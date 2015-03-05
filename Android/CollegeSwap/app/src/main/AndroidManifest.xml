@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="edu.ua.collegeswap">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".view.LoginActivity"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".view.MainDrawerActivity"
+            android:label="@string/title_activity_main_drawer">
+        </activity>
+        <activity
+            android:name=".view.DetailTextbook"
+            android:label="@string/title_activity_detail_textbook"
+            android:parentActivityName=".view.MainDrawerActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.ua.collegeswap.view.MainDrawerActivity"/>
+        </activity>
+        <activity
+            android:name=".view.DetailTicket"
+            android:label="@string/title_activity_detail_ticket"
+            android:parentActivityName=".view.MainDrawerActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.ua.collegeswap.view.MainDrawerActivity"/>
+        </activity>
+        <activity
+            android:name=".view.DetailSublease"
+            android:label="@string/title_activity_detail_sublease"
+            android:parentActivityName=".view.MainDrawerActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.ua.collegeswap.view.MainDrawerActivity"/>
+        </activity>
+    </application>
+
+</manifest>

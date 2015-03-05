@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">College Swap</string>
+
+    <string-array name="sections_array">
+        <item>Textbooks</item>
+        <item>Tickets</item>
+        <item>Subleases</item>
+    </string-array>
+
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_edit">Edit</string>
+    <string name="title_activity_main_drawer">College Swap</string>
+
+    <string name="title_section1">Textbooks</string>
+    <string name="title_section2">Tickets</string>
+    <string name="title_section3">Subleases</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_example">Example action</string>
+    <string name="title_activity_detail_textbook">Textbook Details</string>
+    <string name="title_activity_detail_ticket">Ticket Details</string>
+    <string name="title_activity_detail_sublease">Sublease Details</string>
+
+    <string name="preference_last_nav_drawer_position">lastNavDrawerPosition</string>
+</resources>
