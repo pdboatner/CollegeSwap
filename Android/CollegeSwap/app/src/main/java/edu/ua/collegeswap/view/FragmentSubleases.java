@@ -15,7 +15,7 @@ import edu.ua.collegeswap.viewModel.Sublease;
  * <p/>
  * Created by Patrick on 3/4/2015.
  */
-public class SectionFragmentSubleases extends SectionFragment implements View.OnClickListener {
+public class FragmentSubleases extends SectionFragment implements View.OnClickListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
