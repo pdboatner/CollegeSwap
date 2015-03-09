@@ -27,16 +27,16 @@ public class SectionFragment extends Fragment {
 
         switch (sectionNumber) {
             case 1:
-                frag = new SectionFragmentTextbooks();
+                frag = new FragmentTextbooks();
                 break;
             case 2:
-                frag = new SectionFragmentTickets();
+                frag = new FragmentTickets();
                 break;
             case 3:
-                frag = new SectionFragmentSubleases();
+                frag = new FragmentSubleases();
                 break;
             default:
-                frag = new SectionFragmentTextbooks();
+                frag = new FragmentTextbooks();
                 break;
         }
 

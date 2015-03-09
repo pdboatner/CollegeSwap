@@ -15,7 +15,7 @@ import edu.ua.collegeswap.viewModel.Textbook;
  * <p/>
  * Created by Patrick on 3/4/2015.
  */
-public class SectionFragmentTextbooks extends SectionFragment implements View.OnClickListener {
+public class FragmentTextbooks extends SectionFragment implements View.OnClickListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
