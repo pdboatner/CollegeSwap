@@ -33,3 +33,6 @@ proguard/
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# Visual Paradigm tilde files
+*.vpp~[1-9]*
