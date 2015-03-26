@@ -35,6 +35,9 @@ public class SectionFragment extends Fragment {
             case 3:
                 frag = new FragmentSubleases();
                 break;
+            case 4:
+                frag = new FragmentProfile();
+                break;
             default:
                 frag = new FragmentTextbooks();
                 break;
