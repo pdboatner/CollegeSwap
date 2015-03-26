@@ -10,6 +10,10 @@ public class Ticket extends Listing {
     private String game;
     private String bowl;
 
+    public Ticket() {
+        super();
+    }
+
     @Override
     public Class getDetailActivityClass() {
         return DetailTicket.class;

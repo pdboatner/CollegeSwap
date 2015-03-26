@@ -13,6 +13,17 @@ public abstract class Listing implements Serializable {
     private Account posterAccount;
     private float askingPrice;
     private int ID;
+    private List<Integer> offers;
+    private String title;
+    private String details;
+
+    public Listing() {
+        //TODO
+        posterAccount = new Account();
+        posterAccount.setName("Example Name");
+        posterAccount.setRating(4.5f);
+        posterAccount.setContactInfo("email@crimson.ua.edu");
+    }
 
     public abstract Class getDetailActivityClass();
 
@@ -56,5 +67,21 @@ public abstract class Listing implements Serializable {
         this.ID = ID;
     }
 
-    private List<Integer> offers;
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDetails() {
+        return details;
+    }
+
+    public void setDetails(String details) {
+        this.details = details;
+    }
+
+
 }

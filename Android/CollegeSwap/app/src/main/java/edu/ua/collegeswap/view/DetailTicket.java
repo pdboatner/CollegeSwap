@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.Serializable;
@@ -41,9 +42,26 @@ public class DetailTicket extends ActionBarActivity {
         // Set up the Views
         setContentView(R.layout.activity_detail_ticket);
 
-        //TODO Use the fields of the ticket to set TextViews and such
-//        TextView textView = (TextView) findViewById(R.id.example);
-//        textView.setText(ticket.getSomeString());
+        // Use the fields of the ticket to set TextViews and such
+        TextView title = (TextView) findViewById(R.id.textViewTitle);
+        title.setText(ticket.getTitle());
+
+        TextView price = (TextView) findViewById(R.id.textViewPrice);
+        price.setText("$" + ticket.getAskingPrice());
+
+        TextView seller = (TextView) findViewById(R.id.textViewSeller);
+        seller.setText(ticket.getPosterAccount().getName());
+
+        TextView game = (TextView) findViewById(R.id.textViewGame);
+        game.setText(ticket.getGame());
+
+        TextView bowl = (TextView) findViewById(R.id.textViewBowl);
+        bowl.setText(ticket.getBowl());
+
+        TextView details = (TextView) findViewById(R.id.textViewDetails);
+        details.setText(ticket.getDetails());
+
+        //TODO Perhaps display the user's rating. Android has a rating View that shows 5 stars.
 
     }
 
@@ -51,6 +69,9 @@ public class DetailTicket extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_detail_ticket, menu);
+
+        //TODO Only show the edit button if the user is allowed to edit the Listing
+
         return true;
     }
 
@@ -72,6 +93,9 @@ public class DetailTicket extends ActionBarActivity {
                 return true;
             case R.id.action_edit:
                 Toast.makeText(this, "Edit Button clicked", Toast.LENGTH_SHORT).show();
+
+                //TODO Launch an activity to edit the Listing. Pass the Ticket via bundle, similar to MainDrawerActivity.onListingClicked().
+
                 return true;
         }
 

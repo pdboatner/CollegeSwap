@@ -1,9 +1,11 @@
 package edu.ua.collegeswap.viewModel;
 
+import java.io.Serializable;
+
 /**
  * Created by Patrick on 3/25/2015.
  */
-public class Account {
+public class Account implements Serializable {
 
     private String name;
     private String contactInfo;

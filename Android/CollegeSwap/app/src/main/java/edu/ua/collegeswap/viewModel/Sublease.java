@@ -12,6 +12,10 @@ public class Sublease extends Listing {
     private Calendar startDate;
     private Calendar endDate;
 
+    public Sublease() {
+        super();
+    }
+
     @Override
     public Class getDetailActivityClass() {
         return DetailSublease.class;

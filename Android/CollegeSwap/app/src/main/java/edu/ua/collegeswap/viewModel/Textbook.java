@@ -10,6 +10,10 @@ public class Textbook extends Listing {
     private String courseSubject;
     private int courseNumber;
 
+    public Textbook() {
+        super();
+    }
+
     @Override
     public Class getDetailActivityClass() {
         return DetailTextbook.class;

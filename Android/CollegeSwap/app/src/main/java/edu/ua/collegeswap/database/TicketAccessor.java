@@ -23,18 +23,24 @@ public class TicketAccessor extends ListingAccessor {
             t.setGame("Auburn");
             t.setBowl("Lower bowl");
             t.setAskingPrice(200);
+            t.setTitle("Iron bowl for sale, transfer only");
+            t.setDetails("it's a great ticket.");
             l.add(t);
 
             t = new Ticket();
             t.setGame("West Carolina");
             t.setBowl("Upper bowl");
             t.setAskingPrice(25);
+            t.setTitle("WC for sale. Can upgrade.");
+            t.setDetails("it's a pretty shabby ticket.");
             l.add(t);
 
             t = new Ticket();
             t.setGame("LSU");
             t.setBowl("Lower bowl");
             t.setAskingPrice(150);
+            t.setTitle("LSU for sale. Upgraded.");
+            t.setDetails("it's a nice ticket.");
             l.add(t);
         }
 
