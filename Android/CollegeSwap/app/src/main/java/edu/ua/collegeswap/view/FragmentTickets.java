@@ -21,7 +21,6 @@ public class FragmentTickets extends SectionFragment implements View.OnClickList
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.section_fragment_tickets, container, false);
 
-        //TODO receive the ticket from the bundle
         //TODO update the ticket from the server
 
         Ticket exampleTicket = new Ticket();
