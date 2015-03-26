@@ -14,7 +14,31 @@ public class TicketAccessor extends ListingAccessor {
     @Override
     public List<Listing> getAll() {
         //TODO
-        return null;
+
+        List<Listing> l = new ArrayList<>();
+
+        Ticket t;
+        for (int i = 0; i < 5; i++) {
+            t = new Ticket();
+            t.setGame("Auburn");
+            t.setBowl("Lower bowl");
+            t.setAskingPrice(200);
+            l.add(t);
+
+            t = new Ticket();
+            t.setGame("West Carolina");
+            t.setBowl("Upper bowl");
+            t.setAskingPrice(25);
+            l.add(t);
+
+            t = new Ticket();
+            t.setGame("LSU");
+            t.setBowl("Lower bowl");
+            t.setAskingPrice(150);
+            l.add(t);
+        }
+
+        return l;
     }
 
     @Override

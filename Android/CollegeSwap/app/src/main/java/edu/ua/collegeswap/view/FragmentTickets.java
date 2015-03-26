@@ -5,9 +5,15 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import edu.ua.collegeswap.R;
+import edu.ua.collegeswap.database.TicketAccessor;
+import edu.ua.collegeswap.viewModel.Listing;
 import edu.ua.collegeswap.viewModel.Ticket;
 
 /**
@@ -17,19 +23,56 @@ import edu.ua.collegeswap.viewModel.Ticket;
  */
 public class FragmentTickets extends SectionFragment implements View.OnClickListener {
 
+    private List<Ticket> tickets;
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.section_fragment_tickets, container, false);
 
-        //TODO update the ticket from the server
+        updateTicketsFromServer();
 
-        Ticket exampleTicket = new Ticket();
+        // Get a reference to the linear layout which will hold the View for each ticket
+        LinearLayout linearLayoutTickets = (LinearLayout) view.findViewById(R.id.linearLayoutTickets);
 
-        Button buttonTicket = (Button) view.findViewById(R.id.buttonTicketSimulate);
-        buttonTicket.setOnClickListener(this);
-        buttonTicket.setTag(exampleTicket); // Store the Ticket object as a tag in the View for retrieval when clicked
+        for (Ticket t : tickets) {
+            // Inflate the individual ticket View and put it inside the parent LinearLayout
+            // (this returns the parent linearLayoutTickets, not the individual child View we need)
+            inflater.inflate(R.layout.individual_ticket, linearLayoutTickets);
+
+            // Get a reference to the individual bookmark view we just inflated
+            LinearLayout ticketView = (LinearLayout) linearLayoutTickets.getChildAt(
+                    linearLayoutTickets.getChildCount() - 1);
+
+            ticketView.setTag(t); // Store the Ticket object as a tag in the View for retrieval when clicked
+            ticketView.setOnClickListener(this); // allow the user to click on the whole Ticket representation
+
+            // Find the TextViews and their their text from the Ticket fields
+
+            TextView game = (TextView) ticketView.findViewById(R.id.textViewGame);
+            game.setText(t.getGame());
+
+            TextView bowl = (TextView) ticketView.findViewById(R.id.textViewBowl);
+            bowl.setText(t.getBowl());
+
+            TextView price = (TextView) ticketView.findViewById(R.id.textViewPrice);
+            price.setText("$" + t.getAskingPrice());
+        }
 
         return view;
+    }
+
+    private void updateTicketsFromServer() {
+        // Retrieve the list of tickets from the server
+        TicketAccessor accessor = new TicketAccessor();
+        List<Listing> listings = accessor.getAll();
+        tickets = new ArrayList<>();
+        for (Listing l : listings) {
+            if (l instanceof Ticket) {
+                tickets.add((Ticket) l);
+            } else {
+                throw new IllegalStateException("Expected a Ticket, but found another class.");
+            }
+        }
     }
 
     @Override
