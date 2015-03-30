@@ -20,13 +20,14 @@ import edu.ua.collegeswap.viewModel.Account;
 
 /**
  * A simple {@link Fragment} subclass.
+ * The FragmentProfile class displays the current user's profile
  */
 public class FragmentProfile extends SectionFragment implements View.OnClickListener {
 
     private Account account;
 
     public FragmentProfile() {
-        // Retrieve the user that is currently logged in
+        // TODO Retrieve the user that is currently logged in
         AccountAccessor accessor = new AccountAccessor();
         //Account account = accessor.getLogin();
     }
@@ -36,7 +37,7 @@ public class FragmentProfile extends SectionFragment implements View.OnClickList
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        // Fragment has an options menu, set to True
+        // Add this to tell the fragment that it has menu items to inflate
         setHasOptionsMenu(true);
 
         return view;
@@ -52,7 +53,7 @@ public class FragmentProfile extends SectionFragment implements View.OnClickList
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         // Inflate the options menu
-        inflater.inflate(R.menu.menu_edit_profile, menu);
+        inflater.inflate(R.menu.menu_profile, menu);
         return;
     }
 
@@ -64,7 +65,7 @@ public class FragmentProfile extends SectionFragment implements View.OnClickList
 
             case (R.id.action_edit) :
                 // Make toast for now...
-                Toast.makeText(getActivity(), "Edit profile clicked", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), "Edit profile clicked", Toast.LENGTH_SHORT).show();
                 editButtonClick();
                 break;
         }
@@ -73,6 +74,8 @@ public class FragmentProfile extends SectionFragment implements View.OnClickList
     }
 
     private void editButtonClick() {
-        // TODO launch intent to open the edit profile activity
+        // Launch explicit intent to open the edit profile activity
+        Intent editProfileIntent = new Intent(getActivity(), EditProfileActivity.class);
+        startActivity(editProfileIntent);
     }
 }

@@ -3,8 +3,8 @@
       xmlns:tools="http://schemas.android.com/tools"
       tools:context="edu.ua.collegeswap.view.EditProfileActivity">
     <item
-        android:id="@+id/action_edit"
-        android:title="@string/action_edit"
-        android:icon="@drawable/ic_action_edit"
-        app:showAsAction="withText|ifRoom"/>
+        android:id="@+id/action_settings"
+        android:title="@string/action_settings"
+        android:orderInCategory="100"
+        app:showAsAction="never"/>
 </menu>

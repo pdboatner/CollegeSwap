@@ -7,6 +7,10 @@ import android.view.MenuItem;
 
 import edu.ua.collegeswap.R;
 
+/* The EditProfileActivity class allows the user to edit their profile.
+ * This activity is launched via the FragmentProfile.
+ */
+
 public class EditProfileActivity extends ActionBarActivity {
 
     @Override
