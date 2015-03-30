@@ -15,7 +15,9 @@ import android.widget.Toast;
 import edu.ua.collegeswap.R;
 import edu.ua.collegeswap.database.AccountAccessor;
 import edu.ua.collegeswap.viewModel.Account;
-
+import edu.ua.collegeswap.viewModel.Sublease;
+import edu.ua.collegeswap.viewModel.Textbook;
+import edu.ua.collegeswap.viewModel.Ticket;
 
 
 /**
@@ -45,9 +47,24 @@ public class FragmentProfile extends SectionFragment implements View.OnClickList
 
     @Override
     public void onClick(View v) {
+        // TODO user clicks on an item in their list of postings
 
-        // TODO user clicks on an item in the list
+        if (v.getTag() instanceof Ticket) {
+            // Retrieve the ticket stored in this view
+            Ticket ticket = (Ticket) v.getTag();
+            // Do something
 
+        }else if (v.getTag() instanceof Textbook) {
+            // Retrieve the textbook stored in this view
+            Textbook textbook = (Textbook) v.getTag();
+            // Do something
+            
+        }else if (v.getTag() instanceof Sublease) {
+            // Retrieve the sublease stored in this view
+            Sublease sublease = (Sublease) v.getTag();
+            // Do something
+
+        }
     }
 
     @Override
@@ -73,6 +90,10 @@ public class FragmentProfile extends SectionFragment implements View.OnClickList
         return super.onOptionsItemSelected(item);
     }
 
+    /*
+     * If the user selects the edit button in the options menu then
+     * launch the intent to start EditProfileActivity
+     */
     private void editButtonClick() {
         // Launch explicit intent to open the edit profile activity
         Intent editProfileIntent = new Intent(getActivity(), EditProfileActivity.class);
