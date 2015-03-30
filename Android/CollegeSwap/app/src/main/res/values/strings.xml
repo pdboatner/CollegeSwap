@@ -25,10 +25,11 @@
     <string name="title_activity_detail_textbook">Textbook Details</string>
     <string name="title_activity_detail_ticket">Ticket Details</string>
     <string name="title_activity_detail_sublease">Sublease Details</string>
+    <string name="title_activity_edit_profile">Edit Profile</string>
 
     <string name="preference_last_nav_drawer_position">lastNavDrawerPosition</string>
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_edit_profile">Edit Profile</string>
+
 </resources>

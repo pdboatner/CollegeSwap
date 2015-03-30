@@ -8,7 +8,7 @@ import edu.ua.collegeswap.viewModel.Account;
 public class AccountAccessor {
 
     public Account getLogin( String s, String p ){
-        //TODO
+        //TODO get the login information for the user
         return null;
     }
 }
