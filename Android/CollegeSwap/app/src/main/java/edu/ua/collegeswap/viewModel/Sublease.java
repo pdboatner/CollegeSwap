@@ -1,6 +1,7 @@
 package edu.ua.collegeswap.viewModel;
 
 import java.util.Calendar;
+import java.util.Locale;
 
 import edu.ua.collegeswap.view.DetailSublease;
 
@@ -35,5 +36,15 @@ public class Sublease extends Listing {
 
     public void setStartDate(Calendar startDate) {
         this.startDate = startDate;
+    }
+
+    /**
+     * @return like "Jan 3 - May 15"
+     */
+    public String getDateRange() {
+        return startDate.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.US) + " "
+                + startDate.get(Calendar.DATE) + " - "
+                + endDate.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.US) + " "
+                + endDate.get(Calendar.DATE);
     }
 }

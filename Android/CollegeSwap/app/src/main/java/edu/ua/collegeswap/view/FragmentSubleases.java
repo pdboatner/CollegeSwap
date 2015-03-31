@@ -5,9 +5,15 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import edu.ua.collegeswap.R;
+import edu.ua.collegeswap.database.SubleaseAccessor;
+import edu.ua.collegeswap.viewModel.Listing;
 import edu.ua.collegeswap.viewModel.Sublease;
 
 /**
@@ -17,17 +23,56 @@ import edu.ua.collegeswap.viewModel.Sublease;
  */
 public class FragmentSubleases extends SectionFragment implements View.OnClickListener {
 
+    private List<Sublease> subleases;
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.section_fragment_subleases, container, false);
 
-        Sublease exampleSublease = new Sublease();
+        updateSubleasesFromServer();
 
-        Button buttonSublease = (Button) view.findViewById(R.id.buttonSubleaseSimulate);
-        buttonSublease.setOnClickListener(this);
-        buttonSublease.setTag(exampleSublease); // Store the Sublease object as a tag in the View for retrieval when clicked
+        // Get a reference to the linear layout which will hold the View for each sublease
+        LinearLayout linearLayoutSubleases = (LinearLayout) view.findViewById(R.id.linearLayoutSubleases);
+
+        for (Sublease s : subleases) {
+            // Inflate the individual sublease View and put it inside the parent LinearLayout
+            // (this returns the parent linearLayoutSubleases, not the individual child View we need)
+            inflater.inflate(R.layout.individual_sublease, linearLayoutSubleases);
+
+            // Get a reference to the individual bookmark view we just inflated
+            LinearLayout subleaseView = (LinearLayout) linearLayoutSubleases.getChildAt(
+                    linearLayoutSubleases.getChildCount() - 1);
+
+            subleaseView.setTag(s); // Store the Sublease object as a tag in the View for retrieval when clicked
+            subleaseView.setOnClickListener(this); // allow the user to click on the whole Sublease representation
+
+            // Find the TextViews and their their text from the Sublease fields
+
+            TextView title = (TextView) subleaseView.findViewById(R.id.textViewTitle);
+            title.setText(s.getTitle());
+
+            TextView dateRange = (TextView) subleaseView.findViewById(R.id.textViewDateRange);
+            dateRange.setText(s.getDateRange());
+
+            TextView price = (TextView) subleaseView.findViewById(R.id.textViewPrice);
+            price.setText("$" + s.getAskingPrice());
+        }
 
         return view;
+    }
+
+    private void updateSubleasesFromServer() {
+        // Retrieve the list of subleases from the server
+        SubleaseAccessor accessor = new SubleaseAccessor();
+        List<Listing> listings = accessor.getAll();
+        subleases = new ArrayList<>();
+        for (Listing l : listings) {
+            if (l instanceof Sublease) {
+                subleases.add((Sublease) l);
+            } else {
+                throw new IllegalStateException("Expected a Sublease, but found another class.");
+            }
+        }
     }
 
     @Override

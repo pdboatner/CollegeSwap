@@ -14,7 +14,38 @@ public class TextbookAccessor extends ListingAccessor {
     @Override
     public List<Listing> getAll() {
         //TODO
-        return null;
+
+        List<Listing> l = new ArrayList<>();
+
+        Textbook t;
+        for (int i = 0; i < 5; i++) {
+            t = new Textbook();
+            t.setCourseSubject("MATH");
+            t.setCourseNumber(145);
+            t.setAskingPrice(110);
+            t.setTitle("Calculus book for sale");
+            t.setDetails("Pretty good condition.");
+            l.add(t);
+
+            t = new Textbook();
+            t.setCourseSubject("CS");
+            t.setCourseNumber(360);
+            t.setAskingPrice(30);
+            t.setTitle("Algorithms book. Very used.");
+            t.setDetails("Took the class three times. Got a lot of wear and tear.");
+            l.add(t);
+
+            t = new Textbook();
+            t.setCourseSubject("ENGR");
+            t.setCourseNumber(101);
+            t.setAskingPrice(10);
+            t.setTitle("Please take this intro book");
+            t.setDetails("Why, oh why did I ever buy this?");
+            l.add(t);
+        }
+
+        return l;
+
     }
 
     @Override

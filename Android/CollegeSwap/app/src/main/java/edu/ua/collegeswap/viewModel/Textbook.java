@@ -34,4 +34,11 @@ public class Textbook extends Listing {
     public void setCourseNumber(int courseNumber) {
         this.courseNumber = courseNumber;
     }
+
+    /**
+     * @return like "MATH 145"
+     */
+    public String getSubjectAndNumber() {
+        return courseSubject + " " + courseNumber;
+    }
 }

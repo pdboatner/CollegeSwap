@@ -1,6 +1,7 @@
 package edu.ua.collegeswap.database;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import edu.ua.collegeswap.viewModel.Account;
@@ -14,7 +15,50 @@ public class SubleaseAccessor extends ListingAccessor {
     @Override
     public List<Listing> getAll() {
         //TODO
-        return null;
+
+        List<Listing> l = new ArrayList<>();
+
+        Sublease s;
+        Calendar start, end;
+        for (int i = 0; i < 5; i++) {
+            s = new Sublease();
+            s.setAskingPrice(450);
+            s.setTitle("Woodlands, 1 bedroom");
+            s.setDetails("You get a pool and stuff.");
+            start = Calendar.getInstance();
+            end = Calendar.getInstance();
+            start.add(Calendar.DATE, 2);
+            end.add(Calendar.DATE, 90);
+            s.setStartDate(start);
+            s.setEndDate(end);
+            l.add(s);
+
+            s = new Sublease();
+            s.setAskingPrice(300);
+            s.setTitle("Highlands, 2 bedrooms");
+            s.setDetails("You're almost still on campus!");
+            start = Calendar.getInstance();
+            end = Calendar.getInstance();
+            start.add(Calendar.DATE, 7);
+            end.add(Calendar.DATE, 100);
+            s.setStartDate(start);
+            s.setEndDate(end);
+            l.add(s);
+
+            s = new Sublease();
+            s.setAskingPrice(200);
+            s.setTitle("Grandparent's spare bedroom");
+            s.setDetails("They love young people, and make great cookies.");
+            start = Calendar.getInstance();
+            end = Calendar.getInstance();
+            end.add(Calendar.DATE, 120);
+            s.setStartDate(start);
+            s.setEndDate(end);
+            l.add(s);
+        }
+
+        return l;
+
     }
 
     @Override
