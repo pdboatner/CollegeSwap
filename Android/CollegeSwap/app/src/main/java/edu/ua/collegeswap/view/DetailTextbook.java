@@ -28,7 +28,7 @@ public class DetailTextbook extends ActionBarActivity {
             }
 
         });
-        /*
+        */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
