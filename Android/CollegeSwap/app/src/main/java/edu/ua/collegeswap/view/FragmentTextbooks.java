@@ -1,5 +1,6 @@
 package edu.ua.collegeswap.view;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -23,49 +24,63 @@ import edu.ua.collegeswap.viewModel.Textbook;
  */
 public class FragmentTextbooks extends SectionFragment implements View.OnClickListener {
 
-    private List<Textbook> textbooks;
+//    private List<Textbook> textbooks;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.section_fragment_textbooks, container, false);
+    public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        final View view = inflater.inflate(R.layout.section_fragment_textbooks, container, false);
 
-        updateTextbooksFromServer();
+        final View.OnClickListener onClickListener = this;
 
-        // Get a reference to the linear layout which will hold the View for each textbook
-        LinearLayout linearLayoutTextbooks = (LinearLayout) view.findViewById(R.id.linearLayoutTextbooks);
+        new AsyncTask<Void, Void, List<Textbook>>() {
 
-        for (Textbook t : textbooks) {
-            // Inflate the individual textbook View and put it inside the parent LinearLayout
-            // (this returns the parent linearLayoutTextbooks, not the individual child View we need)
-            inflater.inflate(R.layout.individual_textbook, linearLayoutTextbooks);
+            @Override
+            protected List<Textbook> doInBackground(Void... params) {
+                // This makes network calls, so do it in a background thread
+                return updateTextbooksFromServer();
+            }
 
-            // Get a reference to the individual bookmark view we just inflated
-            LinearLayout textbookView = (LinearLayout) linearLayoutTextbooks.getChildAt(
-                    linearLayoutTextbooks.getChildCount() - 1);
+            @Override
+            protected void onPostExecute(List<Textbook> textbooks) {
+                // When the network calls are complete, this runs on the UI thread to show the listings returned from the server.
 
-            textbookView.setTag(t); // Store the Textbook object as a tag in the View for retrieval when clicked
-            textbookView.setOnClickListener(this); // allow the user to click on the whole Textbook representation
+                // Get a reference to the linear layout which will hold the View for each textbook
+                LinearLayout linearLayoutTextbooks = (LinearLayout) view.findViewById(R.id.linearLayoutTextbooks);
 
-            // Find the TextViews and their their text from the Textbook fields
+                for (Textbook t : textbooks) {
+                    // Inflate the individual textbook View and put it inside the parent LinearLayout
+                    // (this returns the parent linearLayoutTextbooks, not the individual child View we need)
+                    inflater.inflate(R.layout.individual_textbook, linearLayoutTextbooks);
 
-            TextView title = (TextView) textbookView.findViewById(R.id.textViewTitle);
-            title.setText(t.getTitle());
+                    // Get a reference to the individual bookmark view we just inflated
+                    LinearLayout textbookView = (LinearLayout) linearLayoutTextbooks.getChildAt(
+                            linearLayoutTextbooks.getChildCount() - 1);
 
-            TextView course = (TextView) textbookView.findViewById(R.id.textViewCourse);
-            course.setText(t.getSubjectAndNumber());
+                    textbookView.setTag(t); // Store the Textbook object as a tag in the View for retrieval when clicked
+                    textbookView.setOnClickListener(onClickListener); // allow the user to click on the whole Textbook representation
 
-            TextView price = (TextView) textbookView.findViewById(R.id.textViewPrice);
-            price.setText("$" + t.getAskingPrice());
-        }
+                    // Find the TextViews and their their text from the Textbook fields
+
+                    TextView title = (TextView) textbookView.findViewById(R.id.textViewTitle);
+                    title.setText(t.getTitle());
+
+                    TextView course = (TextView) textbookView.findViewById(R.id.textViewCourse);
+                    course.setText(t.getSubjectAndNumber());
+
+                    TextView price = (TextView) textbookView.findViewById(R.id.textViewPrice);
+                    price.setText("$" + t.getAskingPrice());
+                }
+            }
+        }.execute();
 
         return view;
     }
 
-    private void updateTextbooksFromServer() {
+    private List<Textbook> updateTextbooksFromServer() {
         // Retrieve the list of textbooks from the server
         TextbookAccessor accessor = new TextbookAccessor();
         List<Listing> listings = accessor.getAll();
-        textbooks = new ArrayList<>();
+        List<Textbook> textbooks = new ArrayList<>();
         for (Listing l : listings) {
             if (l instanceof Textbook) {
                 textbooks.add((Textbook) l);
@@ -73,6 +88,8 @@ public class FragmentTextbooks extends SectionFragment implements View.OnClickLi
                 throw new IllegalStateException("Expected a Textbook, but found another class.");
             }
         }
+
+        return textbooks;
     }
 
     @Override

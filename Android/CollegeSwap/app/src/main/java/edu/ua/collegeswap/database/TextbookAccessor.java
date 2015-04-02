@@ -1,5 +1,9 @@
 package edu.ua.collegeswap.database;
 
+import android.util.JsonReader;
+
+import java.io.IOException;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,10 +15,8 @@ import edu.ua.collegeswap.viewModel.Textbook;
  * Created by Patrick on 3/25/2015.
  */
 public class TextbookAccessor extends ListingAccessor {
-    @Override
-    public List<Listing> getAll() {
-        //TODO
 
+    private List<Listing> mockGetTextbooks() {
         List<Listing> l = new ArrayList<>();
 
         Textbook t;
@@ -45,7 +47,69 @@ public class TextbookAccessor extends ListingAccessor {
         }
 
         return l;
+    }
 
+    /**
+     * @param url
+     * @return a list of textbooks from the given URL
+     */
+    private List<Listing> getTextbooksFromURL(String url) {
+        String json = getJSONfromURL(url);
+        JsonReader reader = new JsonReader(new StringReader(json));
+
+        List<Listing> l = new ArrayList<>();
+
+        // Parse the JSON
+        try {
+            reader.beginObject();
+
+            while (reader.hasNext()) {
+                String name = reader.nextName();
+                if (name.equals("textbook")) {
+                    // Read the array of textbooks
+                    reader.beginArray();
+
+                    while (reader.hasNext()) {
+                        // Read each textbook
+                        Textbook t = new Textbook();
+
+                        reader.beginObject();
+                        while (reader.hasNext()) {
+                            // Read each field of the textbook
+
+                            String fieldName = reader.nextName();
+                            if (fieldName.equals("subject")) {
+                                t.setCourseSubject(reader.nextString());
+                            } else if (fieldName.equals("number")) {
+                                t.setCourseNumber(Integer.parseInt(reader.nextString()));
+                            }
+                            //TODO Price
+                            //TODO Title
+                        }
+                        reader.endObject();
+
+                        t.setAskingPrice(50);
+                        t.setTitle("Example Title");
+
+                        l.add(t);
+                    }
+
+                    reader.endArray();
+                }
+            }
+
+            reader.endObject();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return l;
+//        return mockGetTextbooks();
+    }
+
+    @Override
+    public List<Listing> getAll() {
+        return getTextbooksFromURL("http://bama.ua.edu/~cppopovich/CS495/request.php");
     }
 
     @Override
