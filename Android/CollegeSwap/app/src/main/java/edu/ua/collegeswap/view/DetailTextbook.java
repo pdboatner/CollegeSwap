@@ -18,7 +18,17 @@ import edu.ua.collegeswap.viewModel.Textbook;
 public class DetailTextbook extends ActionBarActivity {
 
     private Textbook textbook;
+//button1 = (Button) findVeiwById(R.id.button);
 
+        /*button1.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Toast myToast = Toast.makeText(getApplicationContext(),"Saved",Toast.LENGTH_LONG);
+                myToast.show();
+            }
+
+        });
+        /*
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
