@@ -116,6 +116,7 @@ public class TextbookAccessor extends ListingAccessor {
 
     @Override
     public List<Listing> getByPrice(int minPrice, int maxPrice) {
+        //note: post 'tbl=textbook' and 'args=price>minPrice,price<maxPrice'
         //TODO
         return null;
     }
