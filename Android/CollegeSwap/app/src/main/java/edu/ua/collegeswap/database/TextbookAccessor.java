@@ -82,6 +82,8 @@ public class TextbookAccessor extends ListingAccessor {
                                 t.setCourseSubject(reader.nextString());
                             } else if (fieldName.equals("number")) {
                                 t.setCourseNumber(Integer.parseInt(reader.nextString()));
+                            } else {
+                                reader.nextString();
                             }
                             //TODO Price
                             //TODO Title
