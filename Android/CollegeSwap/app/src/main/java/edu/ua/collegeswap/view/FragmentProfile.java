@@ -10,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import edu.ua.collegeswap.R;
@@ -32,6 +33,12 @@ public class FragmentProfile extends SectionFragment implements View.OnClickList
         // TODO Retrieve the user that is currently logged in
         AccountAccessor accessor = new AccountAccessor();
         //Account account = accessor.getLogin();
+        account = new Account();
+        String username = "soccerMom";
+        account.setName(username);
+
+
+
     }
 
     @Override
@@ -41,6 +48,9 @@ public class FragmentProfile extends SectionFragment implements View.OnClickList
 
         // Add this to tell the fragment that it has menu items to inflate
         setHasOptionsMenu(true);
+
+        TextView usernameTextView = (TextView) view.findViewById(R.id.textViewAccountName);
+        usernameTextView.setText(account.getName());
 
         return view;
     }
@@ -85,6 +95,8 @@ public class FragmentProfile extends SectionFragment implements View.OnClickList
                 //Toast.makeText(getActivity(), "Edit profile clicked", Toast.LENGTH_SHORT).show();
                 editButtonClick();
                 break;
+
+
         }
 
         return super.onOptionsItemSelected(item);
