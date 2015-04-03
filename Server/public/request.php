@@ -5,12 +5,13 @@ $script = "/st1/cppopovich/Programming/CS495/sql.pl";
 if(isset($_POST["tbl"])){
 $tbl = $_POST["tbl"];
 $args = $_POST["args"];
-//$sort =
+$sort = $_POST["sort"];
 }else{
 $tbl = 'textbook';
 $args = 'subject=CS';
+$sort = '';
 }
 
-$result = `perl $script $tbl $args`;
+$result = `perl $script $tbl "$args" "$sort"`;
 echo $result;
 ?>

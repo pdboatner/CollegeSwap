@@ -18,6 +18,9 @@ Table:<br>
 <br>
 Args:<br>
 <input type="text" name="args" value="subject=CS">
+<br>
+Sort:<br>
+<input type="text" name="sort" value="+price">
 <br><br>
 <input type="submit" value="Submit">
 </body>

@@ -37,3 +37,5 @@ Thumbs.db
 
 # Visual Paradigm tilde files
 *.vpp~[1-9]*
+# script to download the server files to commit to git
+Server/update

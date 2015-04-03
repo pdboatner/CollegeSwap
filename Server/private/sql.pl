@@ -3,8 +3,15 @@
 use strict;
 use warnings;
 
-my %T = ('account'=>[],'textbook'=>[]);
-my %N = ('account'=>[],'textbook'=>[]);
+my @tables = ('account','textbook','ticket','sublease');
+my %T;
+for (@tables){
+    $T{$_} = [];
+}
+my %N;
+for (@tables){
+    $N{$_} = [];
+}
 my @m;
 my $p = '/st1/cppopovich/Programming/CS495/';
 for my $f ('account','textbook'){;
@@ -31,15 +38,28 @@ sub where{
     for my $i (@whr){
         @items = split /[=><]/, $i;
         $items[0] = $h{$items[0]};
-        if($items[0] ne $items[1]){
-            return 0;
+        if($i =~ /=/){
+            return 0 if $items[0] ne $items[1];
+        }elsif($i =~ />/){
+            return 0 if !($items[0] > $items[1]);
+        }elsif($i =~ /</){
+            return 0 if !($items[0] < $items[1]);
         }
     }
     return 1;
 }
 
+sub cmpNS{
+    my ($a,$b) = @_;
+    if($a=~/^-?\d+\.?\d*$/ && $b=~/^-?\d+\.?\d*$/){
+        return $a <=> $b;
+    }else{
+        return $a cmp $b;
+    }
+}
+
 sub SQL{
-    my ($tbl,$q) = @_;
+    my ($tbl,$q,$sortMethod) = @_;
     @whr = grep {/./} split /,/, $q;
     my @tbl = @{$T{$tbl}};
     my @result = ();
@@ -47,6 +67,13 @@ sub SQL{
         if(where($h_ref)){
             push @result, $h_ref;
         }
+    }
+    $sortMethod=~m/^[+-](.*)$/;
+    my $s = $1;
+    if($sortMethod =~ /^\+/){
+        @result = sort {cmpNS($a->{$s},$b->{$s})} @result;
+    }else{
+        @result = sort {cmpNS($b->{$s},$a->{$s})} @result;
     }
 
     print '{"'.$tbl.'":[';
@@ -67,4 +94,5 @@ sub SQL{
 
 my $tbl = $ARGV[0];
 my $query = $ARGV[1];
-SQL($tbl,$query);
+my $sortMethod = $ARGV[2];
+SQL($tbl,$query,$sortMethod);

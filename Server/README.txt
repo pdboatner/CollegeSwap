@@ -3,6 +3,7 @@ Get information:
     post:
         'tbl' is one of (account,textbook,ticket,sublease)
         'args' is a comma-separated list of conditions.
+        For my convenience, the first value in each pair is assumed to be the field. The second is assumed to be the value.
         example: 'subject=CS,price>9,price<20'
         'sort' is the condition to sort by, prefaced by + or -
         example: '+price'

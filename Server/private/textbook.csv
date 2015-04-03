@@ -1,7 +1,7 @@
-subject,number
-CS,495
-MATH,247
-EN,101
-CS,470
-CS,403
-EN,102
+subject,number,date,poster,price,details
+CS,495,0,bob,12
+MATH,247,0,bob,18
+EN,101,0,bob,9
+CS,470,0,bob,2
+CS,403,0,bob,7
+EN,102,0,bob,3
