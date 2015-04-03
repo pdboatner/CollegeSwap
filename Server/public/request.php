@@ -12,6 +12,10 @@ $args = 'subject=CS';
 $sort = '';
 }
 
-$result = `perl $script $tbl "$args" "$sort"`;
+$tbl = escapeshellarg($tbl);
+$args = escapeshellarg($args);
+$sort = escapeshellarg($sort);
+
+$result = `perl $script $tbl $args $sort`;
 echo $result;
 ?>
