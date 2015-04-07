@@ -3,13 +3,19 @@ package edu.ua.collegeswap.view;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+<<<<<<< Updated upstream
+=======
+import android.widget.EditText;
+>>>>>>> Stashed changes
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +34,10 @@ import edu.ua.collegeswap.viewModel.Ticket;
 public class FragmentProfile extends SectionFragment implements View.OnClickListener {
 
     private Account account;
+
+    private final String LOG_TAG = FragmentProfile.class.getSimpleName();
+
+    private static final String PREFS_NAME = "MyPreferences";
 
     public FragmentProfile() {
         // TODO Retrieve the user that is currently logged in
@@ -49,11 +59,22 @@ public class FragmentProfile extends SectionFragment implements View.OnClickList
         // Add this to tell the fragment that it has menu items to inflate
         setHasOptionsMenu(true);
 
+<<<<<<< Updated upstream
         TextView usernameTextView = (TextView) view.findViewById(R.id.textViewAccountName);
         usernameTextView.setText(account.getName());
+=======
+//        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(PREFS_NAME, 0);
+//        String username = sharedPreferences.getString(getString(R.string.pref_username_key), getString(R.string.pref_username_set));
+//
+//        EditText usernameTextView = (EditText) getActivity().findViewById(R.id.textViewAccountName);
+//        if (username != null) {
+//            usernameTextView.setText(username);
+//        }
+>>>>>>> Stashed changes
 
         return view;
     }
+
 
     @Override
     public void onClick(View v) {
@@ -74,6 +95,8 @@ public class FragmentProfile extends SectionFragment implements View.OnClickList
             Sublease sublease = (Sublease) v.getTag();
             // Do something
 
+        }else {
+            Log.e(LOG_TAG, "Unrecognizable object");
         }
     }
 
@@ -91,7 +114,6 @@ public class FragmentProfile extends SectionFragment implements View.OnClickList
         switch (item.getItemId()) {
 
             case (R.id.action_edit) :
-                // Make toast for now...
                 //Toast.makeText(getActivity(), "Edit profile clicked", Toast.LENGTH_SHORT).show();
                 editButtonClick();
                 break;

@@ -8,13 +8,64 @@
                 android:paddingBottom="@dimen/activity_vertical_margin"
                 tools:context="edu.ua.collegeswap.view.EditProfileActivity">
 
+<<<<<<< Updated upstream
     <TextView android:id="@+id/editProfileTitle"
         android:text="@string/edit_profile_placeholder"
         android:textAppearance="?android:textAppearanceLarge"
         android:textStyle="bold"
         android:textSize="30sp"
+=======
+
+
+    <TextView android:id="@+id/textViewAccountName"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textStyle="bold"
+        android:text="soccerMom203"
+        android:layout_gravity="right|bottom|left"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView android:id="@+id/textViewEmailAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textStyle="bold"
+        android:text="@string/edit_profile_email"
+        android:layout_below="@+id/textViewAccountName"
+        android:paddingTop="40sp" />
+
+    <EditText android:id="@+id/editTextEmailAddress"
+>>>>>>> Stashed changes
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewAccountName"
+        android:paddingTop="30sp"
+        android:ems="20"
+        android:inputType="textEmailAddress"
+        android:layout_toEndOf="@+id/textViewEmailAddress"
+        android:layout_toRightOf="@+id/textViewPhoneNumber" />
+
+    <TextView android:id="@+id/textViewPhoneNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textStyle="bold"
+        android:text="@string/edit_profile_phone"
+        android:layout_below="@+id/textViewEmailAddress"
+        android:paddingTop="40sp" />
+
+    <EditText android:id="@+id/editTextPhoneNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="30sp"
+        android:ems="6"
+        android:inputType="textPhonetic"
+        android:layout_alignTop="@+id/textViewPhoneNumber"
+        android:layout_alignRight="@+id/editTextEmailAddress"
+        android:layout_alignEnd="@+id/editTextEmailAddress" />
+
 
     <TextView android:id="@+id/usernameTitle"
         android:text="Username"
