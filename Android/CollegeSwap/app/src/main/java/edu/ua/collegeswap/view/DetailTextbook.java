@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.Serializable;
@@ -20,15 +21,15 @@ public class DetailTextbook extends ActionBarActivity {
     private Textbook textbook;
 //button1 = (Button) findVeiwById(R.id.button);
 
-        /*button1.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                Toast myToast = Toast.makeText(getApplicationContext(),"Saved",Toast.LENGTH_LONG);
-                myToast.show();
-            }
+    /*button1.setOnClickListener(new View.OnClickListener(){
+        @Override
+        public void onClick(View view){
+            Toast myToast = Toast.makeText(getApplicationContext(),"Saved",Toast.LENGTH_LONG);
+            myToast.show();
+        }
 
-        });
-        */
+    });
+    */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,9 +53,22 @@ public class DetailTextbook extends ActionBarActivity {
         // Set up the Views
         setContentView(R.layout.activity_detail_textbook);
 
-        //TODO Use the fields of the textbook to set TextViews and such
-//        TextView textView = (TextView) findViewById(R.id.example);
-//        textView.setText(textbook.getSomeString());
+        // Use the fields of the textbook to set TextViews and such
+
+        TextView title = (TextView) findViewById(R.id.textViewTitle);
+        title.setText(textbook.getTitle());
+
+        TextView price = (TextView) findViewById(R.id.textViewPrice);
+        price.setText("$" + textbook.getAskingPrice());
+
+        TextView seller = (TextView) findViewById(R.id.textViewSeller);
+        seller.setText(textbook.getPosterAccount().getName());
+
+        TextView course = (TextView) findViewById(R.id.textViewCourse);
+        course.setText(textbook.getSubjectAndNumber());
+
+        TextView details = (TextView) findViewById(R.id.textViewDetails);
+        details.setText(textbook.getDetails());
 
     }
 
