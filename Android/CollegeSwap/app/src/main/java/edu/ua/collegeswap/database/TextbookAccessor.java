@@ -81,15 +81,19 @@ public class TextbookAccessor extends ListingAccessor {
                                 t.setCourseSubject(reader.nextString());
                             } else if (fieldName.equals("number")) {
                                 t.setCourseNumber(Integer.parseInt(reader.nextString()));
+                            } else if (fieldName.equals("poster")) {
+                                Account a = new Account();
+                                a.setName(reader.nextString());
+                                t.setPosterAccount(a);
+                            } else if (fieldName.equals("price")) {
+                                t.setAskingPrice(Float.parseFloat(reader.nextString()));
                             } else {
                                 reader.nextString();
                             }
-                            //TODO Price
                             //TODO Title
                         }
                         reader.endObject();
 
-                        t.setAskingPrice(50);
                         t.setTitle("Example Title");
 
                         l.add(t);
