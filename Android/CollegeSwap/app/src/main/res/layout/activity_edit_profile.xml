@@ -8,13 +8,6 @@
                 android:paddingBottom="@dimen/activity_vertical_margin"
                 tools:context="edu.ua.collegeswap.view.EditProfileActivity">
 
-<<<<<<< Updated upstream
-    <TextView android:id="@+id/editProfileTitle"
-        android:text="@string/edit_profile_placeholder"
-        android:textAppearance="?android:textAppearanceLarge"
-        android:textStyle="bold"
-        android:textSize="30sp"
-=======
 
 
     <TextView android:id="@+id/textViewAccountName"
@@ -27,20 +20,38 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
+    <TextView android:id="@+id/usernameTitle"
+        android:text="Username"
+        android:textAppearance="?android:textAppearanceMedium"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewAccountName"
+        android:paddingTop="30sp"/>
+
+    <EditText android:id="@+id/editTextUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewAccountName"
+        android:paddingTop="30sp"
+        android:ems="20"
+        android:inputType="textEmailAddress"
+        android:layout_toEndOf="@+id/textViewEmailAddress"
+        android:layout_toRightOf="@+id/textViewPhoneNumber" />
+
     <TextView android:id="@+id/textViewEmailAddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textStyle="bold"
         android:text="@string/edit_profile_email"
-        android:layout_below="@+id/textViewAccountName"
+        android:layout_below="@+id/usernameTitle"
         android:paddingTop="40sp" />
 
     <EditText android:id="@+id/editTextEmailAddress"
->>>>>>> Stashed changes
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textViewAccountName"
+        android:layout_below="@+id/usernameTitle"
         android:paddingTop="30sp"
         android:ems="20"
         android:inputType="textEmailAddress"
@@ -67,45 +78,37 @@
         android:layout_alignEnd="@+id/editTextEmailAddress" />
 
 
-    <TextView android:id="@+id/usernameTitle"
-        android:text="Username"
-        android:textAppearance="?android:textAppearanceMedium"
-        android:textStyle="bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/editProfileTitle"
-        android:paddingTop="30sp"/>
 
-    <TextView android:id="@+id/emailTitle"
-        android:text="E-mail"
-        android:textAppearance="?android:textAppearanceMedium"
-        android:textStyle="bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/usernameTitle"
-        android:paddingTop="30sp"/>
+    <!--<TextView android:id="@+id/emailTitle"-->
+        <!--android:text="E-mail"-->
+        <!--android:textAppearance="?android:textAppearanceMedium"-->
+        <!--android:textStyle="bold"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@+id/usernameTitle"-->
+        <!--android:paddingTop="30sp"/>-->
 
-    <EditText  android:id="@+id/username_editText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignRight="@+id/usernameTitle"
-        android:layout_alignBaseline="@+id/usernameTitle"
+    <!--<EditText  android:id="@+id/username_editText"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:ems="10"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_alignParentEnd="true"-->
+        <!--android:layout_alignRight="@+id/usernameTitle"-->
+        <!--android:layout_alignBaseline="@+id/usernameTitle"-->
 
-        android:text="@string/pref_username_default"/>
+        <!--android:text="@string/pref_username_default"/>-->
 
-    <EditText  android:id="@+id/email_editText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignRight="@+id/emailTitle"
-        android:layout_alignBaseline="@+id/emailTitle"
+    <!--<EditText  android:id="@+id/email_editText"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:ems="10"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_alignParentEnd="true"-->
+        <!--android:layout_alignRight="@+id/emailTitle"-->
+        <!--android:layout_alignBaseline="@+id/emailTitle"-->
 
-        android:text="soccermom@gmail.com"/>
+        <!--android:text="soccermom@gmail.com"/>-->
 
 
 </RelativeLayout>

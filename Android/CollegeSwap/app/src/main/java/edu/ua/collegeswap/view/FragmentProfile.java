@@ -12,10 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-<<<<<<< Updated upstream
-=======
 import android.widget.EditText;
->>>>>>> Stashed changes
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,18 +56,15 @@ public class FragmentProfile extends SectionFragment implements View.OnClickList
         // Add this to tell the fragment that it has menu items to inflate
         setHasOptionsMenu(true);
 
-<<<<<<< Updated upstream
         TextView usernameTextView = (TextView) view.findViewById(R.id.textViewAccountName);
         usernameTextView.setText(account.getName());
-=======
-//        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(PREFS_NAME, 0);
-//        String username = sharedPreferences.getString(getString(R.string.pref_username_key), getString(R.string.pref_username_set));
-//
-//        EditText usernameTextView = (EditText) getActivity().findViewById(R.id.textViewAccountName);
-//        if (username != null) {
-//            usernameTextView.setText(username);
-//        }
->>>>>>> Stashed changes
+
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(PREFS_NAME, 0);
+        String username = sharedPreferences.getString(getString(R.string.pref_username_key), getString(R.string.pref_username_default));
+
+        if (username == null) {
+            usernameTextView.setText(account.getName());
+        }else { usernameTextView.setText(username); }
 
         return view;
     }

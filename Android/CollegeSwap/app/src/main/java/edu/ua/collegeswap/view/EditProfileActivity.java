@@ -1,10 +1,7 @@
 package edu.ua.collegeswap.view;
 
 import android.content.SharedPreferences;
-<<<<<<< Updated upstream
-=======
 import android.support.v7.app.ActionBarActivity;
->>>>>>> Stashed changes
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
@@ -51,7 +48,7 @@ public class EditProfileActivity extends ActionBarActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-<<<<<<< Updated upstream
+
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
@@ -61,34 +58,35 @@ public class EditProfileActivity extends ActionBarActivity {
         } else if (id == R.id.action_save) {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
             String username = prefs.getString(getString(R.string.pref_username_key), getString(R.string.pref_username_default));
+            saveButtonClicked();
 
         }
         // Respond to the action bar's Up/Home button
         else if (id == android.R.id.home) {
-                /*
-                This prevents the MainDrawerActivity from reverting to the default Section number.
-                This makes the Up/Home button behavior identical to the hardware Back button behavior.
-                 */
+            /*
+            This prevents the MainDrawerActivity from reverting to the default Section number.
+            This makes the Up/Home button behavior identical to the hardware Back button behavior.
+            */
             finish();
             return true;
-=======
-        switch(item.getItemId()) {
-            case (R.id.action_save) :
-                saveButtonClicked();
-                break;
-            case (R.id.action_settings) :
-                break;
->>>>>>> Stashed changes
         }
+
+//        switch(item.getItemId()) {
+//            case (R.id.action_save) :
+//                saveButtonClicked();
+//                break;
+//            case (R.id.action_settings) :
+//                break;
+//        }
 
         return super.onOptionsItemSelected(item);
     }
 
 
     private void saveButtonClicked() {
-//        Toast.makeText(this, "Save button clicked", Toast.LENGTH_SHORT).show();
-//        SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, 0);
-//        SharedPreferences.Editor editor = sharedPreferences.edit();
-//        editor.putString(getString(R.string.pref_username_key), "newUser");
+          Toast.makeText(this, "Save button clicked", Toast.LENGTH_SHORT).show();
+          SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, 0);
+          SharedPreferences.Editor editor = sharedPreferences.edit();
+          editor.putString(getString(R.string.pref_username_key), "newUser");
     }
 }
