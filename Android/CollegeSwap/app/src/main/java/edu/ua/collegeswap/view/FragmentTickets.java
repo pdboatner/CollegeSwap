@@ -3,10 +3,14 @@ package edu.ua.collegeswap.view;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +28,10 @@ import edu.ua.collegeswap.viewModel.Ticket;
 public class FragmentTickets extends SectionFragment implements View.OnClickListener {
 
     private List<Ticket> tickets;
+
+    public FragmentTickets() {
+        setHasOptionsMenu(true);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -85,6 +93,26 @@ public class FragmentTickets extends SectionFragment implements View.OnClickList
             Ticket ticket = (Ticket) v.getTag();
 
             callbacks.onListingClicked(ticket);
+        }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
+        inflater.inflate(R.menu.menu_content_fragment, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_new) {
+            //TODO Open the activity to create a new Ticket
+
+            Toast.makeText(getActivity(), "Making a new Ticket", Toast.LENGTH_SHORT).show();
+
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
         }
     }
 }

@@ -1,0 +1,13 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context="edu.ua.collegeswap.view.SectionFragment">
+    <!--<item android:id="@+id/action_example"-->
+    <!--android:title="@string/action_example"-->
+    <!--app:showAsAction="withText|ifRoom"/>-->
+    <item
+        android:id="@+id/action_new"
+        android:title="New"
+        android:icon="@android:drawable/ic_menu_add"
+        app:showAsAction="withText|ifRoom"/>
+</menu>
