@@ -2,7 +2,6 @@ package edu.ua.collegeswap.database;
 
 import android.util.JsonReader;
 
-import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -101,7 +100,7 @@ public class TextbookAccessor extends ListingAccessor {
             }
 
             reader.endObject();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
