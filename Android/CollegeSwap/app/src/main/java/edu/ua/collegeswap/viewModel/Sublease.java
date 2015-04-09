@@ -12,6 +12,7 @@ public class Sublease extends Listing {
 
     private Calendar startDate;
     private Calendar endDate;
+    private String location;
 
     public Sublease() {
         super();
@@ -36,6 +37,14 @@ public class Sublease extends Listing {
 
     public void setStartDate(Calendar startDate) {
         this.startDate = startDate;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     /**
