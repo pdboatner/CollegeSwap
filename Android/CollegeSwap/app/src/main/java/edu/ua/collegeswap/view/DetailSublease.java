@@ -47,7 +47,7 @@ public class DetailSublease extends ActionBarActivity {
         title.setText(sublease.getTitle());
 
         TextView price = (TextView) findViewById(R.id.textViewPrice);
-        price.setText("$" + sublease.getAskingPrice());
+        price.setText(sublease.getAskingPriceDollars());
 
         TextView seller = (TextView) findViewById(R.id.textViewSeller);
         seller.setText(sublease.getPosterAccount().getName());

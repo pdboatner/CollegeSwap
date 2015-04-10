@@ -76,7 +76,7 @@ public class FragmentTextbooks extends SectionFragment implements View.OnClickLi
                     course.setText(t.getSubjectAndNumber());
 
                     TextView price = (TextView) textbookView.findViewById(R.id.textViewPrice);
-                    price.setText("$" + t.getAskingPrice());
+                    price.setText(t.getAskingPriceDollars());
                 }
             }
         }.execute();

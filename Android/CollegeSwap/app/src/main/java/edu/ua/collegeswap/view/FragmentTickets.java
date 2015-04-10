@@ -66,7 +66,7 @@ public class FragmentTickets extends SectionFragment implements View.OnClickList
             bowl.setText(t.getBowl());
 
             TextView price = (TextView) ticketView.findViewById(R.id.textViewPrice);
-            price.setText("$" + t.getAskingPrice());
+            price.setText(t.getAskingPriceDollars());
         }
 
         return view;

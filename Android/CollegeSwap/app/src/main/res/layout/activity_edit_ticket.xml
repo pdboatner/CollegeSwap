@@ -1,0 +1,99 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:paddingLeft="@dimen/activity_horizontal_margin"
+              android:paddingRight="@dimen/activity_horizontal_margin"
+              android:paddingTop="@dimen/activity_vertical_margin"
+              android:paddingBottom="@dimen/activity_vertical_margin"
+              android:orientation="vertical"
+              tools:context="edu.ua.collegeswap.view.EditTicketActivity">
+
+    <TextView
+        style="@style/SmallHeaderCrimson"
+        android:text="TITLE"/>
+
+    <include layout="@layout/crimson_line"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/editTextTitle"
+        android:hint="Title"
+        android:layout_gravity="center_horizontal"/>
+
+    <TextView
+        style="@style/SmallHeaderCrimson"
+        android:text="PRICE"/>
+
+    <include layout="@layout/crimson_line"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="$"
+            android:layout_marginRight="5dp"/>
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:hint="Price"
+            android:id="@+id/editTextPrice"/>
+
+    </LinearLayout>
+
+
+    <TextView
+        style="@style/SmallHeaderCrimson"
+        android:text="GAME"/>
+
+    <include layout="@layout/crimson_line"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Spinner
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:id="@+id/spinnerGame"
+            android:spinnerMode="dropdown"/>
+
+        <Spinner
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:id="@+id/spinnerBowl"
+            android:spinnerMode="dropdown"/>
+
+    </LinearLayout>
+
+    <TextView
+        style="@style/SmallHeaderCrimson"
+        android:text="DETAILS"/>
+
+    <include layout="@layout/crimson_line"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Details"
+        android:minLines="3"
+        android:gravity="top"
+        android:id="@+id/editTextDetails"/>
+
+</LinearLayout>

@@ -46,5 +46,6 @@
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="edit_profile_placeholder">Edit Profile</string>
+    <string name="title_activity_edit_ticket">Edit Ticket</string>
 
 </resources>

@@ -47,7 +47,7 @@ public class DetailTicket extends ActionBarActivity {
         title.setText(ticket.getTitle());
 
         TextView price = (TextView) findViewById(R.id.textViewPrice);
-        price.setText("$" + ticket.getAskingPrice());
+        price.setText(ticket.getAskingPriceDollars());
 
         TextView seller = (TextView) findViewById(R.id.textViewSeller);
         seller.setText(ticket.getPosterAccount().getName());
@@ -95,6 +95,10 @@ public class DetailTicket extends ActionBarActivity {
                 Toast.makeText(this, "Edit Button clicked", Toast.LENGTH_SHORT).show();
 
                 //TODO Launch an activity to edit the Listing. Pass the Ticket via bundle, similar to MainDrawerActivity.onListingClicked().
+
+                Intent intent = new Intent(this, EditTicketActivity.class);
+                intent.putExtra(EditTicketActivity.EXTRA_TICKET, ticket);
+                startActivity(intent);
 
                 return true;
         }

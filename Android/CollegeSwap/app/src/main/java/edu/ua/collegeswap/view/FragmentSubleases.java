@@ -63,7 +63,7 @@ public class FragmentSubleases extends SectionFragment implements View.OnClickLi
             dateRange.setText(s.getDateRange());
 
             TextView price = (TextView) subleaseView.findViewById(R.id.textViewPrice);
-            price.setText("$" + s.getAskingPrice());
+            price.setText(s.getAskingPriceDollars());
         }
 
         return view;

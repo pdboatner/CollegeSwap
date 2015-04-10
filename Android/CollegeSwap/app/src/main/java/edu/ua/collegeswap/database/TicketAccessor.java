@@ -78,6 +78,19 @@ public class TicketAccessor extends ListingAccessor {
 
         l.add("West Carolina");
         l.add("Auburn");
+        l.add("LSU");
+
+        return l;
+    }
+
+    /**
+     * @return a list of the bowl options
+     */
+    public List<String> getBowls() {
+        List<String> l = new ArrayList<>(2);
+
+        l.add("Upper bowl");
+        l.add("Lower bowl");
 
         return l;
     }

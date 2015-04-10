@@ -59,6 +59,20 @@ public abstract class Listing implements Serializable {
         this.askingPrice = askingPrice;
     }
 
+    /**
+     * @return the asking price, formatted as a plain number like "200"
+     */
+    public String getAskingPriceFormatted() {
+        return "" + (int) askingPrice;
+    }
+
+    /**
+     * @return the asking price, formatted as a dollar amount like "$200"
+     */
+    public String getAskingPriceDollars() {
+        return "$" + (int) askingPrice;
+    }
+
     public int getID() {
         return ID;
     }

@@ -59,7 +59,7 @@ public class DetailTextbook extends ActionBarActivity {
         title.setText(textbook.getTitle());
 
         TextView price = (TextView) findViewById(R.id.textViewPrice);
-        price.setText("$" + textbook.getAskingPrice());
+        price.setText(textbook.getAskingPriceDollars());
 
         TextView seller = (TextView) findViewById(R.id.textViewSeller);
         seller.setText(textbook.getPosterAccount().getName());
