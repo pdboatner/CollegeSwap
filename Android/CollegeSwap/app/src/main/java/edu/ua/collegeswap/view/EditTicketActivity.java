@@ -7,12 +7,14 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.io.Serializable;
 import java.util.List;
 
 import edu.ua.collegeswap.R;
 import edu.ua.collegeswap.database.TicketAccessor;
+import edu.ua.collegeswap.database.TicketWriter;
 import edu.ua.collegeswap.viewModel.Ticket;
 
 public class EditTicketActivity extends EditListingActivity {
@@ -109,7 +111,27 @@ public class EditTicketActivity extends EditListingActivity {
                 finish();
                 break;
             case R.id.actionbar_done:
-                //TODO Save the Ticket. Submit it to the server.
+                // Save the Ticket. Submit it to the server.
+
+                ticket.setTitle(title.getText().toString());
+                ticket.setAskingPrice(Float.parseFloat(price.getText().toString()));
+                ticket.setDetails(details.getText().toString());
+                ticket.setBowl(bowl.getSelectedItem().toString());
+                ticket.setGame(game.getSelectedItem().toString());
+
+                System.out.println("Bowl is " + bowl.getSelectedItem().toString());
+                System.out.println("Game is " + game.getSelectedItem().toString());
+
+                TicketWriter ticketWriter = new TicketWriter();
+                if (editingExisting) {
+                    ticketWriter.updateExisting(ticket);
+                    Toast.makeText(this, "Updating existing ticket", Toast.LENGTH_SHORT).show();
+                } else {
+                    ticketWriter.saveNew(ticket);
+                    Toast.makeText(this, "Saving new ticket", Toast.LENGTH_SHORT).show();
+                }
+
+                finish(); // TODO ask the calling activity to refresh now?
 
                 break;
         }
