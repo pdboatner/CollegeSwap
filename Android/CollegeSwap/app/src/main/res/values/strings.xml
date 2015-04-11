@@ -14,6 +14,7 @@
     <string name="action_edit">Edit</string>
     <string name="action_save">Save</string>
     <string name="title_activity_main_drawer">College Swap</string>
+    <string name="loginTitle">College Swap</string>
 
     <string name="title_section1">Textbooks</string>
     <string name="title_section2">Tickets</string>
