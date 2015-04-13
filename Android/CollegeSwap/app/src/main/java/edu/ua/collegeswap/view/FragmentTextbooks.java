@@ -69,13 +69,13 @@ public class FragmentTextbooks extends SectionFragment implements View.OnClickLi
 
                     // Find the TextViews and their their text from the Textbook fields
 
-                    TextView title = (TextView) textbookView.findViewById(R.id.textViewTitle);
+                    TextView title = (TextView) textbookView.findViewById(R.id.AptName);
                     title.setText(t.getTitle());
 
                     TextView course = (TextView) textbookView.findViewById(R.id.textViewCourse);
                     course.setText(t.getSubjectAndNumber());
 
-                    TextView price = (TextView) textbookView.findViewById(R.id.textViewPrice);
+                    TextView price = (TextView) textbookView.findViewById(R.id.textPriceLabel);
                     price.setText("$" + t.getAskingPrice());
                 }
             }

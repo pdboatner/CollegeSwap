@@ -43,13 +43,13 @@ public class DetailTicket extends ActionBarActivity {
         setContentView(R.layout.activity_detail_ticket);
 
         // Use the fields of the ticket to set TextViews and such
-        TextView title = (TextView) findViewById(R.id.textViewTitle);
+        TextView title = (TextView) findViewById(R.id.AptName);
         title.setText(ticket.getTitle());
 
-        TextView price = (TextView) findViewById(R.id.textViewPrice);
+        TextView price = (TextView) findViewById(R.id.textPriceLabel);
         price.setText("$" + ticket.getAskingPrice());
 
-        TextView seller = (TextView) findViewById(R.id.textViewSeller);
+        TextView seller = (TextView) findViewById(R.id.textSeller);
         seller.setText(ticket.getPosterAccount().getName());
 
         TextView game = (TextView) findViewById(R.id.textViewGame);

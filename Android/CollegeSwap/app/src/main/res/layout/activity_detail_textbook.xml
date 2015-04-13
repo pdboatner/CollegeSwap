@@ -13,17 +13,17 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="$80"
-        android:id="@+id/textViewPrice"
-        android:layout_alignTop="@+id/textViewLabelPrice"
-        android:layout_alignRight="@+id/textViewSeller"
-        android:layout_alignEnd="@+id/textViewSeller"/>
+        android:id="@+id/textPriceLabel"
+        android:layout_alignTop="@+id/textPriceLabel"
+        android:layout_alignRight="@+id/textSeller"
+        android:layout_alignEnd="@+id/textSeller"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Title"
-        android:id="@+id/textViewLabelTitle"
+        android:id="@+id/aptLabel"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"/>
@@ -33,17 +33,17 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="soccerMom203"
-        android:id="@+id/textViewSeller"
+        android:id="@+id/textSeller"
         android:layout_alignTop="@+id/textViewLabelSeller"
-        android:layout_alignRight="@+id/textViewTitle"
-        android:layout_alignEnd="@+id/textViewTitle"/>
+        android:layout_alignRight="@+id/AptName"
+        android:layout_alignEnd="@+id/AptName"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Super awesome textbook"
-        android:id="@+id/textViewTitle"
+        android:id="@+id/AptName"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"/>
@@ -53,8 +53,8 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Price"
-        android:id="@+id/textViewLabelPrice"
-        android:layout_below="@+id/textViewLabelTitle"
+        android:id="@+id/textPriceLabel"
+        android:layout_below="@+id/aptLabel"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"/>
 
@@ -64,7 +64,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Seller"
         android:id="@+id/textViewLabelSeller"
-        android:layout_below="@+id/textViewLabelPrice"
+        android:layout_below="@+id/textPriceLabel"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"/>
 
@@ -74,7 +74,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Details"
         android:id="@+id/textViewLabelDetails"
-        android:layout_below="@+id/textViewLabelCourse"
+        android:layout_below="@+id/textViewBedBath"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"/>
 
@@ -94,7 +94,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Course"
-        android:id="@+id/textViewLabelCourse"
+        android:id="@+id/textViewBedBath"
         android:layout_below="@+id/textViewLabelSeller"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"/>
@@ -105,8 +105,8 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="MATH 125"
         android:id="@+id/textViewCourse"
-        android:layout_alignTop="@+id/textViewLabelCourse"
-        android:layout_alignRight="@+id/textViewSeller"
-        android:layout_alignEnd="@+id/textViewSeller"/>
+        android:layout_alignTop="@+id/textViewBedBath"
+        android:layout_alignRight="@+id/textSeller"
+        android:layout_alignEnd="@+id/textSeller"/>
 
 </RelativeLayout>

@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="(title)"
-            android:id="@+id/textViewTitle"/>
+            android:id="@+id/AptName"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -35,7 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="$80"
-        android:id="@+id/textViewPrice"
+        android:id="@+id/textPriceLabel"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#228b22"/>
 

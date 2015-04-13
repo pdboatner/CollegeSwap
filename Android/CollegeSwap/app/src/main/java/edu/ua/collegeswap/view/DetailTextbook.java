@@ -55,13 +55,13 @@ public class DetailTextbook extends ActionBarActivity {
 
         // Use the fields of the textbook to set TextViews and such
 
-        TextView title = (TextView) findViewById(R.id.textViewTitle);
+        TextView title = (TextView) findViewById(R.id.AptName);
         title.setText(textbook.getTitle());
 
-        TextView price = (TextView) findViewById(R.id.textViewPrice);
+        TextView price = (TextView) findViewById(R.id.textPriceLabel);
         price.setText("$" + textbook.getAskingPrice());
 
-        TextView seller = (TextView) findViewById(R.id.textViewSeller);
+        TextView seller = (TextView) findViewById(R.id.textSeller);
         seller.setText(textbook.getPosterAccount().getName());
 
         TextView course = (TextView) findViewById(R.id.textViewCourse);

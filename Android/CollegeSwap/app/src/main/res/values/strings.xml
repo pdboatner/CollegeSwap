@@ -46,5 +46,16 @@
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="edit_profile_placeholder">Edit Profile</string>
+    <string name="string">Number of Bed and Bath</string>
+    <string name="strings">$400</string>
+    <string name="s1">Number of Bed/Baths</string>
+    <string name="s2">Details</string>
+    <string name="s3">2 Bath 3 Bed</string>
+    <string name="s4">This is a great apartment. Close to campus with great ammenties.</string>
+    <string name="s5">Seller</string>
+    <string name="s6">Asking Price Per Month</string>
+    <string name="s7">The Lofts</string>
+    <string name="s8">Bob</string>
+    <string name="s9">Apartment</string>
 
 </resources>

@@ -56,7 +56,7 @@ public class FragmentTickets extends SectionFragment implements View.OnClickList
 
             // Find the TextViews and their their text from the Ticket fields
 
-            TextView title = (TextView) ticketView.findViewById(R.id.textViewTitle);
+            TextView title = (TextView) ticketView.findViewById(R.id.AptName);
             title.setText(t.getTitle());
 
             TextView game = (TextView) ticketView.findViewById(R.id.textViewGame);
@@ -65,7 +65,7 @@ public class FragmentTickets extends SectionFragment implements View.OnClickList
             TextView bowl = (TextView) ticketView.findViewById(R.id.textViewBowl);
             bowl.setText(t.getBowl());
 
-            TextView price = (TextView) ticketView.findViewById(R.id.textViewPrice);
+            TextView price = (TextView) ticketView.findViewById(R.id.textPriceLabel);
             price.setText("$" + t.getAskingPrice());
         }
 

@@ -56,13 +56,13 @@ public class FragmentSubleases extends SectionFragment implements View.OnClickLi
 
             // Find the TextViews and their their text from the Sublease fields
 
-            TextView title = (TextView) subleaseView.findViewById(R.id.textViewTitle);
+            TextView title = (TextView) subleaseView.findViewById(R.id.AptName);
             title.setText(s.getTitle());
 
             TextView dateRange = (TextView) subleaseView.findViewById(R.id.textViewDateRange);
             dateRange.setText(s.getDateRange());
 
-            TextView price = (TextView) subleaseView.findViewById(R.id.textViewPrice);
+            TextView price = (TextView) subleaseView.findViewById(R.id.textPriceLabel);
             price.setText("$" + s.getAskingPrice());
         }
 
