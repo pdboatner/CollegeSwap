@@ -49,11 +49,12 @@ public class TextbookAccessor extends ListingAccessor {
     }
 
     /**
-     * @param url
-     * @return a list of textbooks from the given URL
+     * Parse the JSON string and create a list of textbooks
+     *
+     * @param json a JSON string returned from the server
+     * @return a list of textbooks populated with the information from the JSON string
      */
-    private List<Listing> getTextbooksFromURL(String url) {
-        String json = getJSONfromURL(url);
+    private List<Listing> getTextbooksFromJSON(String json) {
         JsonReader reader = new JsonReader(new StringReader(json));
 
         List<Listing> l = new ArrayList<>();
@@ -109,6 +110,17 @@ public class TextbookAccessor extends ListingAccessor {
         }
 
         return l;
+    }
+
+    /**
+     * @param url
+     * @return a list of textbooks from the given URL
+     */
+    private List<Listing> getTextbooksFromURL(String url) {
+        String json = getJSONfromURL(url);
+
+        return getTextbooksFromJSON(json);
+
 //        return mockGetTextbooks();
     }
 
