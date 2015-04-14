@@ -96,6 +96,13 @@ public class DetailTextbook extends ActionBarActivity {
                 return true;
             case R.id.action_edit:
                 Toast.makeText(this, "Edit Button clicked", Toast.LENGTH_SHORT).show();
+
+                // Launch an activity to edit the Listing.
+
+                Intent intent = new Intent(this, EditTextbookActivity.class);
+                intent.putExtra(EditTextbookActivity.EXTRA_TEXTBOOK, textbook);
+                startActivity(intent);
+
                 return true;
         }
 

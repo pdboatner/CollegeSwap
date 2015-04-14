@@ -162,11 +162,35 @@ public class TextbookAccessor extends ListingAccessor {
         //TODO
 
         List<Integer> l = new ArrayList<>();
-        l.add(101);
-        l.add(105);
-        l.add(400);
+
+        if (courseSubject.contentEquals("CS")) {
+            l.add(495);
+            l.add(470);
+            l.add(403);
+        } else {
+            l.add(101);
+            l.add(105);
+            l.add(400);
+        }
 
         return l;
+    }
+
+    /**
+     * @param courseSubject like "MATH"
+     * @return a list of course numbers (formatted as Strings) for the given course subject, like
+     * 125
+     */
+    public List<String> getCourseNumbersStrings(String courseSubject) {
+        List<Integer> numbers = getCourseNumbers(courseSubject);
+
+        List<String> numberStrings = new ArrayList<>(numbers.size());
+
+        for (Integer num : numbers) {
+            numberStrings.add("" + num);
+        }
+
+        return numberStrings;
     }
 
     /**

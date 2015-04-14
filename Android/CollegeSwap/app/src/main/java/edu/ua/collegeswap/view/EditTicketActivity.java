@@ -21,8 +21,6 @@ public class EditTicketActivity extends EditListingActivity {
 
     // State representation
     private Ticket ticket;
-    // If this Activity is editing an existing Ticket. False means a new Ticket is being created.
-    private boolean editingExisting;
 
     // UI references
     private EditText title, price, details;
@@ -118,9 +116,7 @@ public class EditTicketActivity extends EditListingActivity {
                 ticket.setDetails(details.getText().toString());
                 ticket.setBowl(bowl.getSelectedItem().toString());
                 ticket.setGame(game.getSelectedItem().toString());
-
-                System.out.println("Bowl is " + bowl.getSelectedItem().toString());
-                System.out.println("Game is " + game.getSelectedItem().toString());
+                //TODO check the indices of the spinners. Should not be 0 - the hint.
 
                 TicketWriter ticketWriter = new TicketWriter();
                 if (editingExisting) {

@@ -15,6 +15,9 @@ import edu.ua.collegeswap.R;
  */
 public abstract class EditListingActivity extends ActionBarActivity implements View.OnClickListener {
 
+    // If this Activity is editing an existing Listing. False means a new Listing is being created.
+    protected boolean editingExisting;
+
     /**
      * See https://plus.google.com/+RomanNurik/posts/R49wVvcDoEW and https://android.googlesource.com/platform/developers/samples/android/+/master/ui/actionbar/DoneBar
      */

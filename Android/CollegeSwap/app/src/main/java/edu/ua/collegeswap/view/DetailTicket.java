@@ -94,7 +94,7 @@ public class DetailTicket extends ActionBarActivity {
             case R.id.action_edit:
                 Toast.makeText(this, "Edit Button clicked", Toast.LENGTH_SHORT).show();
 
-                //TODO Launch an activity to edit the Listing. Pass the Ticket via bundle, similar to MainDrawerActivity.onListingClicked().
+                // Launch an activity to edit the Listing.
 
                 Intent intent = new Intent(this, EditTicketActivity.class);
                 intent.putExtra(EditTicketActivity.EXTRA_TICKET, ticket);
