@@ -1,9 +1,23 @@
-<ListView xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:choiceMode="singleChoice"
-          android:divider="@android:color/transparent"
-          android:dividerHeight="0dp"
-          android:background="#cccc"
-          tools:context="edu.ua.collegeswap.view.NavigationDrawerFragment"/>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#cccc">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/ua_square_logo"
+        android:scaleType="centerCrop"/>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:choiceMode="singleChoice"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="0dp"
+        android:id="@+id/navDrawerListView"
+        tools:context="edu.ua.collegeswap.view.NavigationDrawerFragment"/>
+
+
+</RelativeLayout>

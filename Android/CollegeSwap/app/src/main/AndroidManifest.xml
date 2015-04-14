@@ -58,6 +58,10 @@
             android:name=".view.EditTicketActivity"
             android:label="@string/title_activity_edit_ticket" >
         </activity>
+        <activity
+            android:name=".view.EditTextbookActivity"
+            android:label="@string/title_activity_edit_textbook" >
+        </activity>
     </application>
 
 </manifest>

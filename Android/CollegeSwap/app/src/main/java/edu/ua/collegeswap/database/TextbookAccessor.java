@@ -49,11 +49,12 @@ public class TextbookAccessor extends ListingAccessor {
     }
 
     /**
-     * @param url
-     * @return a list of textbooks from the given URL
+     * Parse the JSON string and create a list of textbooks
+     *
+     * @param json a JSON string returned from the server
+     * @return a list of textbooks populated with the information from the JSON string
      */
-    private List<Listing> getTextbooksFromURL(String url) {
-        String json = getJSONfromURL(url);
+    private List<Listing> getTextbooksFromJSON(String json) {
         JsonReader reader = new JsonReader(new StringReader(json));
 
         List<Listing> l = new ArrayList<>();
@@ -109,6 +110,17 @@ public class TextbookAccessor extends ListingAccessor {
         }
 
         return l;
+    }
+
+    /**
+     * @param url
+     * @return a list of textbooks from the given URL
+     */
+    private List<Listing> getTextbooksFromURL(String url) {
+        String json = getJSONfromURL(url);
+
+        return getTextbooksFromJSON(json);
+
 //        return mockGetTextbooks();
     }
 
@@ -162,11 +174,35 @@ public class TextbookAccessor extends ListingAccessor {
         //TODO
 
         List<Integer> l = new ArrayList<>();
-        l.add(101);
-        l.add(105);
-        l.add(400);
+
+        if (courseSubject.contentEquals("CS")) {
+            l.add(495);
+            l.add(470);
+            l.add(403);
+        } else {
+            l.add(101);
+            l.add(105);
+            l.add(400);
+        }
 
         return l;
+    }
+
+    /**
+     * @param courseSubject like "MATH"
+     * @return a list of course numbers (formatted as Strings) for the given course subject, like
+     * 125
+     */
+    public List<String> getCourseNumbersStrings(String courseSubject) {
+        List<Integer> numbers = getCourseNumbers(courseSubject);
+
+        List<String> numberStrings = new ArrayList<>(numbers.size());
+
+        for (Integer num : numbers) {
+            numberStrings.add("" + num);
+        }
+
+        return numberStrings;
     }
 
     /**
