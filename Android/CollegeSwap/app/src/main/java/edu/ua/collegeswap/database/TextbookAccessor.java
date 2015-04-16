@@ -2,6 +2,8 @@ package edu.ua.collegeswap.database;
 
 import android.util.JsonReader;
 
+import org.apache.http.client.HttpClient;
+
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -126,6 +128,9 @@ public class TextbookAccessor extends ListingAccessor {
 
     @Override
     public List<Listing> getAll() {
+        //TODO Google "java html post"
+
+
         return getTextbooksFromURL("http://bama.ua.edu/~cppopovich/CS495/request.php");
     }
 
