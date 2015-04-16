@@ -49,5 +49,6 @@
     <string name="edit_profile_placeholder">Edit Profile</string>
     <string name="title_activity_edit_ticket">Edit Ticket</string>
     <string name="title_activity_edit_textbook">Edit Textbook</string>
+    <string name="title_activity_edit_sublease">Edit Sublease</string>
 
 </resources>

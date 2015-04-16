@@ -3,9 +3,6 @@ package edu.ua.collegeswap.view;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -32,8 +29,9 @@ public class LoginActivity extends Activity {
         String usernameLogin = username.getText().toString();
         String passwordLogin = password.getText().toString();
 
-        if (checkLoginCredentials(usernameLogin, passwordLogin)) { launchMainDrawerActivity(); }
-        else {
+        if (checkLoginCredentials(usernameLogin, passwordLogin)) {
+            launchMainDrawerActivity();
+        } else {
             Toast.makeText(this, "Invalid login", Toast.LENGTH_SHORT).show();
         }
     }
@@ -45,12 +43,17 @@ public class LoginActivity extends Activity {
      * @param username the username for the user
      * @param password the password for the user
      */
-    private boolean checkLoginCredentials(String username, String password){
+    private boolean checkLoginCredentials(String username, String password) {
 
         //TODO check the users login credentials against the server
 
-        if ( username.equals("bob") && password.equals("1234") ) { return true; }
-        else { return false; }
+        return true; // too much work to type things
+
+//        if (username.equals("bob") && password.equals("1234")) {
+//            return true;
+//        } else {
+//            return false;
+//        }
 
     }
 

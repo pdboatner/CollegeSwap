@@ -86,6 +86,13 @@ public class DetailSublease extends ActionBarActivity {
                 return true;
             case R.id.action_edit:
                 Toast.makeText(this, "Edit Button clicked", Toast.LENGTH_SHORT).show();
+
+                // Launch an activity to edit the Listing.
+
+                Intent intent = new Intent(this, EditSubleaseActivity.class);
+                intent.putExtra(EditSubleaseActivity.EXTRA_SUBLEASE, sublease);
+                startActivity(intent);
+
                 return true;
         }
 
