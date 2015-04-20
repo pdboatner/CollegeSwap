@@ -39,8 +39,9 @@
 
     <!-- Strings for profile -->
     <string name="profile_title">My Profile</string>
-    <string name="edit_profile_email">E-mail</string>
-    <string name="edit_profile_phone">Phone Number:</string>
+    <string name="edit_profile_email">E-MAIL</string>
+    <string name="edit_profile_phone">PHONE NUMBER</string>
+    <string name="edit_profile_username">USERNAME</string>
 
 
 
