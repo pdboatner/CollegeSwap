@@ -30,7 +30,7 @@ public class EditTextbookActivity extends EditListingActivity {
     private Spinner courseSubject, courseNumber;
 
     public final static String EXTRA_TEXTBOOK = "edu.ua.collegeswap.edittextbook.TEXTBOOK";
-    private final static String chooseNumberMessage = "Choose course number";
+    public final static String chooseNumberMessage = "Choose course number";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +107,7 @@ public class EditTextbookActivity extends EditListingActivity {
                 courseSubject.setSelection(subjectIndex);
             }
 
-            // Update the course numbers for the given textbook
+            // Update the course numbers for the given subject
             updateCourseNumbers(textbook.getCourseSubject(), numberAdapter, courseNumber);
 
             int numberIndex = courseNumbers.indexOf(textbook.getCourseNumber() + "");

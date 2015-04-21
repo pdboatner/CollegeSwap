@@ -93,7 +93,6 @@ public class TextbookAccessor extends ListingAccessor {
                             } else {
                                 reader.nextString();
                             }
-                            //TODO Title
                         }
                         reader.endObject();
 
@@ -124,8 +123,9 @@ public class TextbookAccessor extends ListingAccessor {
     @Override
     public List<Listing> getByPrice(int minPrice, int maxPrice) {
         //note: post 'tbl=textbook' and 'args=price>minPrice,price<maxPrice'
-        //TODO
-        return null;
+        String json = getJSONrequest(tableTextbook, "price>" + minPrice + ",price<" + maxPrice);
+
+        return getTextbooksFromJSON(json);
     }
 
     @Override
@@ -140,8 +140,9 @@ public class TextbookAccessor extends ListingAccessor {
      * @return a list of all Textbook Listings for a given class
      */
     public List<Textbook> getByClass(String courseSubject, int courseNumber) {
-        //TODO
-        return null;
+        String json = getJSONrequest(tableTextbook, "subject=" + courseSubject + ",number=" + courseNumber);
+
+        return castListingsToTextbooks(getTextbooksFromJSON(json));
     }
 
     /**
@@ -206,7 +207,21 @@ public class TextbookAccessor extends ListingAccessor {
      * range
      */
     public List<Textbook> get(int minPrice, int maxPrice, String courseSubject, int courseNumber) {
-        //TODO
-        return null;
+        String json = getJSONrequest(tableTextbook, "price>" + minPrice + ",price<" + maxPrice + ",subject=" + courseSubject + ",number=" + courseNumber);
+
+        return castListingsToTextbooks(getTextbooksFromJSON(json));
+    }
+
+    public List<Textbook> castListingsToTextbooks(List<Listing> listings) {
+        List<Textbook> textbooks = new ArrayList<>();
+        for (Listing l : listings) {
+            if (l instanceof Textbook) {
+                textbooks.add((Textbook) l);
+            } else {
+                throw new IllegalStateException("Expected a Textbook, but found another class.");
+            }
+        }
+
+        return textbooks;
     }
 }
