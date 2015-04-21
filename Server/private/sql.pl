@@ -64,7 +64,7 @@ sub SQL{
     my @tbl = @{$T{$tbl}};
     my @result = ();
     for my $h_ref (@tbl){
-        if(where($h_ref)){
+        if($h_ref->{"del"}==0 && where($h_ref)){
             push @result, $h_ref;
         }
     }
