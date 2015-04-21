@@ -156,6 +156,13 @@ public class TextbookAccessor extends ListingAccessor {
         l.add("CS");
         l.add("ECE");
 
+        /*
+        TODO Get list of things from server
+		    url = "bama.ua.edu/~cppopovich/CS495/request.php"
+			'tbl'
+			'col'
+         */
+
         return l;
     }
 

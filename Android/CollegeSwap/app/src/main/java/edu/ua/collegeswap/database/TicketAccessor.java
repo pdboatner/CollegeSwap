@@ -61,9 +61,10 @@ public class TicketAccessor extends ListingAccessor {
 
     /**
      * @param game the name of the football game.  See TicketAccessor.getGames()
+     * @param bowl "upper" or "lower"
      * @return a list of all Ticket Listings for a given game
      */
-    public List<Ticket> getByGame(String game) {
+    public List<Ticket> getByGame(String game, String bowl) {
         //TODO
         return null;
     }
@@ -97,11 +98,12 @@ public class TicketAccessor extends ListingAccessor {
 
     /**
      * @param game     the name of the football game.  See TicketAccessor.getGames()
+     * @param bowl     ""upper" or "lower". See TicketAccessor.getBowls()
      * @param minPrice the minimum price of Ticket Listings to return
      * @param maxPrice the maximum price of Ticket Listings to return
      * @return a list of all Ticket listings for a given game within the given price range
      */
-    public List<Ticket> get(String game, int minPrice, int maxPrice) {
+    public List<Ticket> get(String game, String bowl, int minPrice, int maxPrice) {
         //TODO
         return null;
     }

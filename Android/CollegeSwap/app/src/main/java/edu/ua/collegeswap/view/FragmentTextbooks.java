@@ -130,7 +130,6 @@ public class FragmentTextbooks extends SectionFragment implements View.OnClickLi
             protected void onPostExecute(List<Textbook> textbooks) {
                 // When the network calls are complete, this runs on the UI thread to show the listings returned from the server.
 
-                // Get a reference to the linear layout which will hold the View for each textbook
                 linearLayoutTextbooks.removeAllViews(); // Remove the child views, since this can be called again after filtering
 
                 for (Textbook t : textbooks) {
@@ -244,7 +243,6 @@ public class FragmentTextbooks extends SectionFragment implements View.OnClickLi
                 }
                 break;
         }
-
     }
 
     @Override
