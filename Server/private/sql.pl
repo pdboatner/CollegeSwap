@@ -14,7 +14,7 @@ for (@tables){
 }
 my @m;
 my $p = '/st1/cppopovich/Programming/CS495/';
-for my $f ('account','textbook'){;
+for my $f (@tables){;
     open my $FILE, '<', $p.$f.'.csv' or die $!."\n";
     my @n = map {s/\s+//;$_} split(/,/,<$FILE>);
     @{$N{$f}} = @n;
