@@ -2,8 +2,6 @@ package edu.ua.collegeswap.database;
 
 import android.util.JsonReader;
 
-import org.apache.http.client.HttpClient;
-
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -90,6 +88,8 @@ public class TextbookAccessor extends ListingAccessor {
                                 t.setPosterAccount(a);
                             } else if (fieldName.equals("price")) {
                                 t.setAskingPrice(Float.parseFloat(reader.nextString()));
+                            } else if (fieldName.equals("title")) {
+                                t.setTitle(reader.nextString());
                             } else {
                                 reader.nextString();
                             }
@@ -114,24 +114,11 @@ public class TextbookAccessor extends ListingAccessor {
         return l;
     }
 
-    /**
-     * @param url
-     * @return a list of textbooks from the given URL
-     */
-    private List<Listing> getTextbooksFromURL(String url) {
-        String json = getJSONfromURL(url);
-
-        return getTextbooksFromJSON(json);
-
-//        return mockGetTextbooks();
-    }
-
     @Override
     public List<Listing> getAll() {
-        //TODO Google "java html post"
+        String json = getJSONrequest(tableTextbook, "");
 
-
-        return getTextbooksFromURL("http://bama.ua.edu/~cppopovich/CS495/request.php");
+        return getTextbooksFromJSON(json);
     }
 
     @Override
