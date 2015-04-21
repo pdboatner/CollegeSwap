@@ -1,7 +1,9 @@
 package edu.ua.collegeswap.view;
 
 
+import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,21 +33,20 @@ import edu.ua.collegeswap.viewModel.Ticket;
  */
 public class FragmentProfile extends SectionFragment implements View.OnClickListener {
 
+    private AccountAccessor accountAccessor;
     private Account account;
+    private Context context;
 
     private final String LOG_TAG = FragmentProfile.class.getSimpleName();
 
-    private static final String PREFS_NAME = "MyPreferences";
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        context = activity;
+    }
 
     public FragmentProfile() {
         // TODO Retrieve the user that is currently logged in
-        AccountAccessor accessor = new AccountAccessor();
-        //Account account = accessor.getLogin();
-        account = new Account();
-        String username = "soccerMom";
-        account.setName(username);
-
-
 
     }
 
@@ -56,15 +58,17 @@ public class FragmentProfile extends SectionFragment implements View.OnClickList
         // Add this to tell the fragment that it has menu items to inflate
         setHasOptionsMenu(true);
 
+        accountAccessor = new AccountAccessor();
+        account = new Account();
+
+        account = accountAccessor.getCachedLogin(context);
+        if (account == null){
+            account = new Account();
+            account.setName("Failure");
+        }
+
         TextView usernameTextView = (TextView) view.findViewById(R.id.textViewAccountName);
         usernameTextView.setText(account.getName());
-
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(PREFS_NAME, 0);
-        String username = sharedPreferences.getString(getString(R.string.pref_username_key), getString(R.string.pref_username_default));
-
-        if (username == null) {
-            usernameTextView.setText(account.getName());
-        }else { usernameTextView.setText(username); }
 
         return view;
     }
@@ -111,8 +115,6 @@ public class FragmentProfile extends SectionFragment implements View.OnClickList
                 //Toast.makeText(getActivity(), "Edit profile clicked", Toast.LENGTH_SHORT).show();
                 editButtonClick();
                 break;
-
-
         }
 
         return super.onOptionsItemSelected(item);
@@ -125,6 +127,7 @@ public class FragmentProfile extends SectionFragment implements View.OnClickList
     private void editButtonClick() {
         // Launch explicit intent to open the edit profile activity
         Intent editProfileIntent = new Intent(getActivity(), EditProfileActivity.class);
+        editProfileIntent.putExtra(EditProfileActivity.EXTRA_ACCOUNT, account);
         startActivity(editProfileIntent);
     }
 }

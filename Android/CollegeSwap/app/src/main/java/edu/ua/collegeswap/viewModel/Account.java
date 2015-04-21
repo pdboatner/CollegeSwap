@@ -11,6 +11,13 @@ public class Account implements Serializable {
     private String contactInfo;
     private float rating;
 
+    private String phoneNo;
+    private String email;
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+    public String getPhoneNo() { return phoneNo; }
+    public void setPhoneNo(String phone) { this.phoneNo = phone; }
+
     public String getName() {
         return name;
     }

@@ -1,24 +1,46 @@
 package edu.ua.collegeswap.view;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import edu.ua.collegeswap.R;
+import edu.ua.collegeswap.database.AccountAccessor;
+import edu.ua.collegeswap.viewModel.Account;
 
 
 public class LoginActivity extends Activity {
+
+    public static final String MY_PREFS = "MyPrefs";
+    public static final String usernameKey = "usernameKey";
+    public static final String passwordKey = "passwordKey";
+    private EditText username_editText, password_editText;
+
+    public Account account;
+    public AccountAccessor accountAccessor;
+
+    private static final String LOG_TAG = LoginActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // TODO If there's a login in the SharedPreference, go straight to the main activity
+        Context mContext = this;
 
+        accountAccessor = new AccountAccessor();
+        account = accountAccessor.getCachedLogin(mContext);
+        if (account != null){
+            Toast.makeText(this, account.getName(), Toast.LENGTH_SHORT).show(); // debugging purposes, DELETE
+            launchMainDrawerActivity();
+        }
 
     }
 
@@ -28,12 +50,14 @@ public class LoginActivity extends Activity {
      * @param buttonLogin the login button
      */
     public void loginClicked(View buttonLogin) {
-        EditText username = (EditText) findViewById(R.id.editText_usernameLogin);
-        EditText password = (EditText) findViewById(R.id.editText_passwordLogin);
-        String usernameLogin = username.getText().toString();
-        String passwordLogin = password.getText().toString();
+        username_editText = (EditText) findViewById(R.id.editText_usernameLogin);
+        password_editText = (EditText) findViewById(R.id.editText_passwordLogin);
+        String usernameLogin = username_editText.getText().toString();
+        String passwordLogin = password_editText.getText().toString();
 
         if (checkLoginCredentials(usernameLogin, passwordLogin)) {
+            savePreferences(usernameKey, usernameLogin);
+            savePreferences(passwordKey, passwordLogin);
             launchMainDrawerActivity();
         } else {
             Toast.makeText(this, "Invalid login", Toast.LENGTH_SHORT).show();
@@ -52,13 +76,6 @@ public class LoginActivity extends Activity {
         //TODO check the users login credentials against the server
 
         return true; // too much work to type things  <-- lazy! XD
-
-//        if (username.equals("bob") && password.equals("1234")) {
-//            return true;
-//        } else {
-//            return false;
-//        }
-
     }
 
     /**
@@ -68,6 +85,23 @@ public class LoginActivity extends Activity {
     private void launchMainDrawerActivity() {
         Intent i = new Intent(this, MainDrawerActivity.class);
         startActivity(i);
+    }
+
+    /**
+     *   Method used to get Shared Preferences */
+
+    public SharedPreferences getPreferences()
+    {
+        return getSharedPreferences(MY_PREFS, MODE_PRIVATE);
+    }
+    /**
+     *  Method used to save Preferences */
+    public void savePreferences(String key, String value)
+    {
+        SharedPreferences sharedPreferences = getPreferences();
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(key, value);
+        editor.commit();
     }
 
 }

@@ -48,11 +48,7 @@
         </activity>
         <activity
             android:name=".view.EditProfileActivity"
-            android:label="@string/title_activity_edit_profile"
-            android:parentActivityName=".view.MainDrawerActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.ua.collegeswap.view.MainDrawerActivity" />
+            android:label="@string/title_activity_edit_profile" >
         </activity>
         <activity
             android:name=".view.EditTicketActivity"

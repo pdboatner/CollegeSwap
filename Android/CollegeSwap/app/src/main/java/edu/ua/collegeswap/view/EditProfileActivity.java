@@ -1,5 +1,6 @@
 package edu.ua.collegeswap.view;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -12,7 +13,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.Serializable;
 
 import edu.ua.collegeswap.R;
 import edu.ua.collegeswap.viewModel.Account;
@@ -23,9 +27,11 @@ import edu.ua.collegeswap.viewModel.Account;
 
 public class EditProfileActivity extends ActionBarActivity implements View.OnClickListener {
 
-    private static final String PREFS_NAME = "MyPreferences";
+    public final static String EXTRA_ACCOUNT = "edu.ua.collegeswap.editprofile.EXTRA_ACCOUNT";
 
     private Account account;
+    private TextView usernameTextView;
+    private EditText usernameEditText, emailEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,14 +39,23 @@ public class EditProfileActivity extends ActionBarActivity implements View.OnCli
         setContentView(R.layout.activity_edit_profile);
         setupActionBar();
 
+        // Try to receive the Ticket object
+        Intent intent = getIntent();
+        Serializable accountObject = null;
+        if (intent.hasExtra(EXTRA_ACCOUNT)) {
+            accountObject = intent.getSerializableExtra(EXTRA_ACCOUNT);
+        }
+        if (accountObject != null && accountObject instanceof Account){
+            String editProfileTitle = ((Account) accountObject).getName() + "'s profile";
+            usernameTextView = (TextView) findViewById(R.id.textViewAccountName);
+            usernameTextView.setText(editProfileTitle);
 
-        EditText phoneNum = (EditText) findViewById(R.id.editTextPhone);
-        EditText email = (EditText) findViewById(R.id.editTextEmail);
+            usernameEditText = (EditText) findViewById(R.id.editTextUsername);
+            usernameEditText.setHint(((Account) accountObject).getName());
 
-
-        phoneNum.setHint("256-123-4567");
-        email.setHint("soccerMom@crimson.ua.edu");
-
+            emailEditText = (EditText) findViewById(R.id.editTextEmail);
+            emailEditText.setHint(((Account) accountObject).getEmail());
+        }
 
     }
 
@@ -57,14 +72,6 @@ public class EditProfileActivity extends ActionBarActivity implements View.OnCli
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-
-//      else if (id == R.id.action_save) {
-//            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-//            String username = prefs.getString(getString(R.string.pref_username_key), getString(R.string.pref_username_default));
-//            saveButtonClicked();
-//
-//        }
-
 
         return true;
     }
@@ -103,23 +110,7 @@ public class EditProfileActivity extends ActionBarActivity implements View.OnCli
                 finish();
                 break;
             case R.id.actionbar_done:
-                // Save the Ticket. Submit it to the server.
-
-//                ticket.setTitle(title.getText().toString());
-//                ticket.setAskingPrice(Float.parseFloat(price.getText().toString()));
-//                ticket.setDetails(details.getText().toString());
-//                ticket.setBowl(bowl.getSelectedItem().toString());
-//                ticket.setGame(game.getSelectedItem().toString());
-//                //TODO check the indices of the spinners. Should not be 0 - the hint.
-//
-//                TicketWriter ticketWriter = new TicketWriter();
-//                if (editingExisting) {
-//                    ticketWriter.updateExisting(ticket);
-//                    Toast.makeText(this, "Updating existing ticket", Toast.LENGTH_SHORT).show();
-//                } else {
-//                    ticketWriter.saveNew(ticket);
-//                    Toast.makeText(this, "Saving new ticket", Toast.LENGTH_SHORT).show();
-//                }
+                // TODO Save the Account. Submit it to the server.
 
                 saveButtonClicked();
                 finish(); // TODO ask the calling activity to refresh now?
