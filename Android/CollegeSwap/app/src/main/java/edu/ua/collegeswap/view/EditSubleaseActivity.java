@@ -1,15 +1,33 @@
 package edu.ua.collegeswap.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.io.Serializable;
+import java.util.Calendar;
+import java.util.List;
+
 import edu.ua.collegeswap.R;
+import edu.ua.collegeswap.database.SubleaseAccessor;
 import edu.ua.collegeswap.database.SubleaseWriter;
+import edu.ua.collegeswap.viewModel.Sublease;
 
 public class EditSubleaseActivity extends EditListingActivity {
+
+    // State representation
+    private Sublease sublease;
+
+    // UI References
+    private EditText title, price, details;
+    private Spinner location;
+    private DatePicker startDate, endDate;
 
     public static final String EXTRA_SUBLEASE = "edu.ua.collegeswap.editticket.SUBLEASE";
 
@@ -21,9 +39,60 @@ public class EditSubleaseActivity extends EditListingActivity {
         setupActionBar();
         setContentView(R.layout.activity_edit_sublease);
 
-        //TODO Set up the input fields and their behavior
+        // Get the UI references
+        title = (EditText) findViewById(R.id.editTextTitle);
+        price = (EditText) findViewById(R.id.editTextPrice);
+        details = (EditText) findViewById(R.id.editTextDetails);
+        location = (Spinner) findViewById(R.id.spinnerLocation);
+        startDate = (DatePicker) findViewById(R.id.datePickerStart);
+        endDate = (DatePicker) findViewById(R.id.datePickerEnd);
 
+        // Populate the spinner
+        List<String> locations = new SubleaseAccessor().getLocations();
+        locations.add(0, "Choose location");
+        ArrayAdapter<String> locationAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, locations);
+        locationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
+        location.setAdapter(locationAdapter);
+
+        // Try to receive the Sublease object
+        Intent intent = getIntent();
+
+        Serializable subleaseObject = null;
+        if (intent.hasExtra(EXTRA_SUBLEASE)) {
+            subleaseObject = intent.getSerializableExtra(EXTRA_SUBLEASE);
+        }
+
+        if (subleaseObject != null && subleaseObject instanceof Sublease) {
+            // This Activity was launched with a Sublease. Edit that sublease.
+            sublease = (Sublease) subleaseObject;
+
+            editingExisting = true;
+
+            // Set up the input fields
+            title.setText(sublease.getTitle());
+            price.setText(sublease.getAskingPriceFormatted());
+            details.setText(sublease.getDetails());
+
+            // Set the spinner to the correct choice
+            int locationIndex = locations.indexOf(sublease.getLocation());
+            if (locationIndex != -1) {
+                location.setSelection(locationIndex);
+            }
+
+            // Set the date pickers to the correct dates
+            Calendar startCal = sublease.getStartDate();
+            startDate.updateDate(
+                    startCal.get(Calendar.YEAR),
+                    startCal.get(Calendar.MONTH),
+                    startCal.get(Calendar.DAY_OF_MONTH));
+
+            Calendar endCal = sublease.getEndDate();
+            endDate.updateDate(
+                    endCal.get(Calendar.YEAR),
+                    endCal.get(Calendar.MONTH),
+                    endCal.get(Calendar.DAY_OF_MONTH));
+        }
     }
 
 
@@ -35,19 +104,23 @@ public class EditSubleaseActivity extends EditListingActivity {
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+    /**
+     * @param year  same as Calendar.YEAR
+     * @param month same as Calendar.MONTH
+     * @param day   same as Calendar.DAY_OF_MONTH
+     * @return a Calendar object set to noon on the given day
+     */
+    private Calendar getCalendar(int year, int month, int day) {
+        Calendar c = Calendar.getInstance();
+        c.clear();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+        c.set(Calendar.YEAR, year);
+        c.set(Calendar.MONTH, month);
+        c.set(Calendar.DAY_OF_MONTH, day);
 
-        return super.onOptionsItemSelected(item);
+        c.set(Calendar.HOUR_OF_DAY, 12);
+
+        return c;
     }
 
     @Override
@@ -59,14 +132,28 @@ public class EditSubleaseActivity extends EditListingActivity {
             case R.id.actionbar_done:
                 // Save the Sublease. Submit it to the server.
 
+                sublease.setTitle(title.getText().toString());
+                sublease.setAskingPrice(Float.parseFloat(price.getText().toString()));
+                sublease.setDetails(details.getText().toString());
+                sublease.setLocation(location.getSelectedItem().toString());
                 //TODO check the indices of the spinners. Should not be 0 - the hint.
+                sublease.setStartDate(getCalendar(
+                        startDate.getYear(),
+                        startDate.getMonth(),
+                        startDate.getDayOfMonth()
+                ));
+                sublease.setEndDate(getCalendar(
+                        endDate.getYear(),
+                        endDate.getMonth(),
+                        endDate.getDayOfMonth()
+                ));
 
                 SubleaseWriter subleaseWriter = new SubleaseWriter();
                 if (editingExisting) {
-//                    subleaseWriter.updateExisting(sublease);
+                    subleaseWriter.updateExisting(sublease);
                     Toast.makeText(this, "Updating existing sublease", Toast.LENGTH_SHORT).show();
                 } else {
-//                    subleaseWriter.saveNew(sublease);
+                    subleaseWriter.saveNew(sublease);
                     Toast.makeText(this, "Saving new sublease", Toast.LENGTH_SHORT).show();
                 }
 

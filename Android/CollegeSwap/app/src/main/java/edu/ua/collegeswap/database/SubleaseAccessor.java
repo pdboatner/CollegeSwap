@@ -25,6 +25,7 @@ public class SubleaseAccessor extends ListingAccessor {
             s.setAskingPrice(450);
             s.setTitle("Woodlands, 1 bedroom");
             s.setDetails("You get a pool and stuff.");
+            s.setLocation("The Woodlands");
             start = Calendar.getInstance();
             end = Calendar.getInstance();
             start.add(Calendar.DATE, 2);
@@ -37,6 +38,7 @@ public class SubleaseAccessor extends ListingAccessor {
             s.setAskingPrice(300);
             s.setTitle("Highlands, 2 bedrooms");
             s.setDetails("You're almost still on campus!");
+            s.setLocation("The Highlands");
             start = Calendar.getInstance();
             end = Calendar.getInstance();
             start.add(Calendar.DATE, 7);
@@ -49,6 +51,7 @@ public class SubleaseAccessor extends ListingAccessor {
             s.setAskingPrice(200);
             s.setTitle("Grandparent's spare bedroom");
             s.setDetails("They love young people, and make great cookies.");
+            s.setLocation("Other");
             start = Calendar.getInstance();
             end = Calendar.getInstance();
             end.add(Calendar.DATE, 120);
@@ -91,6 +94,8 @@ public class SubleaseAccessor extends ListingAccessor {
         List<String> l = new ArrayList<>();
         l.add("The Retreat");
         l.add("The Woodlands");
+        l.add("The Highlands");
+        l.add("Other");
 
         return l;
     }

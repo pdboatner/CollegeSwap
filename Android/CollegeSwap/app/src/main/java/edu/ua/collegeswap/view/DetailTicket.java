@@ -6,7 +6,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.Serializable;
 
@@ -92,8 +91,6 @@ public class DetailTicket extends ActionBarActivity {
                 finish();
                 return true;
             case R.id.action_edit:
-                Toast.makeText(this, "Edit Button clicked", Toast.LENGTH_SHORT).show();
-
                 // Launch an activity to edit the Listing.
 
                 Intent intent = new Intent(this, EditTicketActivity.class);
