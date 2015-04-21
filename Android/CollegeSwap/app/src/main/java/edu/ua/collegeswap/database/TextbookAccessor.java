@@ -72,31 +72,40 @@ public class TextbookAccessor extends ListingAccessor {
                     while (reader.hasNext()) {
                         // Read each textbook
                         Textbook t = new Textbook();
+                        t.setTitle("Example Title");
 
                         reader.beginObject();
                         while (reader.hasNext()) {
                             // Read each field of the textbook
 
                             String fieldName = reader.nextName();
-                            if (fieldName.equals("subject")) {
-                                t.setCourseSubject(reader.nextString());
-                            } else if (fieldName.equals("number")) {
-                                t.setCourseNumber(Integer.parseInt(reader.nextString()));
-                            } else if (fieldName.equals("poster")) {
-                                Account a = new Account();
-                                a.setName(reader.nextString());
-                                t.setPosterAccount(a);
-                            } else if (fieldName.equals("price")) {
-                                t.setAskingPrice(Float.parseFloat(reader.nextString()));
-                            } else if (fieldName.equals("title")) {
-                                t.setTitle(reader.nextString());
-                            } else {
-                                reader.nextString();
+                            switch (fieldName) {
+                                case "subject":
+                                    t.setCourseSubject(reader.nextString());
+                                    break;
+                                case "number":
+                                    t.setCourseNumber(Integer.parseInt(reader.nextString()));
+                                    break;
+                                case "poster":
+                                    Account a = new Account();
+                                    a.setName(reader.nextString());
+                                    t.setPosterAccount(a);
+                                    break;
+                                case "price":
+                                    t.setAskingPrice(Float.parseFloat(reader.nextString()));
+                                    break;
+                                case "title":
+                                    t.setTitle(reader.nextString());
+                                    break;
+                                case "details":
+                                    t.setDetails(reader.nextString());
+                                    break;
+                                default:
+                                    reader.nextString();
+                                    break;
                             }
                         }
                         reader.endObject();
-
-                        t.setTitle("Example Title");
 
                         l.add(t);
                     }
@@ -214,7 +223,8 @@ public class TextbookAccessor extends ListingAccessor {
      * range
      */
     public List<Textbook> get(int minPrice, int maxPrice, String courseSubject, int courseNumber) {
-        String json = getJSONrequest(tableTextbook, "price>" + minPrice + ",price<" + maxPrice + ",subject=" + courseSubject + ",number=" + courseNumber);
+        String json = getJSONrequest(tableTextbook,
+                "price>" + minPrice + ",price<" + maxPrice + ",subject=" + courseSubject + ",number=" + courseNumber);
 
         return castListingsToTextbooks(getTextbooksFromJSON(json));
     }

@@ -1,5 +1,8 @@
 package edu.ua.collegeswap.database;
 
+import android.util.JsonReader;
+
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,10 +14,7 @@ import edu.ua.collegeswap.viewModel.Ticket;
  * Created by Patrick on 3/25/2015.
  */
 public class TicketAccessor extends ListingAccessor {
-    @Override
-    public List<Listing> getAll() {
-        //TODO
-
+    public List<Listing> mockGetAll() {
         List<Listing> l = new ArrayList<>();
 
         Ticket t;
@@ -47,10 +47,91 @@ public class TicketAccessor extends ListingAccessor {
         return l;
     }
 
+    /**
+     * Parse the JSON string and create a list of tickets
+     *
+     * @param json a JSON string returned from the server
+     * @return a list of tickets populated with the information from the JSON string
+     */
+    private List<Listing> getTicketsFromJSON(String json) {
+        JsonReader reader = new JsonReader(new StringReader(json));
+
+        List<Listing> l = new ArrayList<>();
+
+        // Parse the JSON
+        try {
+            reader.beginObject();
+
+            while (reader.hasNext()) {
+                String name = reader.nextName();
+                if (name.equals("ticket")) {
+                    // Read the array of tickets
+                    reader.beginArray();
+
+                    while (reader.hasNext()) {
+                        // Read each ticket
+                        Ticket t = new Ticket();
+                        t.setTitle("Example Title");
+
+                        reader.beginObject();
+                        while (reader.hasNext()) {
+                            // Read each field of the ticket
+
+                            String fieldName = reader.nextName();
+                            switch (fieldName) {
+                                case "game":
+                                    t.setGame(reader.nextString());
+                                    break;
+                                case "bowl":
+                                    t.setBowl(reader.nextString());
+                                case "poster":
+                                    Account a = new Account();
+                                    a.setName(reader.nextString());
+                                    t.setPosterAccount(a);
+                                    break;
+                                case "price":
+                                    t.setAskingPrice(Float.parseFloat(reader.nextString()));
+                                    break;
+                                case "title":
+                                    t.setTitle(reader.nextString());
+                                    break;
+                                case "details":
+                                    t.setDetails(reader.nextString());
+                                    break;
+                                default:
+                                    reader.nextString();
+                                    break;
+                            }
+                        }
+                        reader.endObject();
+
+                        l.add(t);
+                    }
+
+                    reader.endArray();
+                }
+            }
+
+            reader.endObject();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return l;
+    }
+
+    @Override
+    public List<Listing> getAll() {
+        String json = getJSONrequest(tableTicket, "");
+
+        return getTicketsFromJSON(json);
+    }
+
     @Override
     public List<Listing> getByPrice(int minPrice, int maxPrice) {
-        //TODO
-        return null;
+        String json = getJSONrequest(tableTicket, "price>" + minPrice + ",price<" + maxPrice);
+
+        return getTicketsFromJSON(json);
     }
 
     @Override
@@ -65,8 +146,9 @@ public class TicketAccessor extends ListingAccessor {
      * @return a list of all Ticket Listings for a given game
      */
     public List<Ticket> getByGame(String game, String bowl) {
-        //TODO
-        return null;
+        String json = getJSONrequest(tableTicket, "game=" + game + ",bowl=" + bowl);
+
+        return castListingsToTickets(getTicketsFromJSON(json));
     }
 
     /**
@@ -104,7 +186,22 @@ public class TicketAccessor extends ListingAccessor {
      * @return a list of all Ticket listings for a given game within the given price range
      */
     public List<Ticket> get(String game, String bowl, int minPrice, int maxPrice) {
-        //TODO
-        return null;
+        String json = getJSONrequest(tableTicket,
+                "price>" + minPrice + ",price<" + maxPrice + ",game=" + game + ",bowl=" + bowl);
+
+        return castListingsToTickets(getTicketsFromJSON(json));
+    }
+
+    public List<Ticket> castListingsToTickets(List<Listing> listings) {
+        List<Ticket> tickets = new ArrayList<>();
+        for (Listing l : listings) {
+            if (l instanceof Ticket) {
+                tickets.add((Ticket) l);
+            } else {
+                throw new IllegalStateException("Expected a Ticket, but found another class.");
+            }
+        }
+
+        return tickets;
     }
 }
