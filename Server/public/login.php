@@ -1,21 +1,18 @@
 <?php
 session_start();
 $error='';
-if (isset($_POST['submit'])) {
-    if (empty($_POST['username']) || empty($_POST['password'])) {
+if (empty($_POST['name']) || empty($_POST['pass'])) {
         $error = "Username or Password is invalid";
+}else{
+    $name=$_POST['name'];
+    $pass=$_POST['pass'];
+    $path = '/st1/cppopovich/Programming/CS495/login.pl';
+    $result = `perl $path $name $pass`;
+    if($result === 'success'){
+        $_SESSION['login_user']=$name;
     }else{
-        $name=$_POST['username'];
-        $pass=$_POST['password'];
-        //TODO check injection
-        $path = '/st1/cppopovich/Programming/CS495/login.pl';
-        $result = `perl $path $name $pass`;
-        if($result === 'success'){//TODO
-            $_SESSION['login_user']=$name;
-            header("location: profile.php");
-        }else{
-            $error = "Username or Password is invalid";
-        }
+        $error = "Username or Password is invalid";
     }
+    print $result;
 }
 ?>

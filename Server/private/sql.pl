@@ -16,10 +16,10 @@ my @m;
 my $p = '/st1/cppopovich/Programming/CS495/';
 for my $f (@tables){;
     open my $FILE, '<', $p.$f.'.csv' or die $!."\n";
-    my @n = map {s/\s+//;$_} split(/,/,<$FILE>);
+    my @n = map {s/^\s+//;s/\s+$//;$_} split(/,/,<$FILE>);
     @{$N{$f}} = @n;
     while ($_ = <$FILE>){
-        @m = map {s/\s+//;$_} split(/,/);
+        @m = map {s/^\s+//;s/\s+$//;$_} split(/,/);
         my %h;
         for my $i (0 .. $#m){
             $h{$n[$i]}=$m[$i];
