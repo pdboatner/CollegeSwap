@@ -1,6 +1,9 @@
 package edu.ua.collegeswap.database;
 
+import java.util.Calendar;
+
 import edu.ua.collegeswap.viewModel.Listing;
+import edu.ua.collegeswap.viewModel.Sublease;
 
 /**
  * Created by Patrick on 4/9/2015.
@@ -8,7 +11,23 @@ import edu.ua.collegeswap.viewModel.Listing;
 public class SubleaseWriter extends ListingWriter {
     @Override
     public void saveNew(Listing newListing) {
-        //TODO
+        if (newListing instanceof Sublease) {
+            Sublease s = (Sublease) newListing;
+
+            String args = "";
+            args += "location|" + s.getLocation();
+            Calendar c = Calendar.getInstance();
+            args += "|date|" + c.getTimeInMillis();
+            args += "|startDate|" + s.getStartDate().getTimeInMillis();
+            args += "|endDate|" + s.getEndDate().getTimeInMillis();
+            args += "|poster|" + s.getPosterAccount().getName();
+            args += "|price|" + s.getAskingPriceFormatted();
+            args += "|details|" + s.getDetails();
+
+            sendRequest(tableSublease, args);
+        } else {
+            throw new IllegalStateException("Expected a Sublease, but found another Object");
+        }
     }
 
     @Override

@@ -1,5 +1,6 @@
 package edu.ua.collegeswap.view;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -212,9 +213,11 @@ public class FragmentSubleases extends SectionFragment implements View.OnClickLi
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_new) {
-            //TODO Open the activity to create a new Sublease
-
+            //Open the activity to create a new Sublease
             Toast.makeText(getActivity(), "Making a new Sublease", Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent(getActivity(), EditSubleaseActivity.class);
+            startActivity(intent);
 
             return true;
         } else {

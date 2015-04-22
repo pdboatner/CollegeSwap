@@ -84,6 +84,7 @@ public class TicketAccessor extends ListingAccessor {
                                     break;
                                 case "bowl":
                                     t.setBowl(reader.nextString());
+                                    break;
                                 case "poster":
                                     Account a = new Account();
                                     a.setName(reader.nextString());
@@ -142,7 +143,7 @@ public class TicketAccessor extends ListingAccessor {
 
     /**
      * @param game the name of the football game.  See TicketAccessor.getGames()
-     * @param bowl "upper" or "lower"
+     * @param bowl see TicketAccesor.getBowls().
      * @return a list of all Ticket Listings for a given game
      */
     public List<Ticket> getByGame(String game, String bowl) {

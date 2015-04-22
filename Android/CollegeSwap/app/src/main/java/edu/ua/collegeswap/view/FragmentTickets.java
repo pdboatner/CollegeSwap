@@ -1,5 +1,6 @@
 package edu.ua.collegeswap.view;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -227,9 +228,11 @@ public class FragmentTickets extends SectionFragment implements View.OnClickList
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_new) {
-            //TODO Open the activity to create a new Ticket
-
+            // Open the activity to create a new Ticket
             Toast.makeText(getActivity(), "Making a new Ticket", Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent(getActivity(), EditTicketActivity.class);
+            startActivity(intent);
 
             return true;
         } else {

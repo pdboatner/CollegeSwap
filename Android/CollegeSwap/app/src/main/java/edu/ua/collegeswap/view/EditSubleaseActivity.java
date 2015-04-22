@@ -1,6 +1,7 @@
 package edu.ua.collegeswap.view;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -34,6 +35,8 @@ public class EditSubleaseActivity extends EditListingActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        checkLogin();
 
         // Set up the UI
         setupActionBar();
@@ -92,6 +95,10 @@ public class EditSubleaseActivity extends EditListingActivity {
                     endCal.get(Calendar.YEAR),
                     endCal.get(Calendar.MONTH),
                     endCal.get(Calendar.DAY_OF_MONTH));
+        } else {
+            // This Activity was launched without a Sublease, so create a new one.
+            sublease = new Sublease();
+            editingExisting = false;
         }
     }
 
@@ -147,15 +154,33 @@ public class EditSubleaseActivity extends EditListingActivity {
                         endDate.getMonth(),
                         endDate.getDayOfMonth()
                 ));
+                sublease.setPosterAccount(account);
 
-                SubleaseWriter subleaseWriter = new SubleaseWriter();
-                if (editingExisting) {
-                    subleaseWriter.updateExisting(sublease);
-                    Toast.makeText(this, "Updating existing sublease", Toast.LENGTH_SHORT).show();
-                } else {
-                    subleaseWriter.saveNew(sublease);
-                    Toast.makeText(this, "Saving new sublease", Toast.LENGTH_SHORT).show();
-                }
+
+                new AsyncTask<Void, Void, Void>() {
+
+                    @Override
+                    protected Void doInBackground(Void... params) {
+                        SubleaseWriter subleaseWriter = new SubleaseWriter();
+                        if (editingExisting) {
+                            subleaseWriter.updateExisting(sublease);
+                        } else {
+                            subleaseWriter.saveNew(sublease);
+                        }
+
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Void aVoid) {
+                        if (editingExisting) {
+                            Toast.makeText(getApplicationContext(), "Updated existing sublease", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Saved new sublease", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }.execute();
+
 
                 finish(); // TODO ask the calling activity to refresh now?
 

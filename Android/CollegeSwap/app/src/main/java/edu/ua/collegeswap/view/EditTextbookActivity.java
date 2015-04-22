@@ -1,6 +1,7 @@
 package edu.ua.collegeswap.view;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -35,6 +36,8 @@ public class EditTextbookActivity extends EditListingActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        checkLogin();
 
         // Set up the UI
         setupActionBar();
@@ -117,6 +120,7 @@ public class EditTextbookActivity extends EditListingActivity {
             }
         } else {
             // This Activity was launched without a Textbook, so create a new one.
+            textbook = new Textbook();
             editingExisting = false;
         }
     }
@@ -169,15 +173,30 @@ public class EditTextbookActivity extends EditListingActivity {
 
                 textbook.setCourseSubject(courseSubject.getSelectedItem().toString());
                 textbook.setCourseNumber(Integer.parseInt(courseNumber.getSelectedItem().toString()));
+                textbook.setPosterAccount(account);
 
-                TextbookWriter textbookWriter = new TextbookWriter();
-                if (editingExisting) {
-                    textbookWriter.updateExisting(textbook);
-                    Toast.makeText(this, "Updating existing textbook", Toast.LENGTH_SHORT).show();
-                } else {
-                    textbookWriter.saveNew(textbook);
-                    Toast.makeText(this, "Saving new textbook", Toast.LENGTH_SHORT).show();
-                }
+                new AsyncTask<Void, Void, Void>() {
+                    @Override
+                    protected Void doInBackground(Void... params) {
+                        TextbookWriter textbookWriter = new TextbookWriter();
+                        if (editingExisting) {
+                            textbookWriter.updateExisting(textbook);
+                        } else {
+                            textbookWriter.saveNew(textbook);
+                        }
+
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Void aVoid) {
+                        if (editingExisting) {
+                            Toast.makeText(getApplicationContext(), "Updated existing textbook", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Saved new textbook", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }.execute();
 
                 finish(); // TODO ask the calling activity to refresh now?
 

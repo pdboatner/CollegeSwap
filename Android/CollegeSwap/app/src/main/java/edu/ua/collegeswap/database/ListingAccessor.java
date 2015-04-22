@@ -155,7 +155,7 @@ public abstract class ListingAccessor {
         }
     }
 
-    private static String getScriptURL() {
+    public static String getScriptURL() {
         return "http://bama.ua.edu/~cppopovich/CS495/request.php";
     }
 }
