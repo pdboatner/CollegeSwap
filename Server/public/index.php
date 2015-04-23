@@ -1,7 +1,7 @@
 <?php
-include('login.php');
+include('weblogin.php');
 if(isset($_SESSION['login_user'])){
-    header("location: profile.php");
+    header("location: webprofile.php");
 }
 ?>
 <!DOCTYPE html>

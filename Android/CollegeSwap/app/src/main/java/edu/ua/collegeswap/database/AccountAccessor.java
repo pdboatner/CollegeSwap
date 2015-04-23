@@ -4,6 +4,18 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import edu.ua.collegeswap.viewModel.Account;
 
 /**
@@ -36,12 +48,10 @@ public class AccountAccessor {
         String password = loadPreferences(context, passwordKey);
 
         if (username != null && password != null) {
-            if (checkLoginCredentials(username, password)) {
-                String[] splits = username.split("@");
-                account.setName(splits[0]);
-                account.setEmail(username);
-                return account;
-            }
+            String[] splits = username.split("@");
+            account.setName(splits[0]);
+            account.setEmail(username);
+            return account;
         }
         return null;
     }
@@ -53,10 +63,21 @@ public class AccountAccessor {
      * @param username the username for the user
      * @param password the password for the user
      */
-    private boolean checkLoginCredentials(String username, String password) {
-        //TODO check the users login credentials against the server
-
-        return true;
+    public boolean checkLoginCredentials(String username, String password) {
+        HttpClient client = new DefaultHttpClient();
+        HttpPost post = new HttpPost("http://www.bama.ua.edu/~cppopovich/CS495/login.php");
+        List<NameValuePair> pairs = new ArrayList<NameValuePair>();
+        pairs.add(new BasicNameValuePair("name", username));
+        pairs.add(new BasicNameValuePair("pass", password));
+        try {
+            post.setEntity(new UrlEncodedFormEntity(pairs));
+            HttpResponse response = client.execute(post);
+            String responseText = EntityUtils.toString(response.getEntity());
+            return responseText.equalsIgnoreCase("success");
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return false;
     }
 
     /**

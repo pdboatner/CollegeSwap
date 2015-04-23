@@ -14,12 +14,12 @@ for (@tables){
 }
 my @m;
 my $p = '/st1/cppopovich/Programming/CS495/';
-for my $f ('account','textbook'){;
+for my $f (@tables){;
     open my $FILE, '<', $p.$f.'.csv' or die $!."\n";
-    my @n = map {s/\s+//;$_} split(/,/,<$FILE>);
+    my @n = map {s/^\s+//;s/\s+$//;$_} split(/,/,<$FILE>);
     @{$N{$f}} = @n;
     while ($_ = <$FILE>){
-        @m = map {s/\s+//;$_} split(/,/);
+        @m = map {s/^\s+//;s/\s+$//;$_} split(/,/);
         my %h;
         for my $i (0 .. $#m){
             $h{$n[$i]}=$m[$i];
@@ -64,7 +64,7 @@ sub SQL{
     my @tbl = @{$T{$tbl}};
     my @result = ();
     for my $h_ref (@tbl){
-        if(where($h_ref)){
+        if($h_ref->{"del"}==0 && where($h_ref)){
             push @result, $h_ref;
         }
     }
