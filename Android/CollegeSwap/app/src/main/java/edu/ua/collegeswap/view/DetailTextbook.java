@@ -4,17 +4,21 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.Serializable;
 
 import edu.ua.collegeswap.R;
+import edu.ua.collegeswap.database.TransactionManager;
 import edu.ua.collegeswap.viewModel.Textbook;
 
 /**
  * Shows the details of a single Textbook.
  */
-public class DetailTextbook extends AuthenticatedActivity {
+public class DetailTextbook extends AuthenticatedActivity implements View.OnClickListener {
 
     private Textbook textbook;
 //button1 = (Button) findVeiwById(R.id.button);
@@ -70,6 +74,8 @@ public class DetailTextbook extends AuthenticatedActivity {
         TextView details = (TextView) findViewById(R.id.textViewDetails);
         details.setText(textbook.getDetails());
 
+        // Set up the offer button
+        findViewById(R.id.buttonMakeOffer).setOnClickListener(this);
     }
 
     @Override
@@ -112,5 +118,24 @@ public class DetailTextbook extends AuthenticatedActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.buttonMakeOffer) {
+            String offerText = ((EditText) findViewById(R.id.editTextOffer)).getText().toString();
+
+            Toast.makeText(this, "Sending offer \"" + offerText + "\"", Toast.LENGTH_LONG).show();
+
+            new TransactionManager().makeOffer(account.getName(), textbook, offerText);
+
+            // Clear the input
+            EditText input = (EditText) findViewById(R.id.editTextOffer);
+            input.setText("");
+            input.setFocusable(false);
+            hideKeyboard(this, v);
+            input.setHint("(offer sent)");
+            v.setEnabled(false);
+        }
     }
 }

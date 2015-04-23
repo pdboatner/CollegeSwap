@@ -1,7 +1,11 @@
 package edu.ua.collegeswap.view;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import edu.ua.collegeswap.database.AccountAccessor;
@@ -36,6 +40,15 @@ public abstract class AuthenticatedActivity extends ActionBarActivity {
             return false;
         }
         return true;
+    }
+
+    /**
+     * Hide the keyboard - http://stackoverflow.com/a/8785471
+     */
+    protected void hideKeyboard(Activity activity, View anyView) {
+        InputMethodManager inputManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        inputManager.hideSoftInputFromWindow(anyView.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
 }

@@ -128,5 +128,40 @@
         android:layout_below="@+id/textViewDetailsLabel"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginLeft="20dp"/>
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="10dp"/>
+
+    <TextView
+        style="@style/SmallHeaderCrimson"
+        android:text="MAKE OFFER"
+        android:id="@+id/labelMakeOffer"
+        android:layout_below="@id/textViewDetails"/>
+
+
+    <include
+        layout="@layout/crimson_line"
+        android:id="@+id/lineOffer"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@id/labelMakeOffer"
+        android:layout_marginBottom="5dp"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editTextOffer"
+        android:hint="enter your offer"
+        android:layout_below="@+id/lineOffer"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Make Offer"
+        android:id="@+id/buttonMakeOffer"
+        android:layout_below="@+id/editTextOffer"
+        android:layout_centerHorizontal="true"/>
 </RelativeLayout>
