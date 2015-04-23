@@ -2,7 +2,6 @@ package edu.ua.collegeswap.view;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -15,13 +14,15 @@ import edu.ua.collegeswap.viewModel.Sublease;
 /**
  * Shows the details of a single Sublease.
  */
-public class DetailSublease extends ActionBarActivity {
+public class DetailSublease extends AuthenticatedActivity {
 
     private Sublease sublease;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        checkLogin();
 
         /*
         When the user clicks the Up button (left of navigation bar), this will cause us to
@@ -65,6 +66,13 @@ public class DetailSublease extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_detail_sublease, menu);
+
+        MenuItem editButton = menu.findItem(R.id.action_edit);
+        if (sublease.getPosterAccount().getName().equals(account.getName())) {
+            //Only show the edit button if the user is allowed to edit the Listing
+            editButton.setVisible(true);
+        }
+
         return true;
     }
 

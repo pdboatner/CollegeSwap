@@ -32,7 +32,7 @@ public class EditTicketActivity extends EditListingActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+
         checkLogin();
 
         // Set up the UI
@@ -115,13 +115,27 @@ public class EditTicketActivity extends EditListingActivity {
             case R.id.actionbar_done:
                 // Save the Ticket. Submit it to the server.
 
+                // Check the indices of the spinners. Should not be 0 - the hint.
+                if (game.getSelectedItemPosition() == 0) {
+                    Toast.makeText(this, "Please choose a game.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (bowl.getSelectedItemPosition() == 0) {
+                    Toast.makeText(this, "Please choose a bowl.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 ticket.setTitle(title.getText().toString());
-                ticket.setAskingPrice(Float.parseFloat(price.getText().toString()));
+                try {
+                    ticket.setAskingPrice(Float.parseFloat(price.getText().toString()));
+                } catch (NumberFormatException e) {
+                    Toast.makeText(this, "Please enter a valid price.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 ticket.setDetails(details.getText().toString());
                 ticket.setBowl(bowl.getSelectedItem().toString());
                 ticket.setGame(game.getSelectedItem().toString());
                 ticket.setPosterAccount(account);
-                //TODO check the indices of the spinners. Should not be 0 - the hint.
 
                 new AsyncTask<Void, Void, Void>() {
                     @Override

@@ -6,5 +6,6 @@
         android:id="@+id/action_edit"
         android:title="@string/action_edit"
         android:icon="@drawable/ic_action_edit"
+        android:visible="false"
         app:showAsAction="withText|ifRoom"/>
 </menu>

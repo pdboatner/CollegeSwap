@@ -99,6 +99,9 @@ public class TicketAccessor extends ListingAccessor {
                                 case "details":
                                     t.setDetails(reader.nextString());
                                     break;
+                                case "id":
+                                    t.setID(Integer.parseInt(reader.nextString()));
+                                    break;
                                 default:
                                     reader.nextString();
                                     break;
@@ -137,8 +140,9 @@ public class TicketAccessor extends ListingAccessor {
 
     @Override
     public List<Listing> getByUser(Account account) {
-        //TODO
-        return null;
+        String json = getJSONrequest(tableTicket, "poster=" + account.getName());
+
+        return getTicketsFromJSON(json);
     }
 
     /**
@@ -156,13 +160,21 @@ public class TicketAccessor extends ListingAccessor {
      * @return a list of all games
      */
     public List<String> getGames() {
-        //TODO
+        /*
+        Since this will be hardcoded on the server anyways, we don't lose much by hardcoding it here.
+        This might be changed for production code, but it would only require an update once per semester.
+         */
 
         List<String> l = new ArrayList<>();
 
-        l.add("West Carolina");
-        l.add("Auburn");
+        l.add("Florida Atlantic");
+        l.add("Florida");
+        l.add("Texas A&M");
+        l.add("Western Carolina");
+        l.add("Southern Miss");
+        l.add("Mississippi State");
         l.add("LSU");
+        l.add("Auburn");
 
         return l;
     }
@@ -171,6 +183,10 @@ public class TicketAccessor extends ListingAccessor {
      * @return a list of the bowl options
      */
     public List<String> getBowls() {
+        /*
+        Since this will be hardcoded on the server anyways, we don't lose much by hardcoding it here.
+        This might be changed for production code, but it would only require an update once per semester.
+         */
         List<String> l = new ArrayList<>(2);
 
         l.add("Upper bowl");

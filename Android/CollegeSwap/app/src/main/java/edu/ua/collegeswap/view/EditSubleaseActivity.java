@@ -139,11 +139,21 @@ public class EditSubleaseActivity extends EditListingActivity {
             case R.id.actionbar_done:
                 // Save the Sublease. Submit it to the server.
 
+                // Check the indices of the spinners. Should not be 0 - the hint.
+                if (location.getSelectedItemPosition() == 0) {
+                    Toast.makeText(this, "Please choose a location", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 sublease.setTitle(title.getText().toString());
-                sublease.setAskingPrice(Float.parseFloat(price.getText().toString()));
+                try {
+                    sublease.setAskingPrice(Float.parseFloat(price.getText().toString()));
+                } catch (NumberFormatException e) {
+                    Toast.makeText(this, "Please enter a valid price.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 sublease.setDetails(details.getText().toString());
                 sublease.setLocation(location.getSelectedItem().toString());
-                //TODO check the indices of the spinners. Should not be 0 - the hint.
                 sublease.setStartDate(getCalendar(
                         startDate.getYear(),
                         startDate.getMonth(),

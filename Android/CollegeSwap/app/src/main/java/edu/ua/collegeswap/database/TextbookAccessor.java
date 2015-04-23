@@ -100,6 +100,9 @@ public class TextbookAccessor extends ListingAccessor {
                                 case "details":
                                     t.setDetails(reader.nextString());
                                     break;
+                                case "id":
+                                    t.setID(Integer.parseInt(reader.nextString()));
+                                    break;
                                 default:
                                     reader.nextString();
                                     break;
@@ -139,8 +142,9 @@ public class TextbookAccessor extends ListingAccessor {
 
     @Override
     public List<Listing> getByUser(Account account) {
-        //TODO
-        return null;
+        String json = getJSONrequest(tableTextbook, "poster=" + account.getName());
+
+        return getTextbooksFromJSON(json);
     }
 
     /**
@@ -158,19 +162,17 @@ public class TextbookAccessor extends ListingAccessor {
      * @return a list of course subjects
      */
     public List<String> getCourseSubjects() {
-        //TODO
+        /*
+        Since this will be hardcoded on the server anyways, we don't lose much by hardcoding it here.
+        This might be changed for production code, but it would only require an update once per semester.
+         */
+
         List<String> l = new ArrayList<>();
-        l.add("MATH");
-        l.add("PY");
         l.add("CS");
         l.add("ECE");
-
-        /*
-        TODO Get list of things from server
-		    url = "bama.ua.edu/~cppopovich/CS495/request.php"
-			'tbl'
-			'col'
-         */
+        l.add("EN");
+        l.add("MATH");
+        l.add("PY");
 
         return l;
     }
@@ -180,18 +182,43 @@ public class TextbookAccessor extends ListingAccessor {
      * @return a list of course numbers for the given course subject, like 125
      */
     public List<Integer> getCourseNumbers(String courseSubject) {
-        //TODO
+        /*
+        Since this will be hardcoded on the server anyways, we don't lose much by hardcoding it here.
+        This might be changed for production code, but it would only require an update once per semester.
+         */
 
         List<Integer> l = new ArrayList<>();
 
-        if (courseSubject.contentEquals("CS")) {
-            l.add(495);
-            l.add(470);
-            l.add(403);
-        } else {
-            l.add(101);
-            l.add(105);
-            l.add(400);
+        switch (courseSubject) {
+            case "CS":
+                l.add(250);
+                l.add(260);
+                l.add(350);
+                l.add(351);
+                l.add(360);
+                l.add(403);
+                l.add(457);
+                l.add(470);
+                l.add(495);
+                break;
+            case "MATH":
+                l.add(125);
+                l.add(126);
+                l.add(227);
+                l.add(237);
+                l.add(301);
+                l.add(302);
+                break;
+            default:
+                l.add(101);
+                l.add(102);
+                l.add(105);
+                l.add(201);
+                l.add(205);
+                l.add(301);
+                l.add(305);
+                l.add(400);
+                break;
         }
 
         return l;

@@ -29,8 +29,6 @@ public class TextbookWriter extends ListingWriter {
 
     @Override
     public void updateExisting(Listing updatedListing) {
-        //TODO
-
         Textbook textbook = (Textbook) updatedListing;
 
         // TODO Get the information from the textbook and send it to the server

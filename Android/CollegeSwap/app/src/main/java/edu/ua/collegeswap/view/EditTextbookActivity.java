@@ -158,7 +158,12 @@ public class EditTextbookActivity extends EditListingActivity {
                 // Save the Textbook. Submit it to the server.
 
                 textbook.setTitle(title.getText().toString());
-                textbook.setAskingPrice(Float.parseFloat(price.getText().toString()));
+                try {
+                    textbook.setAskingPrice(Float.parseFloat(price.getText().toString()));
+                } catch (NumberFormatException e) {
+                    Toast.makeText(this, "Please enter a valid price.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 textbook.setDetails(details.getText().toString());
 
                 // Check the indices of the spinners. Should not be 0 - the hint.

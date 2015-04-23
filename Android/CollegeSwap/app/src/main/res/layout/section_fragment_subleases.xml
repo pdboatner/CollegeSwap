@@ -16,7 +16,11 @@
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
+
+            <!-- focusable and focusableInTouchMode prevent the first text view from automatically getting focus-->
 
             <TextView
                 style="@style/SmallHeaderCrimson"

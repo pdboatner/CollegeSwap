@@ -2,7 +2,6 @@ package edu.ua.collegeswap.view;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -15,7 +14,7 @@ import edu.ua.collegeswap.viewModel.Textbook;
 /**
  * Shows the details of a single Textbook.
  */
-public class DetailTextbook extends ActionBarActivity {
+public class DetailTextbook extends AuthenticatedActivity {
 
     private Textbook textbook;
 //button1 = (Button) findVeiwById(R.id.button);
@@ -32,6 +31,8 @@ public class DetailTextbook extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        checkLogin();
 
         /*
         When the user clicks the Up button (left of navigation bar), this will cause us to
@@ -75,6 +76,13 @@ public class DetailTextbook extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_detail_textbook, menu);
+
+        MenuItem editButton = menu.findItem(R.id.action_edit);
+        if (textbook.getPosterAccount().getName().equals(account.getName())) {
+            //Only show the edit button if the user is allowed to edit the Listing
+            editButton.setVisible(true);
+        }
+
         return true;
     }
 

@@ -30,13 +30,12 @@ public class AccountAccessor {
      * @return the Account (if the user has it stored in shared preferences) or null otherwise
      */
     public Account getCachedLogin(Context context) {
-        //TODO
         account = new Account();
 
         String username = loadPreferences(context, usernameKey);
         String password = loadPreferences(context, passwordKey);
 
-        if (username != null && password != null){
+        if (username != null && password != null) {
             if (checkLoginCredentials(username, password)) {
                 String[] splits = username.split("@");
                 account.setName(splits[0]);
@@ -55,40 +54,39 @@ public class AccountAccessor {
      * @param password the password for the user
      */
     private boolean checkLoginCredentials(String username, String password) {
-
         //TODO check the users login credentials against the server
 
         return true;
     }
 
     /**
-     *   Method used to get Shared Preferences */
+     * Method used to get Shared Preferences
+     */
 
-    public SharedPreferences getPreferences(Context context)
-    {
+    public SharedPreferences getPreferences(Context context) {
         return context.getSharedPreferences(MY_PREFS, Context.MODE_PRIVATE);
     }
 
     /**
-     *  Method used to load Preferences */
-    public String loadPreferences(Context context, String key)
-    {
+     * Method used to load Preferences
+     */
+    public String loadPreferences(Context context, String key) {
         try {
             SharedPreferences sharedPreferences = getPreferences(context);
-            if (sharedPreferences.contains(key)) { return sharedPreferences.getString(key, ""); }
-            else return null;
-        } catch (NullPointerException nullPointerException)
-        {
+            if (sharedPreferences.contains(key)) {
+                return sharedPreferences.getString(key, "");
+            } else return null;
+        } catch (NullPointerException nullPointerException) {
             Log.e(LOG_TAG, "nullPointerException");
             return null;
         }
     }
 
     /**
-     *  Method used to delete Preferences */
-    public boolean deletePreferences(Context context, String key)
-    {
-        SharedPreferences.Editor editor=getPreferences(context).edit();
+     * Method used to delete Preferences
+     */
+    public boolean deletePreferences(Context context, String key) {
+        SharedPreferences.Editor editor = getPreferences(context).edit();
         //editor.remove(key).commit();
         editor.remove(key).apply();
         return false;

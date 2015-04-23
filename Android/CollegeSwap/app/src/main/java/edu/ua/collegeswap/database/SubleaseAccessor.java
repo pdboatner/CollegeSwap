@@ -125,6 +125,9 @@ public class SubleaseAccessor extends ListingAccessor {
                                 case "details":
                                     s.setDetails(reader.nextString());
                                     break;
+                                case "id":
+                                    s.setID(Integer.parseInt(reader.nextString()));
+                                    break;
                                 default:
                                     reader.nextString();
                                     break;
@@ -164,8 +167,9 @@ public class SubleaseAccessor extends ListingAccessor {
 
     @Override
     public List<Listing> getByUser(Account account) {
-        //TODO
-        return null;
+        String json = getJSONrequest(tableSublease, "poster=" + account.getName());
+
+        return getSubleasesFromJSON(json);
     }
 
     /**
@@ -182,12 +186,18 @@ public class SubleaseAccessor extends ListingAccessor {
      * @return a list of Locations
      */
     public List<String> getLocations() {
-        //TODO
+        /*
+        Since this will be hardcoded on the server anyways, we don't lose much by hardcoding it here.
+        This might be changed for production code, but it wouldn't require frequent updates.
+         */
 
         List<String> l = new ArrayList<>();
         l.add("The Retreat");
         l.add("The Woodlands");
         l.add("The Highlands");
+        l.add("Riverfront Village");
+        l.add("Campus Way");
+        l.add("Houndstooth Condominiums");
         l.add("Other");
 
         return l;
