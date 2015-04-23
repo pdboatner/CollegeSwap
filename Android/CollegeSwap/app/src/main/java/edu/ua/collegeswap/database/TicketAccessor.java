@@ -133,6 +133,9 @@ public class TicketAccessor extends ListingAccessor {
 
     @Override
     public List<Listing> getByPrice(int minPrice, int maxPrice) {
+        minPrice--; // Convert from exclusive to inclusive boundaries
+        maxPrice++;
+
         String json = getJSONrequest(tableTicket, "price>" + minPrice + ",price<" + maxPrice);
 
         return getTicketsFromJSON(json);
@@ -206,6 +209,9 @@ public class TicketAccessor extends ListingAccessor {
      * @return a list of all Ticket listings for a given game within the given price range
      */
     public List<Ticket> get(String game, String bowl, int minPrice, int maxPrice) {
+        minPrice--; // Convert from exclusive to inclusive boundaries
+        maxPrice++;
+
         String bowlFilterString = (bowl.equals("")) ? "" : ",bowl=" + bowl;
 
         String json = getJSONrequest(tableTicket,

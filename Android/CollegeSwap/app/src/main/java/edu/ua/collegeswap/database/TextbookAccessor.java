@@ -135,6 +135,9 @@ public class TextbookAccessor extends ListingAccessor {
     @Override
     public List<Listing> getByPrice(int minPrice, int maxPrice) {
         //note: post 'tbl=textbook' and 'args=price>minPrice,price<maxPrice'
+        minPrice--; // Convert from exclusive to inclusive boundaries
+        maxPrice++;
+
         String json = getJSONrequest(tableTextbook, "price>" + minPrice + ",price<" + maxPrice);
 
         return getTextbooksFromJSON(json);
@@ -252,6 +255,9 @@ public class TextbookAccessor extends ListingAccessor {
      * range
      */
     public List<Textbook> get(int minPrice, int maxPrice, String courseSubject, int courseNumber) {
+        minPrice--; // Convert from exclusive to inclusive boundaries
+        maxPrice++;
+
         String courseNumberString = (courseNumber > 0) ? ",number=" + courseNumber : "";
 
         String json = getJSONrequest(tableTextbook,

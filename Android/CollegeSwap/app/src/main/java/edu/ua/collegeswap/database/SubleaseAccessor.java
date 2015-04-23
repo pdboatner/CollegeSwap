@@ -160,6 +160,8 @@ public class SubleaseAccessor extends ListingAccessor {
 
     @Override
     public List<Listing> getByPrice(int minPrice, int maxPrice) {
+        minPrice--; // Convert from exclusive to inclusive boundaries
+        maxPrice++;
         String json = getJSONrequest(tableSublease, "price>" + minPrice + ",price<" + maxPrice);
 
         return getSubleasesFromJSON(json);
@@ -211,6 +213,8 @@ public class SubleaseAccessor extends ListingAccessor {
      * price range
      */
     public List<Sublease> get(String location, int minPrice, int maxPrice) {
+        minPrice--; // Convert from exclusive to inclusive boundaries
+        maxPrice++;
         String json = getJSONrequest(tableSublease, "price>" + minPrice + ",price<" + maxPrice + ",location=" + location);
 
         return castListingsToSubleases(getSubleasesFromJSON(json));
