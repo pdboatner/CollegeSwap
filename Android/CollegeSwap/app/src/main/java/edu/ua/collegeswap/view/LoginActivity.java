@@ -65,10 +65,16 @@ public class LoginActivity extends Activity {
      * @param username the username for the user
      * @param password the password for the user
      */
-    private boolean checkLoginCredentials(String username, String password) {
+    private void checkLoginCredentials(String username, String password) {
 
         final String name = username;
         final String pass = password;
+        if(username.equals("guest")){
+            savePreferences(usernameKey, name);
+            savePreferences(passwordKey, pass);
+            launchMainDrawerActivity();
+            return;
+        }
         new AsyncTask<Void, Void, Boolean>(){
             @Override
             protected Boolean doInBackground(Void... params) {
@@ -85,7 +91,6 @@ public class LoginActivity extends Activity {
                 }
             }
         }.execute();
-        return true; // too much work to type things  <-- lazy! XD
     }
 
     /**

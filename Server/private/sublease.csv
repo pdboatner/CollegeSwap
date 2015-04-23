@@ -1,3 +1,3 @@
-id,del,location,startDate,endDate,date,poster,price,details
-2,0,The Woodlands,1438448400000,1451498400000,1429665286523,pdboatner,400,Room for rent. Must have gamerscore of at least 10000 and finish rainbow road without falling off.
-3,0,The Retreat,1429635600000,1451412000000,1429667164338,pdboatner,450,Nicer than the other places.
+id,del,title,location,startDate,endDate,date,poster,price,details
+2,0,The Woodlands,The Woodlands,1438448400000,1451498400000,1429665286523,pdboatner,400,Room for rent. Must have gamerscore of at least 10000 and finish rainbow road without falling off.
+3,0,The Retreat,The Retreat,1429635600000,1451412000000,1429667164338,pdboatner,450,Nicer than the other places.
