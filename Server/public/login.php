@@ -7,6 +7,8 @@ if (empty($_POST['name']) || empty($_POST['pass'])) {
     $name=$_POST['name'];
     $pass=$_POST['pass'];
     $path = '/st1/cppopovich/Programming/CS495/login.pl';
+    $name = escapeshellarg($name);
+    $pass = escapeshellarg($pass);
     $result = `perl $path $name $pass`;
     if($result === 'success'){
         $_SESSION['login_user']=$name;

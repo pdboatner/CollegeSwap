@@ -1,8 +1,10 @@
 id,del,title,subject,number,date,poster,price,details
-1,0,Software Applications,CS,495,0,bob,12
-2,0,Vector Calculus: Third Edition,MATH,247,0,bob,18
+1,0,SoftwareApplications,CS,495,1429758105424,bob,12,title
+2,0,Vector Calculus: Third Edition,MATH,247,0,cppopovich,18
 3,0,Symbolism Everywhere,EN,101,0,bob,9
 4,0,Programming Languages,CS,470,0,bob,2
 5,0,Computer Algorithms,CS,403,0,bob,7
 6,0,Good Grammar,EN,102,0,bob,3
-7,0,Data Structures,CS,360,1429747547896,pdboatner,100,It\'s a really hard class. You\'ll need it.
+7,0,Data Structures,CS,360,1429758383983,pdboatner,100,It\'s a really hard class. You\'ll need it.
+8,0,Intro book,EN,101,1429805269420,guest,25,I won\'t use it.
+9,0,Intro psych book. Great deal.,PY,101,1429807918156,guest,25,barely used.
