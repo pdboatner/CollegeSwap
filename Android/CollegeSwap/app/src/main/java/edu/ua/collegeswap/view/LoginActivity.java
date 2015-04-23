@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -54,14 +55,7 @@ public class LoginActivity extends Activity {
         password_editText = (EditText) findViewById(R.id.editText_passwordLogin);
         String usernameLogin = username_editText.getText().toString();
         String passwordLogin = password_editText.getText().toString();
-
-        if (checkLoginCredentials(usernameLogin, passwordLogin)) {
-            savePreferences(usernameKey, usernameLogin);
-            savePreferences(passwordKey, passwordLogin);
-            launchMainDrawerActivity();
-        } else {
-            Toast.makeText(this, "Invalid login", Toast.LENGTH_SHORT).show();
-        }
+        checkLoginCredentials(usernameLogin, passwordLogin);
     }
 
     /**
@@ -73,8 +67,24 @@ public class LoginActivity extends Activity {
      */
     private boolean checkLoginCredentials(String username, String password) {
 
-        //TODO check the users login credentials against the server
-
+        final String name = username;
+        final String pass = password;
+        new AsyncTask<Void, Void, Boolean>(){
+            @Override
+            protected Boolean doInBackground(Void... params) {
+                return accountAccessor.checkLoginCredentials(name, pass);
+            }
+            @Override
+            protected void onPostExecute(Boolean result) {
+                if(result){
+                    savePreferences(usernameKey, name);
+                    savePreferences(passwordKey, pass);
+                    launchMainDrawerActivity();
+                }else{
+                    loginFailed();
+                }
+            }
+        }.execute();
         return true; // too much work to type things  <-- lazy! XD
     }
 
@@ -85,6 +95,13 @@ public class LoginActivity extends Activity {
     private void launchMainDrawerActivity() {
         Intent i = new Intent(this, MainDrawerActivity.class);
         startActivity(i);
+    }
+
+    /**
+     * Display failed login alert.
+     */
+    private void loginFailed() {
+        Toast.makeText(this, "Invalid login", Toast.LENGTH_SHORT).show();
     }
 
     /**
