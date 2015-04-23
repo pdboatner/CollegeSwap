@@ -18,11 +18,12 @@ public abstract class Listing implements Serializable {
     private String details;
 
     public Listing() {
-        //TODO
         posterAccount = new Account();
         posterAccount.setName("Example Name");
         posterAccount.setRating(4.5f);
         posterAccount.setContactInfo("email@crimson.ua.edu");
+
+        ID = -1;
     }
 
     public abstract Class getDetailActivityClass();

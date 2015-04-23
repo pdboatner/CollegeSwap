@@ -23,6 +23,7 @@ public class SubleaseWriter extends ListingWriter {
             args += "|poster|" + s.getPosterAccount().getName();
             args += "|price|" + s.getAskingPriceFormatted();
             args += "|details|" + s.getDetails();
+            args += "|title|" + s.getTitle();
 
             sendRequest(tableSublease, args);
         } else {
@@ -32,7 +33,23 @@ public class SubleaseWriter extends ListingWriter {
 
     @Override
     public void updateExisting(Listing updatedListing) {
-        //TODO
+        if (updatedListing instanceof Sublease) {
+            Sublease s = (Sublease) updatedListing;
+
+            String args = "";
+            args += "location|" + s.getLocation();
+            Calendar c = Calendar.getInstance();
+            args += "|date|" + c.getTimeInMillis();
+            args += "|startDate|" + s.getStartDate().getTimeInMillis();
+            args += "|endDate|" + s.getEndDate().getTimeInMillis();
+            args += "|price|" + s.getAskingPriceFormatted();
+            args += "|details|" + s.getDetails();
+            args += "|title|" + s.getTitle();
+
+            sendRequest(tableSublease, s.getID(), args);
+        } else {
+            throw new IllegalStateException("Expected a Sublease, but found another Object");
+        }
     }
 
     @Override

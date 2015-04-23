@@ -25,25 +25,25 @@ public abstract class ListingWriter {
     protected static final String tableSublease = ListingAccessor.tableSublease;
 
     public static void sendRequest(String table, String args) {
-        sendRequest(table, null, args);
+        sendRequest(table, -1, args);
     }
 
     /**
      * Request the JSON from the server at "bama.ua.edu/~cppopovich/CS495/request.php".
      *
      * @param table one of (account,textbook,ticket,sublease)
-     * @param key   when editing, the id # of the listing or the name of the account.
-     *              When creating a new listing, null or blank.
+     * @param key   when editing, the id # of the listing.
+     *              When creating a new listing, 0 or less.
      * @param args  is a pipe-separated list of data (pipe='|').
      *              When editing a listing, only the data to be modified needs to be included.
      */
-    public static void sendRequest(String table, String key, String args) {
+    public static void sendRequest(String table, int key, String args) {
         // Create a new HttpClient and Post Header
         HttpClient httpclient = new DefaultHttpClient();
 
 
         HttpPost httppost = new HttpPost(
-                (key != null && key.length() != 0) ? getEditScriptURL() : getAddScriptURL());
+                (key > 0) ? getEditScriptURL() : getAddScriptURL());
 
         try {
             // Add the data
@@ -51,8 +51,8 @@ public abstract class ListingWriter {
             nameValuePairs.add(new BasicNameValuePair("tbl", table));
 
             // Optionally add the key options
-            if (key != null && key.length() != 0) {
-                nameValuePairs.add(new BasicNameValuePair("key", key));
+            if (key > 0) {
+                nameValuePairs.add(new BasicNameValuePair("key", "" + key));
             }
 
             nameValuePairs.add(new BasicNameValuePair("args", args));
