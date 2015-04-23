@@ -1,24 +1,47 @@
 package edu.ua.collegeswap.view;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import edu.ua.collegeswap.R;
+import edu.ua.collegeswap.database.AccountAccessor;
+import edu.ua.collegeswap.viewModel.Account;
 
 
 public class LoginActivity extends Activity {
+
+    public static final String MY_PREFS = "MyPrefs";
+    public static final String usernameKey = "usernameKey";
+    public static final String passwordKey = "passwordKey";
+    private EditText username_editText, password_editText;
+
+    public Account account;
+    public AccountAccessor accountAccessor;
+
+    private static final String LOG_TAG = LoginActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        Context mContext = this;
+
+        accountAccessor = new AccountAccessor();
+        account = accountAccessor.getCachedLogin(mContext);
+        if (account != null){
+            Toast.makeText(this, account.getName(), Toast.LENGTH_SHORT).show(); // debugging purposes, DELETE
+            launchMainDrawerActivity();
+        }
+
     }
 
     /**
@@ -27,13 +50,16 @@ public class LoginActivity extends Activity {
      * @param buttonLogin the login button
      */
     public void loginClicked(View buttonLogin) {
-        EditText username = (EditText) findViewById(R.id.editText_usernameLogin);
-        EditText password = (EditText) findViewById(R.id.editText_passwordLogin);
-        String usernameLogin = username.getText().toString();
-        String passwordLogin = password.getText().toString();
+        username_editText = (EditText) findViewById(R.id.editText_usernameLogin);
+        password_editText = (EditText) findViewById(R.id.editText_passwordLogin);
+        String usernameLogin = username_editText.getText().toString();
+        String passwordLogin = password_editText.getText().toString();
 
-        if (checkLoginCredentials(usernameLogin, passwordLogin)) { launchMainDrawerActivity(); }
-        else {
+        if (checkLoginCredentials(usernameLogin, passwordLogin)) {
+            savePreferences(usernameKey, usernameLogin);
+            savePreferences(passwordKey, passwordLogin);
+            launchMainDrawerActivity();
+        } else {
             Toast.makeText(this, "Invalid login", Toast.LENGTH_SHORT).show();
         }
     }
@@ -45,13 +71,11 @@ public class LoginActivity extends Activity {
      * @param username the username for the user
      * @param password the password for the user
      */
-    private boolean checkLoginCredentials(String username, String password){
+    private boolean checkLoginCredentials(String username, String password) {
 
         //TODO check the users login credentials against the server
 
-        if ( username.equals("bob") && password.equals("1234") ) { return true; }
-        else { return false; }
-
+        return true; // too much work to type things  <-- lazy! XD
     }
 
     /**
@@ -63,25 +87,21 @@ public class LoginActivity extends Activity {
         startActivity(i);
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_login, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
+    /**
+     *   Method used to get Shared Preferences */
+
+    public SharedPreferences getPreferences()
+    {
+        return getSharedPreferences(MY_PREFS, MODE_PRIVATE);
+    }
+    /**
+     *  Method used to save Preferences */
+    public void savePreferences(String key, String value)
+    {
+        SharedPreferences sharedPreferences = getPreferences();
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(key, value);
+        editor.commit();
+    }
+
 }

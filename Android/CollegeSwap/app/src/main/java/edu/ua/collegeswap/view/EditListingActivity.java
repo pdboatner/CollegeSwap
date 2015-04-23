@@ -1,7 +1,6 @@
 package edu.ua.collegeswap.view;
 
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,7 @@ import edu.ua.collegeswap.R;
  * <p/>
  * Created by Patrick on 4/9/2015.
  */
-public abstract class EditListingActivity extends ActionBarActivity implements View.OnClickListener {
+public abstract class EditListingActivity extends AuthenticatedActivity implements View.OnClickListener {
 
     // If this Activity is editing an existing Listing. False means a new Listing is being created.
     protected boolean editingExisting;

@@ -1,6 +1,7 @@
 package edu.ua.collegeswap.view;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -31,6 +32,8 @@ public class EditTicketActivity extends EditListingActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        checkLogin();
 
         // Set up the UI
         setupActionBar();
@@ -89,6 +92,7 @@ public class EditTicketActivity extends EditListingActivity {
 
         } else {
             // This Activity was launched without a Ticket, so create a new one.
+            ticket = new Ticket();
             editingExisting = false;
         }
     }
@@ -111,21 +115,51 @@ public class EditTicketActivity extends EditListingActivity {
             case R.id.actionbar_done:
                 // Save the Ticket. Submit it to the server.
 
+                // Check the indices of the spinners. Should not be 0 - the hint.
+                if (game.getSelectedItemPosition() == 0) {
+                    Toast.makeText(this, "Please choose a game.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (bowl.getSelectedItemPosition() == 0) {
+                    Toast.makeText(this, "Please choose a bowl.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 ticket.setTitle(title.getText().toString());
-                ticket.setAskingPrice(Float.parseFloat(price.getText().toString()));
+                try {
+                    ticket.setAskingPrice(Float.parseFloat(price.getText().toString()));
+                } catch (NumberFormatException e) {
+                    Toast.makeText(this, "Please enter a valid price.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 ticket.setDetails(details.getText().toString());
                 ticket.setBowl(bowl.getSelectedItem().toString());
                 ticket.setGame(game.getSelectedItem().toString());
-                //TODO check the indices of the spinners. Should not be 0 - the hint.
+                ticket.setPosterAccount(account);
 
-                TicketWriter ticketWriter = new TicketWriter();
-                if (editingExisting) {
-                    ticketWriter.updateExisting(ticket);
-                    Toast.makeText(this, "Updating existing ticket", Toast.LENGTH_SHORT).show();
-                } else {
-                    ticketWriter.saveNew(ticket);
-                    Toast.makeText(this, "Saving new ticket", Toast.LENGTH_SHORT).show();
-                }
+                new AsyncTask<Void, Void, Void>() {
+                    @Override
+                    protected Void doInBackground(Void... params) {
+                        TicketWriter ticketWriter = new TicketWriter();
+                        if (editingExisting) {
+                            ticketWriter.updateExisting(ticket);
+                        } else {
+                            ticketWriter.saveNew(ticket);
+                        }
+
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Void aVoid) {
+                        if (editingExisting) {
+                            Toast.makeText(getApplicationContext(), "Updated existing ticket", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Saved new ticket", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }.execute();
+
 
                 finish(); // TODO ask the calling activity to refresh now?
 

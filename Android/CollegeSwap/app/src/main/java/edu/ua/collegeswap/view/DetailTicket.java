@@ -2,11 +2,9 @@ package edu.ua.collegeswap.view;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.Serializable;
 
@@ -16,13 +14,15 @@ import edu.ua.collegeswap.viewModel.Ticket;
 /**
  * Shows the details of a single Ticket.
  */
-public class DetailTicket extends ActionBarActivity {
+public class DetailTicket extends AuthenticatedActivity {
 
     private Ticket ticket;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        checkLogin();
 
         /*
         When the user clicks the Up button (left of navigation bar), this will cause us to
@@ -60,9 +60,6 @@ public class DetailTicket extends ActionBarActivity {
 
         TextView details = (TextView) findViewById(R.id.textViewDetails);
         details.setText(ticket.getDetails());
-
-        //TODO Perhaps display the user's rating. Android has a rating View that shows 5 stars.
-
     }
 
     @Override
@@ -70,7 +67,11 @@ public class DetailTicket extends ActionBarActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_detail_ticket, menu);
 
-        //TODO Only show the edit button if the user is allowed to edit the Listing
+        MenuItem editButton = menu.findItem(R.id.action_edit);
+        if (ticket.getPosterAccount().getName().equals(account.getName())) {
+            //Only show the edit button if the user is allowed to edit the Listing
+            editButton.setVisible(true);
+        }
 
         return true;
     }
@@ -92,8 +93,6 @@ public class DetailTicket extends ActionBarActivity {
                 finish();
                 return true;
             case R.id.action_edit:
-                Toast.makeText(this, "Edit Button clicked", Toast.LENGTH_SHORT).show();
-
                 // Launch an activity to edit the Listing.
 
                 Intent intent = new Intent(this, EditTicketActivity.class);

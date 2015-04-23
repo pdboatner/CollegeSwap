@@ -1,6 +1,7 @@
 package edu.ua.collegeswap.view;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -30,11 +31,13 @@ public class EditTextbookActivity extends EditListingActivity {
     private Spinner courseSubject, courseNumber;
 
     public final static String EXTRA_TEXTBOOK = "edu.ua.collegeswap.edittextbook.TEXTBOOK";
-    private final static String chooseNumberMessage = "Choose course number";
+    public final static String chooseNumberMessage = "Choose course number";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        checkLogin();
 
         // Set up the UI
         setupActionBar();
@@ -107,7 +110,7 @@ public class EditTextbookActivity extends EditListingActivity {
                 courseSubject.setSelection(subjectIndex);
             }
 
-            // Update the course numbers for the given textbook
+            // Update the course numbers for the given subject
             updateCourseNumbers(textbook.getCourseSubject(), numberAdapter, courseNumber);
 
             int numberIndex = courseNumbers.indexOf(textbook.getCourseNumber() + "");
@@ -117,6 +120,7 @@ public class EditTextbookActivity extends EditListingActivity {
             }
         } else {
             // This Activity was launched without a Textbook, so create a new one.
+            textbook = new Textbook();
             editingExisting = false;
         }
     }
@@ -154,7 +158,12 @@ public class EditTextbookActivity extends EditListingActivity {
                 // Save the Textbook. Submit it to the server.
 
                 textbook.setTitle(title.getText().toString());
-                textbook.setAskingPrice(Float.parseFloat(price.getText().toString()));
+                try {
+                    textbook.setAskingPrice(Float.parseFloat(price.getText().toString()));
+                } catch (NumberFormatException e) {
+                    Toast.makeText(this, "Please enter a valid price.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 textbook.setDetails(details.getText().toString());
 
                 // Check the indices of the spinners. Should not be 0 - the hint.
@@ -169,15 +178,30 @@ public class EditTextbookActivity extends EditListingActivity {
 
                 textbook.setCourseSubject(courseSubject.getSelectedItem().toString());
                 textbook.setCourseNumber(Integer.parseInt(courseNumber.getSelectedItem().toString()));
+                textbook.setPosterAccount(account);
 
-                TextbookWriter textbookWriter = new TextbookWriter();
-                if (editingExisting) {
-                    textbookWriter.updateExisting(textbook);
-                    Toast.makeText(this, "Updating existing textbook", Toast.LENGTH_SHORT).show();
-                } else {
-                    textbookWriter.saveNew(textbook);
-                    Toast.makeText(this, "Saving new textbook", Toast.LENGTH_SHORT).show();
-                }
+                new AsyncTask<Void, Void, Void>() {
+                    @Override
+                    protected Void doInBackground(Void... params) {
+                        TextbookWriter textbookWriter = new TextbookWriter();
+                        if (editingExisting) {
+                            textbookWriter.updateExisting(textbook);
+                        } else {
+                            textbookWriter.saveNew(textbook);
+                        }
+
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Void aVoid) {
+                        if (editingExisting) {
+                            Toast.makeText(getApplicationContext(), "Updated existing textbook", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Saved new textbook", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }.execute();
 
                 finish(); // TODO ask the calling activity to refresh now?
 

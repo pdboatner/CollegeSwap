@@ -39,8 +39,9 @@
 
     <!-- Strings for profile -->
     <string name="profile_title">My Profile</string>
-    <string name="edit_profile_email">E-mail</string>
-    <string name="edit_profile_phone">Phone Number:</string>
+    <string name="edit_profile_email">E-MAIL</string>
+    <string name="edit_profile_phone">PHONE NUMBER</string>
+    <string name="edit_profile_username">USERNAME</string>
 
 
 
@@ -49,5 +50,6 @@
     <string name="edit_profile_placeholder">Edit Profile</string>
     <string name="title_activity_edit_ticket">Edit Ticket</string>
     <string name="title_activity_edit_textbook">Edit Textbook</string>
+    <string name="title_activity_edit_sublease">Edit Sublease</string>
 
 </resources>

@@ -72,30 +72,43 @@ public class TextbookAccessor extends ListingAccessor {
                     while (reader.hasNext()) {
                         // Read each textbook
                         Textbook t = new Textbook();
+                        t.setTitle("Example Title");
 
                         reader.beginObject();
                         while (reader.hasNext()) {
                             // Read each field of the textbook
 
                             String fieldName = reader.nextName();
-                            if (fieldName.equals("subject")) {
-                                t.setCourseSubject(reader.nextString());
-                            } else if (fieldName.equals("number")) {
-                                t.setCourseNumber(Integer.parseInt(reader.nextString()));
-                            } else if (fieldName.equals("poster")) {
-                                Account a = new Account();
-                                a.setName(reader.nextString());
-                                t.setPosterAccount(a);
-                            } else if (fieldName.equals("price")) {
-                                t.setAskingPrice(Float.parseFloat(reader.nextString()));
-                            } else {
-                                reader.nextString();
+                            switch (fieldName) {
+                                case "subject":
+                                    t.setCourseSubject(reader.nextString());
+                                    break;
+                                case "number":
+                                    t.setCourseNumber(Integer.parseInt(reader.nextString()));
+                                    break;
+                                case "poster":
+                                    Account a = new Account();
+                                    a.setName(reader.nextString());
+                                    t.setPosterAccount(a);
+                                    break;
+                                case "price":
+                                    t.setAskingPrice(Float.parseFloat(reader.nextString()));
+                                    break;
+                                case "title":
+                                    t.setTitle(reader.nextString());
+                                    break;
+                                case "details":
+                                    t.setDetails(reader.nextString());
+                                    break;
+                                case "id":
+                                    t.setID(Integer.parseInt(reader.nextString()));
+                                    break;
+                                default:
+                                    reader.nextString();
+                                    break;
                             }
-                            //TODO Title
                         }
                         reader.endObject();
-
-                        t.setTitle("Example Title");
 
                         l.add(t);
                     }
@@ -112,34 +125,26 @@ public class TextbookAccessor extends ListingAccessor {
         return l;
     }
 
-    /**
-     * @param url
-     * @return a list of textbooks from the given URL
-     */
-    private List<Listing> getTextbooksFromURL(String url) {
-        String json = getJSONfromURL(url);
-
-        return getTextbooksFromJSON(json);
-
-//        return mockGetTextbooks();
-    }
-
     @Override
     public List<Listing> getAll() {
-        return getTextbooksFromURL("http://bama.ua.edu/~cppopovich/CS495/request.php");
+        String json = getJSONrequest(tableTextbook, "");
+
+        return getTextbooksFromJSON(json);
     }
 
     @Override
     public List<Listing> getByPrice(int minPrice, int maxPrice) {
         //note: post 'tbl=textbook' and 'args=price>minPrice,price<maxPrice'
-        //TODO
-        return null;
+        String json = getJSONrequest(tableTextbook, "price>" + minPrice + ",price<" + maxPrice);
+
+        return getTextbooksFromJSON(json);
     }
 
     @Override
     public List<Listing> getByUser(Account account) {
-        //TODO
-        return null;
+        String json = getJSONrequest(tableTextbook, "poster=" + account.getName());
+
+        return getTextbooksFromJSON(json);
     }
 
     /**
@@ -148,20 +153,26 @@ public class TextbookAccessor extends ListingAccessor {
      * @return a list of all Textbook Listings for a given class
      */
     public List<Textbook> getByClass(String courseSubject, int courseNumber) {
-        //TODO
-        return null;
+        String json = getJSONrequest(tableTextbook, "subject=" + courseSubject + ",number=" + courseNumber);
+
+        return castListingsToTextbooks(getTextbooksFromJSON(json));
     }
 
     /**
      * @return a list of course subjects
      */
     public List<String> getCourseSubjects() {
-        //TODO
+        /*
+        Since this will be hardcoded on the server anyways, we don't lose much by hardcoding it here.
+        This might be changed for production code, but it would only require an update once per semester.
+         */
+
         List<String> l = new ArrayList<>();
-        l.add("MATH");
-        l.add("PY");
         l.add("CS");
         l.add("ECE");
+        l.add("EN");
+        l.add("MATH");
+        l.add("PY");
 
         return l;
     }
@@ -171,18 +182,43 @@ public class TextbookAccessor extends ListingAccessor {
      * @return a list of course numbers for the given course subject, like 125
      */
     public List<Integer> getCourseNumbers(String courseSubject) {
-        //TODO
+        /*
+        Since this will be hardcoded on the server anyways, we don't lose much by hardcoding it here.
+        This might be changed for production code, but it would only require an update once per semester.
+         */
 
         List<Integer> l = new ArrayList<>();
 
-        if (courseSubject.contentEquals("CS")) {
-            l.add(495);
-            l.add(470);
-            l.add(403);
-        } else {
-            l.add(101);
-            l.add(105);
-            l.add(400);
+        switch (courseSubject) {
+            case "CS":
+                l.add(250);
+                l.add(260);
+                l.add(350);
+                l.add(351);
+                l.add(360);
+                l.add(403);
+                l.add(457);
+                l.add(470);
+                l.add(495);
+                break;
+            case "MATH":
+                l.add(125);
+                l.add(126);
+                l.add(227);
+                l.add(237);
+                l.add(301);
+                l.add(302);
+                break;
+            default:
+                l.add(101);
+                l.add(102);
+                l.add(105);
+                l.add(201);
+                l.add(205);
+                l.add(301);
+                l.add(305);
+                l.add(400);
+                break;
         }
 
         return l;
@@ -214,7 +250,22 @@ public class TextbookAccessor extends ListingAccessor {
      * range
      */
     public List<Textbook> get(int minPrice, int maxPrice, String courseSubject, int courseNumber) {
-        //TODO
-        return null;
+        String json = getJSONrequest(tableTextbook,
+                "price>" + minPrice + ",price<" + maxPrice + ",subject=" + courseSubject + ",number=" + courseNumber);
+
+        return castListingsToTextbooks(getTextbooksFromJSON(json));
+    }
+
+    public List<Textbook> castListingsToTextbooks(List<Listing> listings) {
+        List<Textbook> textbooks = new ArrayList<>();
+        for (Listing l : listings) {
+            if (l instanceof Textbook) {
+                textbooks.add((Textbook) l);
+            } else {
+                throw new IllegalStateException("Expected a Textbook, but found another class.");
+            }
+        }
+
+        return textbooks;
     }
 }

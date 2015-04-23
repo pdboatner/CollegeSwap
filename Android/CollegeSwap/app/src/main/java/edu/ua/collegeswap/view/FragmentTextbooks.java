@@ -1,5 +1,6 @@
 package edu.ua.collegeswap.view;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,7 +10,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +36,17 @@ public class FragmentTextbooks extends SectionFragment implements View.OnClickLi
 
 //    private List<Textbook> textbooks;
 
+    // UI references
+    private EditText editTextMinPrice, editTextMaxPrice;
+    private Spinner courseSubject, courseNumber;
+
+    // State representation
+    protected boolean filterByPrice = false;
+    protected float minFilterPrice, maxFilterPrice;
+    protected boolean filterByCourse = false;
+    protected String filterCourseSubject;
+    protected int filterCourseNumber;
+
     public FragmentTextbooks() {
         setHasOptionsMenu(true);
     }
@@ -37,8 +54,70 @@ public class FragmentTextbooks extends SectionFragment implements View.OnClickLi
     @Override
     public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.section_fragment_textbooks, container, false);
-
+        LinearLayout linearLayoutTextbooks = (LinearLayout) view.findViewById(R.id.linearLayoutTextbooks);
         final View.OnClickListener onClickListener = this;
+
+        Button buttonClear = (Button) view.findViewById(R.id.buttonClear);
+        Button buttonFilter = (Button) view.findViewById(R.id.buttonFilter);
+        buttonClear.setOnClickListener(this);
+        buttonFilter.setOnClickListener(this);
+
+        editTextMinPrice = (EditText) view.findViewById(R.id.editTextMinPrice);
+        editTextMaxPrice = (EditText) view.findViewById(R.id.editTextMaxPrice);
+        courseSubject = (Spinner) view.findViewById(R.id.spinnerSubject);
+        courseNumber = (Spinner) view.findViewById(R.id.spinnerNumber);
+
+        //TODO Setup the spinners. Try to do this without duplicating code from EditTextbookActivity.
+
+        // Populate the spinners. Duplicate code from EditTextbookActivity.
+        final List<String> courseSubjects = new TextbookAccessor().getCourseSubjects();
+        courseSubjects.add(0, "Choose course subject");
+        ArrayAdapter<String> subjectAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, courseSubjects);
+        subjectAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        List<String> courseNumbers = new ArrayList<>(); // This needs to change when subject is changed
+        courseNumbers.add(0, EditTextbookActivity.chooseNumberMessage);
+        final ArrayAdapter<String> numberAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, courseNumbers);
+        numberAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        courseSubject.setAdapter(subjectAdapter);
+        courseNumber.setAdapter(numberAdapter);
+
+        // Change the courseNumbers whenever the subject is changed
+        courseSubject.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position != 0) { // ignore the "choose course subject" item
+                    // Give the course number adapter the appropriate numbers for the selected subject.
+                    updateCourseNumbers(courseSubjects.get(position), numberAdapter, courseNumber);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+
+        // Load the Textbooks
+        reloadView(inflater, linearLayoutTextbooks, onClickListener);
+
+        return view;
+    }
+
+    private void updateCourseNumbers(String subject, ArrayAdapter<String> numberAdapter, Spinner courseNumber) {
+        numberAdapter.clear();
+        numberAdapter.add(EditTextbookActivity.chooseNumberMessage);
+        numberAdapter.addAll(new TextbookAccessor().getCourseNumbersStrings(subject));
+        courseNumber.setSelection(0);
+    }
+
+    /**
+     * @param inflater              used to inflate each individual textbook layout
+     * @param linearLayoutTextbooks holds the textbooks
+     * @param onClickListener       for clicking on textbooks
+     */
+    private void reloadView(final LayoutInflater inflater, final LinearLayout linearLayoutTextbooks, final View.OnClickListener onClickListener) {
 
         new AsyncTask<Void, Void, List<Textbook>>() {
 
@@ -52,8 +131,7 @@ public class FragmentTextbooks extends SectionFragment implements View.OnClickLi
             protected void onPostExecute(List<Textbook> textbooks) {
                 // When the network calls are complete, this runs on the UI thread to show the listings returned from the server.
 
-                // Get a reference to the linear layout which will hold the View for each textbook
-                LinearLayout linearLayoutTextbooks = (LinearLayout) view.findViewById(R.id.linearLayoutTextbooks);
+                linearLayoutTextbooks.removeAllViews(); // Remove the child views, since this can be called again after filtering
 
                 for (Textbook t : textbooks) {
                     // Inflate the individual textbook View and put it inside the parent LinearLayout
@@ -80,14 +158,27 @@ public class FragmentTextbooks extends SectionFragment implements View.OnClickLi
                 }
             }
         }.execute();
-
-        return view;
     }
 
     private List<Textbook> updateTextbooksFromServer() {
         // Retrieve the list of textbooks from the server
         TextbookAccessor accessor = new TextbookAccessor();
-        List<Listing> listings = accessor.getAll();
+
+        List<Listing> listings;
+        if (filterByPrice) {
+            if (filterByCourse) {
+                return accessor.get((int) minFilterPrice, (int) maxFilterPrice, filterCourseSubject, filterCourseNumber);
+            } else {
+                listings = accessor.getByPrice((int) minFilterPrice, (int) maxFilterPrice);
+            }
+        } else {
+            if (filterByCourse) {
+                return accessor.getByClass(filterCourseSubject, filterCourseNumber);
+            } else {
+                listings = accessor.getAll();
+            }
+        }
+
         List<Textbook> textbooks = new ArrayList<>();
         for (Listing l : listings) {
             if (l instanceof Textbook) {
@@ -102,11 +193,56 @@ public class FragmentTextbooks extends SectionFragment implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-        if (v.getTag() instanceof Textbook) {
-            // Retrieve the Textbook stored in this View
-            Textbook textbook = (Textbook) v.getTag();
+        switch (v.getId()) {
+            case R.id.buttonClear:
+                // Clear the UI filtering inputs
+                editTextMinPrice.setText("");
+                editTextMaxPrice.setText("");
+                courseSubject.setSelection(0);
+                courseNumber.setSelection(0);
 
-            callbacks.onListingClicked(textbook);
+                // Set the state variables to show all textbooks
+                filterByPrice = false;
+                filterByCourse = false;
+
+                reloadView(getActivity().getLayoutInflater(), (LinearLayout) getActivity().findViewById(R.id.linearLayoutTextbooks), this);
+                break;
+            case R.id.buttonFilter:
+                // Set the state variables to possibly filter textbooks
+                try {
+                    minFilterPrice = Float.parseFloat(editTextMinPrice.getText().toString());
+                    maxFilterPrice = Float.parseFloat(editTextMaxPrice.getText().toString());
+
+                    filterByPrice = true;
+                } catch (Exception e) {
+                    filterByPrice = false;
+                }
+
+                if (courseSubject.getSelectedItemPosition() != 0 &&
+                        courseNumber.getSelectedItemPosition() != 0) {
+                    filterCourseSubject = (String) courseSubject.getSelectedItem();
+                    try {
+                        filterCourseNumber = Integer.parseInt((String) courseNumber.getSelectedItem());
+                        filterByCourse = true;
+                    } catch (Exception e) {
+                        filterByCourse = false;
+                    }
+                } else {
+                    filterByCourse = false;
+                }
+
+                //TODO Treat course subject and number separately?
+
+                reloadView(getActivity().getLayoutInflater(), (LinearLayout) getActivity().findViewById(R.id.linearLayoutTextbooks), this);
+                break;
+            default:
+                if (v.getTag() instanceof Textbook) {
+                    // Retrieve the Textbook stored in this View
+                    Textbook textbook = (Textbook) v.getTag();
+
+                    callbacks.onListingClicked(textbook);
+                }
+                break;
         }
     }
 
@@ -120,9 +256,11 @@ public class FragmentTextbooks extends SectionFragment implements View.OnClickLi
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_new) {
-            //TODO Open the activity to create a new Textbook
-
+            // Open the activity to create a new Textbook
             Toast.makeText(getActivity(), "Making a new Textbook", Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent(getActivity(), EditTextbookActivity.class);
+            startActivity(intent);
 
             return true;
         } else {
