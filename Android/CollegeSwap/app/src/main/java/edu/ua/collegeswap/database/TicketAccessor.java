@@ -151,7 +151,9 @@ public class TicketAccessor extends ListingAccessor {
      * @return a list of all Ticket Listings for a given game
      */
     public List<Ticket> getByGame(String game, String bowl) {
-        String json = getJSONrequest(tableTicket, "game=" + game + ",bowl=" + bowl);
+        String bowlFilterString = (bowl.equals("")) ? "" : ",bowl=" + bowl;
+
+        String json = getJSONrequest(tableTicket, "game=" + game + bowlFilterString);
 
         return castListingsToTickets(getTicketsFromJSON(json));
     }
@@ -197,14 +199,17 @@ public class TicketAccessor extends ListingAccessor {
 
     /**
      * @param game     the name of the football game.  See TicketAccessor.getGames()
-     * @param bowl     ""upper" or "lower". See TicketAccessor.getBowls()
+     * @param bowl     ""upper" or "lower". See TicketAccessor.getBowls(). Can be empty to not
+     *                 filter by bowl.
      * @param minPrice the minimum price of Ticket Listings to return
      * @param maxPrice the maximum price of Ticket Listings to return
      * @return a list of all Ticket listings for a given game within the given price range
      */
     public List<Ticket> get(String game, String bowl, int minPrice, int maxPrice) {
+        String bowlFilterString = (bowl.equals("")) ? "" : ",bowl=" + bowl;
+
         String json = getJSONrequest(tableTicket,
-                "price>" + minPrice + ",price<" + maxPrice + ",game=" + game + ",bowl=" + bowl);
+                "price>" + minPrice + ",price<" + maxPrice + ",game=" + game + bowlFilterString);
 
         return castListingsToTickets(getTicketsFromJSON(json));
     }
