@@ -29,7 +29,7 @@ import edu.ua.collegeswap.viewModel.Ticket;
  * <p/>
  * Created by Patrick on 3/4/2015.
  */
-public class FragmentTickets extends SectionFragment implements View.OnClickListener, SectionFragment.Reloadable {
+public class FragmentTickets extends SectionFragment implements View.OnClickListener, SectionFragment.ListingSectionFragment {
 
 //    private List<Ticket> tickets;
 
@@ -42,6 +42,7 @@ public class FragmentTickets extends SectionFragment implements View.OnClickList
     protected float minFilterPrice, maxFilterPrice;
     protected boolean filterByGame = false;
     protected String filterGame, filterBowl;
+    protected boolean onlyShowForUser = false;
 
     public FragmentTickets() {
         setHasOptionsMenu(true);
@@ -49,34 +50,45 @@ public class FragmentTickets extends SectionFragment implements View.OnClickList
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        checkLogin();
+
         final View view = inflater.inflate(R.layout.section_fragment_tickets, container, false);
         // Get a reference to the linear layout which will hold the View for each ticket
         LinearLayout linearLayoutTickets = (LinearLayout) view.findViewById(R.id.linearLayoutTickets);
         final View.OnClickListener onClickListener = this;
 
-        Button buttonClear = (Button) view.findViewById(R.id.buttonClear);
-        Button buttonFilter = (Button) view.findViewById(R.id.buttonFilter);
-        buttonClear.setOnClickListener(this);
-        buttonFilter.setOnClickListener(this);
+        if (!onlyShowForUser) {
+            Button buttonClear = (Button) view.findViewById(R.id.buttonClear);
+            Button buttonFilter = (Button) view.findViewById(R.id.buttonFilter);
+            buttonClear.setOnClickListener(this);
+            buttonFilter.setOnClickListener(this);
 
-        editTextMinPrice = (EditText) view.findViewById(R.id.editTextMinPrice);
-        editTextMaxPrice = (EditText) view.findViewById(R.id.editTextMaxPrice);
-        game = (Spinner) view.findViewById(R.id.spinnerGame);
-        bowl = (Spinner) view.findViewById(R.id.spinnerBowl);
+            editTextMinPrice = (EditText) view.findViewById(R.id.editTextMinPrice);
+            editTextMaxPrice = (EditText) view.findViewById(R.id.editTextMaxPrice);
+            game = (Spinner) view.findViewById(R.id.spinnerGame);
+            bowl = (Spinner) view.findViewById(R.id.spinnerBowl);
 
-        // Populate the spinners. Duplicate code from EditTicketActivity.
-        List<String> games = new TicketAccessor().getGames();
-        games.add(0, "Choose game");
-        ArrayAdapter<String> gameAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, games);
-        gameAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            // Populate the spinners. Duplicate code from EditTicketActivity.
+            List<String> games = new TicketAccessor().getGames();
+            games.add(0, "Choose game");
+            ArrayAdapter<String> gameAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, games);
+            gameAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        List<String> bowlOptions = new TicketAccessor().getBowls();
-        bowlOptions.add(0, "Choose bowl");
-        ArrayAdapter<String> bowlAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, bowlOptions);
-        bowlAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            List<String> bowlOptions = new TicketAccessor().getBowls();
+            bowlOptions.add(0, "Choose bowl");
+            ArrayAdapter<String> bowlAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, bowlOptions);
+            bowlAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        game.setAdapter(gameAdapter);
-        bowl.setAdapter(bowlAdapter);
+            game.setAdapter(gameAdapter);
+            bowl.setAdapter(bowlAdapter);
+        } else {
+            // Hide the filtering controls
+            view.findViewById(R.id.filterControlsTickets).setVisibility(View.GONE);
+
+            // Remove the padding
+            View wholeView = view.findViewById(R.id.linearLayoutWholeTickets);
+            wholeView.setPadding(0, 0, 0, 0);
+        }
 
         // Load the Tickets
         reloadView(inflater, linearLayoutTickets, onClickListener);
@@ -137,19 +149,24 @@ public class FragmentTickets extends SectionFragment implements View.OnClickList
         TicketAccessor accessor = new TicketAccessor();
         List<Listing> listings;
 
-        if (filterByPrice) {
-            if (filterByGame) {
-                return accessor.get(filterGame, filterBowl, (int) minFilterPrice, (int) maxFilterPrice);
-            } else {
-                listings = accessor.getByPrice((int) minFilterPrice, (int) maxFilterPrice);
-            }
+        if (onlyShowForUser) {
+            listings = accessor.getByUser(account);
         } else {
-            if (filterByGame) {
-                return accessor.getByGame(filterGame, filterBowl);
+            if (filterByPrice) {
+                if (filterByGame) {
+                    return accessor.get(filterGame, filterBowl, (int) minFilterPrice, (int) maxFilterPrice);
+                } else {
+                    listings = accessor.getByPrice((int) minFilterPrice, (int) maxFilterPrice);
+                }
             } else {
-                listings = accessor.getAll();
+                if (filterByGame) {
+                    return accessor.getByGame(filterGame, filterBowl);
+                } else {
+                    listings = accessor.getAll();
+                }
             }
         }
+
 
         List<Ticket> tickets = new ArrayList<>();
         for (Listing l : listings) {
@@ -242,5 +259,10 @@ public class FragmentTickets extends SectionFragment implements View.OnClickList
     @Override
     public void reloadView() {
         reloadView(getActivity().getLayoutInflater(), (LinearLayout) getActivity().findViewById(R.id.linearLayoutTickets), this);
+    }
+
+    @Override
+    public void onlyShowForUser() {
+        onlyShowForUser = true;
     }
 }

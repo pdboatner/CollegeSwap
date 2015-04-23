@@ -30,7 +30,7 @@ import edu.ua.collegeswap.viewModel.Textbook;
  * <p/>
  * Created by Patrick on 3/4/2015.
  */
-public class FragmentTextbooks extends SectionFragment implements View.OnClickListener, SectionFragment.Reloadable {
+public class FragmentTextbooks extends SectionFragment implements View.OnClickListener, SectionFragment.ListingSectionFragment {
 
 //    private List<Textbook> textbooks;
 
@@ -44,6 +44,7 @@ public class FragmentTextbooks extends SectionFragment implements View.OnClickLi
     protected boolean filterByCourse = false;
     protected String filterCourseSubject;
     protected int filterCourseNumber;
+    protected boolean onlyShowForUser = false;
 
     public FragmentTextbooks() {
         setHasOptionsMenu(true);
@@ -51,48 +52,59 @@ public class FragmentTextbooks extends SectionFragment implements View.OnClickLi
 
     @Override
     public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        checkLogin();
+
         final View view = inflater.inflate(R.layout.section_fragment_textbooks, container, false);
         LinearLayout linearLayoutTextbooks = (LinearLayout) view.findViewById(R.id.linearLayoutTextbooks);
         final View.OnClickListener onClickListener = this;
 
-        Button buttonClear = (Button) view.findViewById(R.id.buttonClear);
-        Button buttonFilter = (Button) view.findViewById(R.id.buttonFilter);
-        buttonClear.setOnClickListener(this);
-        buttonFilter.setOnClickListener(this);
+        if (!onlyShowForUser) {
+            Button buttonClear = (Button) view.findViewById(R.id.buttonClear);
+            Button buttonFilter = (Button) view.findViewById(R.id.buttonFilter);
+            buttonClear.setOnClickListener(this);
+            buttonFilter.setOnClickListener(this);
 
-        editTextMinPrice = (EditText) view.findViewById(R.id.editTextMinPrice);
-        editTextMaxPrice = (EditText) view.findViewById(R.id.editTextMaxPrice);
-        courseSubject = (Spinner) view.findViewById(R.id.spinnerSubject);
-        courseNumber = (Spinner) view.findViewById(R.id.spinnerNumber);
+            editTextMinPrice = (EditText) view.findViewById(R.id.editTextMinPrice);
+            editTextMaxPrice = (EditText) view.findViewById(R.id.editTextMaxPrice);
+            courseSubject = (Spinner) view.findViewById(R.id.spinnerSubject);
+            courseNumber = (Spinner) view.findViewById(R.id.spinnerNumber);
 
-        // Populate the spinners. Duplicate code from EditTextbookActivity.
-        final List<String> courseSubjects = new TextbookAccessor().getCourseSubjects();
-        courseSubjects.add(0, "Choose course subject");
-        ArrayAdapter<String> subjectAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, courseSubjects);
-        subjectAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            // Populate the spinners. Duplicate code from EditTextbookActivity.
+            final List<String> courseSubjects = new TextbookAccessor().getCourseSubjects();
+            courseSubjects.add(0, "Choose course subject");
+            ArrayAdapter<String> subjectAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, courseSubjects);
+            subjectAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        List<String> courseNumbers = new ArrayList<>(); // This needs to change when subject is changed
-        courseNumbers.add(0, EditTextbookActivity.chooseNumberMessage);
-        final ArrayAdapter<String> numberAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, courseNumbers);
-        numberAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            List<String> courseNumbers = new ArrayList<>(); // This needs to change when subject is changed
+            courseNumbers.add(0, EditTextbookActivity.chooseNumberMessage);
+            final ArrayAdapter<String> numberAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, courseNumbers);
+            numberAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        courseSubject.setAdapter(subjectAdapter);
-        courseNumber.setAdapter(numberAdapter);
+            courseSubject.setAdapter(subjectAdapter);
+            courseNumber.setAdapter(numberAdapter);
 
-        // Change the courseNumbers whenever the subject is changed
-        courseSubject.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position != 0) { // ignore the "choose course subject" item
-                    // Give the course number adapter the appropriate numbers for the selected subject.
-                    updateCourseNumbers(courseSubjects.get(position), numberAdapter, courseNumber);
+            // Change the courseNumbers whenever the subject is changed
+            courseSubject.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    if (position != 0) { // ignore the "choose course subject" item
+                        // Give the course number adapter the appropriate numbers for the selected subject.
+                        updateCourseNumbers(courseSubjects.get(position), numberAdapter, courseNumber);
+                    }
                 }
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                }
+            });
+        } else {
+            // Hide the filtering controls
+            view.findViewById(R.id.filterControlsTextbooks).setVisibility(View.GONE);
+
+            // Remove the padding
+            View wholeView = view.findViewById(R.id.linearLayoutWholeTextbooks);
+            wholeView.setPadding(0, 0, 0, 0);
+        }
 
 
         // Load the Textbooks
@@ -161,19 +173,25 @@ public class FragmentTextbooks extends SectionFragment implements View.OnClickLi
         TextbookAccessor accessor = new TextbookAccessor();
 
         List<Listing> listings;
-        if (filterByPrice) {
-            if (filterByCourse) {
-                return accessor.get((int) minFilterPrice, (int) maxFilterPrice, filterCourseSubject, filterCourseNumber);
-            } else {
-                listings = accessor.getByPrice((int) minFilterPrice, (int) maxFilterPrice);
-            }
+
+        if (onlyShowForUser) {
+            listings = accessor.getByUser(account);
         } else {
-            if (filterByCourse) {
-                return accessor.getByClass(filterCourseSubject, filterCourseNumber);
+            if (filterByPrice) {
+                if (filterByCourse) {
+                    return accessor.get((int) minFilterPrice, (int) maxFilterPrice, filterCourseSubject, filterCourseNumber);
+                } else {
+                    listings = accessor.getByPrice((int) minFilterPrice, (int) maxFilterPrice);
+                }
             } else {
-                listings = accessor.getAll();
+                if (filterByCourse) {
+                    return accessor.getByClass(filterCourseSubject, filterCourseNumber);
+                } else {
+                    listings = accessor.getAll();
+                }
             }
         }
+
 
         List<Textbook> textbooks = new ArrayList<>();
         for (Listing l : listings) {
@@ -261,5 +279,10 @@ public class FragmentTextbooks extends SectionFragment implements View.OnClickLi
     @Override
     public void reloadView() {
         reloadView(getActivity().getLayoutInflater(), (LinearLayout) getActivity().findViewById(R.id.linearLayoutTextbooks), this);
+    }
+
+    @Override
+    public void onlyShowForUser() {
+        onlyShowForUser = true;
     }
 }

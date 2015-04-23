@@ -29,7 +29,7 @@ import edu.ua.collegeswap.viewModel.Sublease;
  * <p/>
  * Created by Patrick on 3/4/2015.
  */
-public class FragmentSubleases extends SectionFragment implements View.OnClickListener, SectionFragment.Reloadable {
+public class FragmentSubleases extends SectionFragment implements View.OnClickListener, SectionFragment.ListingSectionFragment {
 
 //    private List<Sublease> subleases;
 
@@ -42,6 +42,7 @@ public class FragmentSubleases extends SectionFragment implements View.OnClickLi
     protected float minFilterPrice, maxFilterPrice;
     protected boolean filterByLocation = false;
     protected String filterLocation;
+    protected boolean onlyShowForUser = false;
 
     public FragmentSubleases() {
         setHasOptionsMenu(true);
@@ -49,27 +50,39 @@ public class FragmentSubleases extends SectionFragment implements View.OnClickLi
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        checkLogin();
+
         final View view = inflater.inflate(R.layout.section_fragment_subleases, container, false);
         // Get a reference to the linear layout which will hold the View for each sublease
         LinearLayout linearLayoutSubleases = (LinearLayout) view.findViewById(R.id.linearLayoutSubleases);
         final View.OnClickListener onClickListener = this;
 
-        Button buttonClear = (Button) view.findViewById(R.id.buttonClear);
-        Button buttonFilter = (Button) view.findViewById(R.id.buttonFilter);
-        buttonClear.setOnClickListener(this);
-        buttonFilter.setOnClickListener(this);
+        if (!onlyShowForUser) {
+            Button buttonClear = (Button) view.findViewById(R.id.buttonClear);
+            Button buttonFilter = (Button) view.findViewById(R.id.buttonFilter);
+            buttonClear.setOnClickListener(this);
+            buttonFilter.setOnClickListener(this);
 
-        editTextMinPrice = (EditText) view.findViewById(R.id.editTextMinPrice);
-        editTextMaxPrice = (EditText) view.findViewById(R.id.editTextMaxPrice);
-        location = (Spinner) view.findViewById(R.id.spinnerLocation);
+            editTextMinPrice = (EditText) view.findViewById(R.id.editTextMinPrice);
+            editTextMaxPrice = (EditText) view.findViewById(R.id.editTextMaxPrice);
+            location = (Spinner) view.findViewById(R.id.spinnerLocation);
 
-        // Populate the spinner.  Duplicate code from EditSubleaseActivity.
-        List<String> locations = new SubleaseAccessor().getLocations();
-        locations.add(0, "Choose location");
-        ArrayAdapter<String> locationAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, locations);
-        locationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            // Populate the spinner.  Duplicate code from EditSubleaseActivity.
+            List<String> locations = new SubleaseAccessor().getLocations();
+            locations.add(0, "Choose location");
+            ArrayAdapter<String> locationAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, locations);
+            locationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        location.setAdapter(locationAdapter);
+            location.setAdapter(locationAdapter);
+        } else {
+            // Hide the filtering controls
+            view.findViewById(R.id.filterControlsSubleases).setVisibility(View.GONE);
+
+            // Remove the padding
+            View wholeView = view.findViewById(R.id.linearLayoutWholeSubleases);
+            wholeView.setPadding(0, 0, 0, 0);
+        }
+
 
         // Load the subleases
         reloadView(inflater, linearLayoutSubleases, onClickListener);
@@ -128,19 +141,23 @@ public class FragmentSubleases extends SectionFragment implements View.OnClickLi
         // Retrieve the list of subleases from the server
         SubleaseAccessor accessor = new SubleaseAccessor();
 
-        List<Listing> listings = accessor.getAll();
+        List<Listing> listings;
 
-        if (filterByPrice) {
-            if (filterByLocation) {
-                return accessor.get(filterLocation, (int) minFilterPrice, (int) maxFilterPrice);
-            } else {
-                listings = accessor.getByPrice((int) minFilterPrice, (int) maxFilterPrice);
-            }
+        if (onlyShowForUser) {
+            listings = accessor.getByUser(account);
         } else {
-            if (filterByLocation) {
-                return accessor.getByLocation(filterLocation);
+            if (filterByPrice) {
+                if (filterByLocation) {
+                    return accessor.get(filterLocation, (int) minFilterPrice, (int) maxFilterPrice);
+                } else {
+                    listings = accessor.getByPrice((int) minFilterPrice, (int) maxFilterPrice);
+                }
             } else {
-                listings = accessor.getAll();
+                if (filterByLocation) {
+                    return accessor.getByLocation(filterLocation);
+                } else {
+                    listings = accessor.getAll();
+                }
             }
         }
 
@@ -225,5 +242,10 @@ public class FragmentSubleases extends SectionFragment implements View.OnClickLi
     @Override
     public void reloadView() {
         reloadView(getActivity().getLayoutInflater(), (LinearLayout) getActivity().findViewById(R.id.linearLayoutSubleases), this);
+    }
+
+    @Override
+    public void onlyShowForUser() {
+        onlyShowForUser = true;
     }
 }

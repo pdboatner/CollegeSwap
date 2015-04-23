@@ -99,8 +99,8 @@ public class MainDrawerActivity extends ActionBarActivity
         // If an Activity was launched that might update listings, go ahead and refresh them
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == UPDATE_LISTING_REQUEST && currentFragment instanceof SectionFragment.Reloadable) {
-            ((SectionFragment.Reloadable) currentFragment).reloadView();
+        if (requestCode == UPDATE_LISTING_REQUEST && currentFragment instanceof SectionFragment.ListingSectionFragment) {
+            ((SectionFragment.ListingSectionFragment) currentFragment).reloadView();
         }
     }
 

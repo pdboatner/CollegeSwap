@@ -2,10 +2,11 @@ package edu.ua.collegeswap.view;
 
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -66,6 +67,31 @@ public class FragmentProfile extends SectionFragment implements View.OnClickList
         TextView usernameTextView = (TextView) view.findViewById(R.id.textViewAccountName);
         usernameTextView.setText(account.getName());
 
+        // Set up the SectionFragments to show the user's listings
+        FragmentManager fm = getChildFragmentManager();
+        Fragment sectionTextbook = fm.findFragmentByTag("sectionTextbook");
+        Fragment sectionTicket = fm.findFragmentByTag("sectionTicket");
+        Fragment sectionSublease = fm.findFragmentByTag("sectionSublease");
+
+        if (sectionTextbook == null ||
+                sectionTicket == null ||
+                sectionSublease == null) {
+            // Create them for the first time
+            sectionTextbook = SectionFragment.newInstance(SectionFragment.textbookNumber);
+            sectionTicket = SectionFragment.newInstance(SectionFragment.ticketNumber);
+            sectionSublease = SectionFragment.newInstance(SectionFragment.subleaseNumber);
+
+            ((ListingSectionFragment) sectionTextbook).onlyShowForUser();
+            ((ListingSectionFragment) sectionTicket).onlyShowForUser();
+            ((ListingSectionFragment) sectionSublease).onlyShowForUser();
+
+            fm.beginTransaction()
+                    .replace(R.id.containerTextbooks, sectionTextbook, "sectionTextbook")
+                    .replace(R.id.containerTickets, sectionTicket, "sectionTicket")
+                    .replace(R.id.containerSubleases, sectionSublease, "sectionSublease")
+                    .commit();
+        }
+
         return view;
     }
 
@@ -74,14 +100,14 @@ public class FragmentProfile extends SectionFragment implements View.OnClickList
     public void onClick(View v) {
         // TODO user clicks on an item in their list of postings
 
-        if (v.getTag() instanceof Ticket) {
-            // Retrieve the ticket stored in this view
-            Ticket ticket = (Ticket) v.getTag();
-            // Do something
-
-        } else if (v.getTag() instanceof Textbook) {
+        if (v.getTag() instanceof Textbook) {
             // Retrieve the textbook stored in this view
             Textbook textbook = (Textbook) v.getTag();
+            // Do something
+
+        } else if (v.getTag() instanceof Ticket) {
+            // Retrieve the ticket stored in this view
+            Ticket ticket = (Ticket) v.getTag();
             // Do something
 
         } else if (v.getTag() instanceof Sublease) {

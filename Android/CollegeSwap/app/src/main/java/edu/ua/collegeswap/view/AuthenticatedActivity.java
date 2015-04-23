@@ -19,6 +19,8 @@ public abstract class AuthenticatedActivity extends ActionBarActivity {
 
     /**
      * Check the login. Update the account object.
+     * <p/>
+     * See duplicate in SectionFragment.
      *
      * @return true if the user is logged in, false if the user is not
      */
