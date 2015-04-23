@@ -1,6 +1,5 @@
 package edu.ua.collegeswap.view;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,7 +15,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +29,7 @@ import edu.ua.collegeswap.viewModel.Sublease;
  * <p/>
  * Created by Patrick on 3/4/2015.
  */
-public class FragmentSubleases extends SectionFragment implements View.OnClickListener {
+public class FragmentSubleases extends SectionFragment implements View.OnClickListener, SectionFragment.Reloadable {
 
 //    private List<Sublease> subleases;
 
@@ -95,6 +93,8 @@ public class FragmentSubleases extends SectionFragment implements View.OnClickLi
 
             @Override
             protected void onPostExecute(List<Sublease> subleases) {
+
+                linearLayoutSubleases.removeAllViews(); // Remove the child views, since this can be called again after filtering
 
                 for (Sublease s : subleases) {
                     // Inflate the individual sublease View and put it inside the parent LinearLayout
@@ -170,7 +170,7 @@ public class FragmentSubleases extends SectionFragment implements View.OnClickLi
                 filterByPrice = false;
                 filterByLocation = false;
 
-                reloadView(getActivity().getLayoutInflater(), (LinearLayout) getActivity().findViewById(R.id.linearLayoutSubleases), this);
+                reloadView();
                 break;
             case R.id.buttonFilter:
                 // Set the state variables to possibly filter subleases
@@ -190,7 +190,7 @@ public class FragmentSubleases extends SectionFragment implements View.OnClickLi
                     filterByLocation = false;
                 }
 
-                reloadView(getActivity().getLayoutInflater(), (LinearLayout) getActivity().findViewById(R.id.linearLayoutSubleases), this);
+                reloadView();
                 break;
             default:
                 if (v.getTag() instanceof Sublease) {
@@ -214,14 +214,16 @@ public class FragmentSubleases extends SectionFragment implements View.OnClickLi
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_new) {
             //Open the activity to create a new Sublease
-            Toast.makeText(getActivity(), "Making a new Sublease", Toast.LENGTH_SHORT).show();
-
-            Intent intent = new Intent(getActivity(), EditSubleaseActivity.class);
-            startActivity(intent);
+            ((MainDrawerActivity) getActivity()).launchNewListingActivity(EditSubleaseActivity.class);
 
             return true;
         } else {
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void reloadView() {
+        reloadView(getActivity().getLayoutInflater(), (LinearLayout) getActivity().findViewById(R.id.linearLayoutSubleases), this);
     }
 }

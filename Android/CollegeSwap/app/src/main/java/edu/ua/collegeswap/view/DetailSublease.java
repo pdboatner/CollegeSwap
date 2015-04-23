@@ -103,4 +103,5 @@ public class DetailSublease extends AuthenticatedActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }

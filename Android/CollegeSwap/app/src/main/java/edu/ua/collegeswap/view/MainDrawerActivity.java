@@ -33,6 +33,13 @@ public class MainDrawerActivity extends ActionBarActivity
      */
     public static final String detailListingExtra = "detailListingExtra";
 
+    /**
+     * Request code for starting activities which may update listings. When these activities
+     * return,
+     * we may need to reload the listings.
+     */
+    public static final int UPDATE_LISTING_REQUEST = 5;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,7 +83,25 @@ public class MainDrawerActivity extends ActionBarActivity
         // Launch a new detailed Listing activity
         Intent intent = new Intent(this, listing.getDetailActivityClass());
         intent.putExtra(detailListingExtra, listing);
-        startActivity(intent);
+        startActivityForResult(intent, UPDATE_LISTING_REQUEST);
+    }
+
+    @Override
+    public void launchNewListingActivity(Class newListingActivityClass) {
+        // Launch an Activity to create a new Listing
+        Intent intent = new Intent(this, newListingActivityClass);
+        startActivityForResult(intent, UPDATE_LISTING_REQUEST);
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // If an Activity was launched that might update listings, go ahead and refresh them
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == UPDATE_LISTING_REQUEST && currentFragment instanceof SectionFragment.Reloadable) {
+            ((SectionFragment.Reloadable) currentFragment).reloadView();
+        }
     }
 
     @Override

@@ -153,7 +153,9 @@ public class TextbookAccessor extends ListingAccessor {
      * @return a list of all Textbook Listings for a given class
      */
     public List<Textbook> getByClass(String courseSubject, int courseNumber) {
-        String json = getJSONrequest(tableTextbook, "subject=" + courseSubject + ",number=" + courseNumber);
+        String courseNumberString = (courseNumber > 0) ? ",number=" + courseNumber : "";
+
+        String json = getJSONrequest(tableTextbook, "subject=" + courseSubject + courseNumberString);
 
         return castListingsToTextbooks(getTextbooksFromJSON(json));
     }
@@ -245,13 +247,15 @@ public class TextbookAccessor extends ListingAccessor {
      * @param minPrice      the minimum price of listings to display
      * @param maxPrice      the maximum price of listings to display
      * @param courseSubject like "MATH"
-     * @param courseNumber  like 125
+     * @param courseNumber  like 125. If -1, don't filter by number.
      * @return a list of all Textbook Listings for a given class which also fall into a given price
      * range
      */
     public List<Textbook> get(int minPrice, int maxPrice, String courseSubject, int courseNumber) {
+        String courseNumberString = (courseNumber > 0) ? ",number=" + courseNumber : "";
+
         String json = getJSONrequest(tableTextbook,
-                "price>" + minPrice + ",price<" + maxPrice + ",subject=" + courseSubject + ",number=" + courseNumber);
+                "price>" + minPrice + ",price<" + maxPrice + ",subject=" + courseSubject + courseNumberString);
 
         return castListingsToTextbooks(getTextbooksFromJSON(json));
     }

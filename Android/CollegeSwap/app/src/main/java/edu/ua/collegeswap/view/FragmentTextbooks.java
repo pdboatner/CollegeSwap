@@ -1,6 +1,5 @@
 package edu.ua.collegeswap.view;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,7 +16,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +30,7 @@ import edu.ua.collegeswap.viewModel.Textbook;
  * <p/>
  * Created by Patrick on 3/4/2015.
  */
-public class FragmentTextbooks extends SectionFragment implements View.OnClickListener {
+public class FragmentTextbooks extends SectionFragment implements View.OnClickListener, SectionFragment.Reloadable {
 
 //    private List<Textbook> textbooks;
 
@@ -66,8 +64,6 @@ public class FragmentTextbooks extends SectionFragment implements View.OnClickLi
         editTextMaxPrice = (EditText) view.findViewById(R.id.editTextMaxPrice);
         courseSubject = (Spinner) view.findViewById(R.id.spinnerSubject);
         courseNumber = (Spinner) view.findViewById(R.id.spinnerNumber);
-
-        //TODO Setup the spinners. Try to do this without duplicating code from EditTextbookActivity.
 
         // Populate the spinners. Duplicate code from EditTextbookActivity.
         final List<String> courseSubjects = new TextbookAccessor().getCourseSubjects();
@@ -205,7 +201,7 @@ public class FragmentTextbooks extends SectionFragment implements View.OnClickLi
                 filterByPrice = false;
                 filterByCourse = false;
 
-                reloadView(getActivity().getLayoutInflater(), (LinearLayout) getActivity().findViewById(R.id.linearLayoutTextbooks), this);
+                reloadView();
                 break;
             case R.id.buttonFilter:
                 // Set the state variables to possibly filter textbooks
@@ -218,22 +214,19 @@ public class FragmentTextbooks extends SectionFragment implements View.OnClickLi
                     filterByPrice = false;
                 }
 
-                if (courseSubject.getSelectedItemPosition() != 0 &&
-                        courseNumber.getSelectedItemPosition() != 0) {
+                if (courseSubject.getSelectedItemPosition() != 0) { // Allow filtering only by subject, and optionally number
                     filterCourseSubject = (String) courseSubject.getSelectedItem();
+                    filterByCourse = true;
                     try {
                         filterCourseNumber = Integer.parseInt((String) courseNumber.getSelectedItem());
-                        filterByCourse = true;
                     } catch (Exception e) {
-                        filterByCourse = false;
+                        filterCourseNumber = -1; // if the user hasn't selected a course
                     }
                 } else {
                     filterByCourse = false;
                 }
 
-                //TODO Treat course subject and number separately?
-
-                reloadView(getActivity().getLayoutInflater(), (LinearLayout) getActivity().findViewById(R.id.linearLayoutTextbooks), this);
+                reloadView();
                 break;
             default:
                 if (v.getTag() instanceof Textbook) {
@@ -257,14 +250,16 @@ public class FragmentTextbooks extends SectionFragment implements View.OnClickLi
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_new) {
             // Open the activity to create a new Textbook
-            Toast.makeText(getActivity(), "Making a new Textbook", Toast.LENGTH_SHORT).show();
-
-            Intent intent = new Intent(getActivity(), EditTextbookActivity.class);
-            startActivity(intent);
+            ((MainDrawerActivity) getActivity()).launchNewListingActivity(EditTextbookActivity.class);
 
             return true;
         } else {
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void reloadView() {
+        reloadView(getActivity().getLayoutInflater(), (LinearLayout) getActivity().findViewById(R.id.linearLayoutTextbooks), this);
     }
 }

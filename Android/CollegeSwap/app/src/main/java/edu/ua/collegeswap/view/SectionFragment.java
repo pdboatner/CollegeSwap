@@ -75,6 +75,15 @@ public class SectionFragment extends Fragment {
     public static interface ListingCallbacks {
 
         void onListingClicked(Listing listing);
+
+        void launchNewListingActivity(Class newListingActivityClass);
+    }
+
+    public interface Reloadable {
+        /**
+         * Reload this fragment's view.
+         */
+        public void reloadView();
     }
 
 }

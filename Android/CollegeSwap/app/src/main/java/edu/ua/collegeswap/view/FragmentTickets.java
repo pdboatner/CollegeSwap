@@ -1,6 +1,5 @@
 package edu.ua.collegeswap.view;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,7 +15,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +29,7 @@ import edu.ua.collegeswap.viewModel.Ticket;
  * <p/>
  * Created by Patrick on 3/4/2015.
  */
-public class FragmentTickets extends SectionFragment implements View.OnClickListener {
+public class FragmentTickets extends SectionFragment implements View.OnClickListener, SectionFragment.Reloadable {
 
 //    private List<Ticket> tickets;
 
@@ -180,7 +178,7 @@ public class FragmentTickets extends SectionFragment implements View.OnClickList
                 filterByPrice = false;
                 filterByGame = false;
 
-                reloadView(getActivity().getLayoutInflater(), (LinearLayout) getActivity().findViewById(R.id.linearLayoutTickets), this);
+                reloadView();
 
                 break;
             case R.id.buttonFilter:
@@ -194,16 +192,20 @@ public class FragmentTickets extends SectionFragment implements View.OnClickList
                     filterByPrice = false;
                 }
 
-                if (game.getSelectedItemPosition() != 0 &&
-                        bowl.getSelectedItemPosition() != 0) {
+                if (game.getSelectedItemPosition() != 0) {
                     filterGame = (String) game.getSelectedItem();
-                    filterBowl = (String) bowl.getSelectedItem();
                     filterByGame = true;
+
+                    if (bowl.getSelectedItemPosition() != 0) {
+                        filterBowl = (String) bowl.getSelectedItem();
+                    } else {
+                        filterBowl = ""; // Filter by game, but not by bowl
+                    }
                 } else {
                     filterByGame = false;
                 }
 
-                reloadView(getActivity().getLayoutInflater(), (LinearLayout) getActivity().findViewById(R.id.linearLayoutTickets), this);
+                reloadView();
 
                 break;
             default:
@@ -229,14 +231,16 @@ public class FragmentTickets extends SectionFragment implements View.OnClickList
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_new) {
             // Open the activity to create a new Ticket
-            Toast.makeText(getActivity(), "Making a new Ticket", Toast.LENGTH_SHORT).show();
-
-            Intent intent = new Intent(getActivity(), EditTicketActivity.class);
-            startActivity(intent);
+            ((MainDrawerActivity) getActivity()).launchNewListingActivity(EditTicketActivity.class);
 
             return true;
         } else {
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void reloadView() {
+        reloadView(getActivity().getLayoutInflater(), (LinearLayout) getActivity().findViewById(R.id.linearLayoutTickets), this);
     }
 }

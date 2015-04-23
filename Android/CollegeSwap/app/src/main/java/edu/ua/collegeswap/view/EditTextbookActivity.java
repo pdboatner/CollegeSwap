@@ -203,7 +203,7 @@ public class EditTextbookActivity extends EditListingActivity {
                     }
                 }.execute();
 
-                finish(); // TODO ask the calling activity to refresh now?
+                finish();
 
                 break;
         }
