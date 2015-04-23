@@ -36,3 +36,12 @@ Column Data:
         'col' is the column of the table you want
         example: 'textbook' and 'subject' returns every subject
             that there is a listing for.
+
+Email users:
+    url = "bama.ua.edu/~cppopovich/CS495/mailUser.php"
+    post:
+        'email' is the email to send to
+        'text' is the body of the email
+        To use the subject line, the first line of 'text'
+            should be "Subject: "+yoursubjectline
+        example: "Subject: CollegeSwap News"
